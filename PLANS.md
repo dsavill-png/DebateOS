@@ -8,7 +8,7 @@ Goal: make human/AI collaboration reliable before scaling implementation.
 - Keep GitHub and Dropbox responsibilities distinct.
 - Prove the manual loop: leadership decision → approved work order → Work/Codex execution → review.
 - The Work dispatcher loop has now been proven sufficiently to authorize the limited Codex dispatcher bootstrap in Task 005.
-- Task 005 may install and verify the Codex dispatcher, including production routing and draft PR publishing after the reserved smoke test. This is a bounded bootstrap exception, not approval for broader unattended automation.
+- Task 005 is complete. The Codex dispatcher is verified for production routing and draft PR publishing under the bounded bootstrap authorization.
 
 ## Phase 1 — Consolidate the knowledge model
 
@@ -74,8 +74,8 @@ The automation layer should encode proven workflows rather than inventing them.
 Current authorization:
 
 - Work dispatch through GitHub PR #1 is operational.
-- The reserved read-only Codex smoke test passed. Task 005 is authorized to continue with production command routing and draft PR publishing, and to verify both with a harmless reserved test.
-- Task 002 remains on hold until production routing and draft PR publishing are verified and leadership separately authorizes release. A smoke or verification result alone does not release it.
+- The reserved read-only Codex smoke test passed. TASK-999 verified production command routing, draft PR publishing, and reporting to PR #1. Evidence: [source comment 7041685281](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7041685281), [Actions run 44751105302](https://github.com/dsavill-png/DebateOS/actions/runs/44751105302), and [draft PR #2](https://github.com/dsavill-png/DebateOS/pull/2).
+- Task 002 remains on dispatch hold pending a separate explicit leadership decision to release it.
 - Broader queueing, QA chains, retries, and unattended orchestration remain future work after the command path is proven.
 
 ## Accepted implementation stack
