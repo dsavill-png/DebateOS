@@ -76,3 +76,14 @@ When finishing, report:
 - RECOMMENDED NEXT STEP
 
 If a task is blocked by a decision that belongs to Dennis/Jared/Chat, stop and surface the decision instead of improvising.
+
+## Approved initial stack
+
+The accepted initial application stack is recorded in `docs/architecture/ADR-001-initial-stack.md`:
+
+- TypeScript as the primary application language.
+- Next.js for the web/application/API layer.
+- PostgreSQL for durable application data.
+- Python only for later specialized data/AI workloads when explicitly justified.
+
+Do not silently replace these with another primary framework, language, or database.
