@@ -77,3 +77,9 @@ Only after the manual work-order loop is stable:
 - add QA/review triggers
 
 The automation should encode a proven workflow rather than inventing one.
+
+## Accepted implementation stack
+
+The initial stack is now approved in `docs/architecture/ADR-001-initial-stack.md`: TypeScript + Next.js + PostgreSQL, with Python reserved for specialized later workloads.
+
+Task 002 is unblocked for Codex implementation of the public-only Tabroom adapter. Task 003 continues independently as Work research into supported authenticated Tabroom access.
