@@ -167,6 +167,9 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           branch="codex/task-$TASK-comment-$SOURCE_ID"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+            -f ref="refs/heads/$branch" -f sha="$GITHUB_SHA" --jq .ref
           git switch -c "$branch"
           git commit -m "Codex TASK-$TASK from comment $SOURCE_ID"
           git push origin "HEAD:refs/heads/$branch"
