@@ -1,6 +1,6 @@
 # 001 · Freeze the Tabroom ingestion contract
 
-**Status** Approved and ready for manual assignment  
+**Status** Completed  
 **Worker** Work  
 **Review** Chat with Dennis and Jared  
 **Priority** High
@@ -14,7 +14,7 @@ Turn the Tabroom research already completed for DebateOS into a concise, impleme
 The project has already verified:
 
 - GET https://api.tabroom.com/v1 returns the live OpenAPI document.
-- For Harvard tournament tourn_id 40923, anonymous public REST access has been verified for tournament, rounds, results, schedule, and invite resources.
+- For Harvard tournament tourn_id 40923, prior research reported anonymous REST coverage. The final v1 check verified anonymous tournament and invite access, and rounds, results, and schedule returned 401. See the completed design note below.
 - Guessed routes that returned 404 must not be treated as supported; exact paths should come from the OpenAPI specification.
 - download_data.mhtml?tourn_id=40923 returns a rich bulk tournament snapshot and is useful alongside REST.
 - The Harvard 2026 R1 Kansas SS vs Texas BS example is the canonical test case currently used by the project.
@@ -72,8 +72,10 @@ Report:
 
 ## Delivered design note
 
-[Tabroom ingestion contract in Dropbox](https://www.dropbox.com/home/DebateOS/Research?preview=001-tabroom-ingestion-contract.md)
+[Final Tabroom v1 ingestion contract in Dropbox](https://www.dropbox.com/home/DebateOS/Research?preview=001-tabroom-ingestion-contract-v1.md)
 
-Dropbox path: `/DebateOS/Research/001-tabroom-ingestion-contract.md`.
+Dropbox path: `/DebateOS/Research/001-tabroom-ingestion-contract-v1.md`.
 
-The design handoff is complete. Exact REST route bindings and the Harvard payload replay are implementation verification steps. Protected authentication and ballot/outcome mapping remain unresolved.
+**Approved decision.** Tabroom v1 is public-only. Use anonymous REST where available and `download_data.mhtml` for structured bulk tournament data. Represent protected REST resources as unavailable. Do not scrape HTML. Authenticated access is a separate future capability.
+
+**Verification.** Live OpenAPI route bindings checked. The saved Harvard bulk response verified the unique panel `9200905`, both entry IDs, and tournament judge `2912715` linked to person `366665`. The ballot winner remains unresolved. Adapter implementation is a follow-on task.
