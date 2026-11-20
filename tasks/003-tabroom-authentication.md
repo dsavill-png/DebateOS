@@ -52,3 +52,7 @@ Report:
 - ARCHITECTURE CONFLICTS
 - FILES / COMMITS
 - RECOMMENDED NEXT STEP
+
+## Research memo
+
+[Tabroom authenticated REST access](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md) · source comment `7039686188`
