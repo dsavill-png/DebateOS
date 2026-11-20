@@ -84,3 +84,7 @@ Report:
 - FILES / COMMITS
 - REQUIRED ONE-TIME USER ACTION, if any
 - RECOMMENDED NEXT STEP
+
+## Prerequisite update
+
+**2026-11-20:** Dennis confirmed that the repository Actions secret `OPENAI_API_KEY` is now set for `dsavill-png/DebateOS`. Treat the secret value as unavailable and do not attempt to reveal or log it. Resume the approved setup, install the dispatcher workflow, and run only the reserved harmless smoke test. Task 002 remains unreleased until the smoke test succeeds.
