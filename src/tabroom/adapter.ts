@@ -1,13 +1,11 @@
 import { createHash } from 'node:crypto';
 import { normalize } from './normalize.ts';
+import { protectedRestResources, publicRestUrls, spec } from './openapi.ts';
+
+export { spec } from './openapi.ts';
 
 export type Scope = { tournament: string; event?: string; round?: string };
 export type Resource = 'tournament' | 'invite' | 'bulk' | 'rounds' | 'results' | 'schedule';
-
-export const spec = {
-  version: '1.2.0',
-  sha256: 'e01682f296589c599f6390127ef06a6c9fb10f8c6ab3019a700727322bd7e375',
-};
 
 export interface Snapshot {
   id: string;
@@ -74,6 +72,7 @@ type Options = {
 
 async function readPublic(url: string): Promise<Reply> {
   const response = await fetch(url, {
+    method: 'GET',
     credentials: 'omit',
     redirect: 'manual',
     headers: { accept: 'application/json' },
@@ -100,14 +99,12 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
     async import(scope) {
       const id = encodeURIComponent(scope.tournament);
       if (!/^\d+$/.test(id)) throw Error('Invalid tournament ID');
-      const base = 'https://api.tabroom.com/v1/rest/tourns/' + id;
       const urls = {
-        tournament: base,
-        invite: base + '/invite',
+        ...publicRestUrls(id),
         bulk: 'https://www.tabroom.com/api/download_data.mhtml?tourn_id=' + id,
       };
-      const diagnostics: Diagnostic[] = ['rounds', 'results', 'schedule'].map(resource => ({
-        resource: resource as Resource, state: 'unavailable', reason: 'Protected REST operation',
+      const diagnostics: Diagnostic[] = protectedRestResources.map(resource => ({
+        resource, state: 'unavailable', reason: 'Protected REST operation',
       }));
       const snapshots: Snapshot[] = [];
 

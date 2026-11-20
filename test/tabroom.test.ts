@@ -148,3 +148,32 @@ for (const scenario of ['withheld', 'contradictory']) {
     }
   });
 }
+
+test('real transport uses only pinned anonymous GET URLs and rejects HTML', async t => {
+  const fetch = t.mock.method(globalThis, 'fetch', async (_input: RequestInfo | URL, _init?: RequestInit) =>
+    new Response('<html>Sign in</html>', {
+      status: 200, headers: { 'content-type': 'text/html' },
+    }),
+  );
+  const adapter = publicTabroom({
+    retain: async () => assert.fail('HTML must not be retained as a JSON snapshot'),
+  });
+  const result = await adapter.import(scope);
+  assert.deepEqual(fetch.mock.calls.map(call => call.arguments[0]), [
+    tournament.url, invite.url, bulk.url,
+  ]);
+  for (const { arguments: [, init] } of fetch.mock.calls) {
+    assert.equal(init?.method, 'GET');
+    assert.equal(init?.credentials, 'omit');
+    assert.equal(init?.redirect, 'manual');
+    assert.deepEqual(init?.headers, { accept: 'application/json' });
+  }
+  assert.deepEqual(
+    result.diagnostics.filter(item => item.state === 'unavailable').map(item => item.resource),
+    manifest.protected_rest.map(({ url }: { url: string }) => url.split('/').at(-1)),
+  );
+  assert.deepEqual(result.diagnostics.slice(3).map(item => item.reason),
+    Array(3).fill('Unexpected media type'));
+  assert.equal(result.tournament, null);
+  assert.deepEqual(result.snapshots, []);
+});
