@@ -64,3 +64,7 @@ Report:
 - ARCHITECTURE CONFLICTS
 - FILES / COMMITS
 - RECOMMENDED NEXT STEP
+
+## Research memo
+
+[Codex dispatch implementation plan](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-004-7039823123-codex-dispatch.md) · source comment `7039823123`
