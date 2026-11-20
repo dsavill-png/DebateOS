@@ -1,4 +1,4 @@
-name: Codex dispatcher smoke test
+name: Codex dispatcher
 run-name: Codex dispatcher comment ${{ github.event.comment.id }}
 on:
   issue_comment:
@@ -6,13 +6,13 @@ on:
 permissions:
   contents: read
   actions: read
+concurrency:
+  group: codex-dispatch-comment-${{ github.event.comment.id }}
 jobs:
   smoke:
     if: github.repository == 'dsavill-png/DebateOS' && github.ref == 'refs/heads/main' && github.event.issue.number == 1 && github.event.issue.pull_request && github.actor == 'dsavill-png' && github.event.sender.login == 'dsavill-png' && github.event.comment.user.login == 'dsavill-png'
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    concurrency:
-      group: codex-dispatch-comment-${{ github.event.comment.id }}
     steps:
       - name: Verify source and reserve smoke-only command
         id: gate
@@ -58,3 +58,134 @@ jobs:
           test "$(cat "$RUNNER_TEMP/codex-smoke.txt")" = DEBATEOS_CODEX_SMOKE_OK
           test -z "$(git status --porcelain)"
           echo "Read-only Codex smoke test passed for source comment $(jq -r '.comment.id' "$GITHUB_EVENT_PATH")." >> "$GITHUB_STEP_SUMMARY"
+
+  route:
+    if: github.repository == 'dsavill-png/DebateOS' && github.ref == 'refs/heads/main' && github.event.issue.number == 1 && github.event.issue.pull_request && github.actor == 'dsavill-png' && github.event.sender.login == 'dsavill-png' && github.event.comment.user.login == 'dsavill-png'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      task: ${{ steps.gate.outputs.task }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Validate source and release
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_RUN_ATTEMPT" == 1 ]] || exit 0
+          id=$(jq -er '.comment.id | numbers | tostring | select(test("^[0-9]+$"))' "$GITHUB_EVENT_PATH")
+          record=$(gh api "repos/$GITHUB_REPOSITORY/issues/comments/$id")
+          body=$(jq -er --arg id "$id" --arg repo "$GITHUB_REPOSITORY" --slurpfile event "$GITHUB_EVENT_PATH" '
+            select((.id | tostring) == $id and
+              .issue_url == ("https://api.github.com/repos/" + $repo + "/issues/1") and
+              .user.login == "dsavill-png" and .user.type == "User" and
+              (.created_at | type) == "string" and .created_at == .updated_at and
+              .body == $event[0].comment.body) |
+            .body | gsub("^\\s+|\\s+$"; "")
+          ' <<<"$record") || exit 0
+          [[ "$body" =~ ^CODEX\ TASK-([0-9]{3})$ ]] || exit 0
+          task=${BASH_REMATCH[1]}
+          [[ "$task" != 000 && "$task" != 001 && "$task" != 002 ]] || exit 0
+          first_run=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/codex-dispatcher.yml/runs?event=issue_comment&per_page=100" |
+            jq -sr --arg title "Codex dispatcher comment $id" '[.[].workflow_runs[] | select(.display_title == $title) | .id] | min')
+          [[ "$first_run" == "$GITHUB_RUN_ID" ]] || exit 0
+          if [[ "$task" == 999 ]]; then
+            printf '%s\n' 'Read AGENTS.md and PLANS.md. Create only codex-dispatch-verification.txt containing DEBATEOS_CODEX_PUBLISH_OK followed by a newline. Do not change application files.' > "$RUNNER_TEMP/task-prompt"
+          else
+            shopt -s nullglob
+            files=(tasks/"$task"-*.md)
+            [[ ${#files[@]} == 1 && -f "${files[0]}" && ! -L "${files[0]}" ]] || exit 0
+            grep -qxE '\*\*Status\*\* Approved[[:blank:]]*' "${files[0]}" || exit 0
+            grep -qxE '\*\*Worker\*\* Codex[[:blank:]]*' "${files[0]}" || exit 0
+            grep -qxE '\*\*Dispatch\*\* Released[[:blank:]]*' "${files[0]}" || exit 0
+            printf 'Read AGENTS.md, PLANS.md and %s. Implement only the approved work order and run its tests. Do not change dispatcher controls or publish anything.\n' "${files[0]}" > "$RUNNER_TEMP/task-prompt"
+          fi
+          echo "task=$task" >> "$GITHUB_OUTPUT"
+      - name: Run Codex without publishing credentials
+        if: steps.gate.outputs.task != ''
+        uses: openai/codex-action@306c6a196a99dcc6582530c396a19d2672d5e9ec
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ":workspace"
+          prompt-file: ${{ runner.temp }}/task-prompt
+      - name: Package changes
+        if: steps.gate.outputs.task != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git add -A
+          git diff --cached --binary "$GITHUB_SHA" > "$RUNNER_TEMP/result.patch"
+          test -s "$RUNNER_TEMP/result.patch"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: steps.gate.outputs.task != ''
+        with:
+          name: codex-patch
+          path: ${{ runner.temp }}/result.patch
+          retention-days: 1
+  publish:
+    needs: route
+    if: needs.route.outputs.task != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: codex-patch
+          path: ${{ runner.temp }}/codex-patch
+      - name: Validate patch and publish draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TASK: ${{ needs.route.outputs.task }}
+          SOURCE_ID: ${{ github.event.comment.id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TASK" =~ ^[0-9]{3}$ && "$SOURCE_ID" =~ ^[0-9]+$ ]]
+          [[ "$TASK" != 000 && "$TASK" != 001 && "$TASK" != 002 ]]
+          git apply --index "$RUNNER_TEMP/codex-patch/result.patch"
+          test -n "$(git diff --cached --name-only)"
+          if [[ "$TASK" == 999 ]]; then
+            test "$(git diff --cached --name-only)" = codex-dispatch-verification.txt
+            test "$(cat codex-dispatch-verification.txt)" = DEBATEOS_CODEX_PUBLISH_OK
+            test "$(git diff --cached --name-status)" = $'A\tcodex-dispatch-verification.txt'
+          fi
+          git diff --cached --quiet -- .github tasks AGENTS.md PLANS.md
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          branch="codex/task-$TASK-comment-$SOURCE_ID"
+          git switch -c "$branch"
+          git commit -m "Codex TASK-$TASK from comment $SOURCE_ID"
+          git push origin "HEAD:refs/heads/$branch"
+          gh pr create --draft --base main --head "$branch" --title "Codex TASK-$TASK" --body "Review only. Source comment $SOURCE_ID; Actions run $GITHUB_RUN_ID."
+  report:
+    needs: [route, publish]
+    if: always() && needs.route.outputs.task != ''
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          TASK: ${{ needs.route.outputs.task }}
+          SOURCE_ID: ${{ github.event.comment.id }}
+          RESULT: ${{ needs.publish.result }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$TASK" =~ ^[0-9]{3}$ && "$SOURCE_ID" =~ ^[0-9]+$ ]]
+          link="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          draft=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "codex/task-$TASK-comment-$SOURCE_ID" --state open --json url --jq '.[0].url // ""')
+          gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body "Codex TASK-$TASK result: $RESULT. Source comment ID $SOURCE_ID. Actions: $link. Draft PR: ${draft:-none}."
