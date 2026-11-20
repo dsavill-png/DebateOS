@@ -65,6 +65,10 @@ jobs:
     timeout-minutes: 15
     outputs:
       task: ${{ steps.gate.outputs.task }}
+      task_status: ${{ steps.package.outputs.task_status }}
+      task_reason: ${{ steps.package.outputs.task_reason }}
+      has_patch: ${{ steps.package.outputs.has_patch }}
+      pipeline_failure: ${{ steps.package.outputs.pipeline_failure }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -107,30 +111,78 @@ jobs:
           fi
           echo "task=$task" >> "$GITHUB_OUTPUT"
       - name: Run Codex without publishing credentials
+        id: codex
         if: steps.gate.outputs.task != ''
         uses: openai/codex-action@306c6a196a99dcc6582530c396a19d2672d5e9ec
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           permission-profile: ":workspace"
           prompt-file: ${{ runner.temp }}/task-prompt
-      - name: Package changes
+          output-file: ${{ runner.temp }}/codex-result.txt
+      - name: Package and classify result
+        id: package
         if: steps.gate.outputs.task != ''
         shell: bash
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test -f "$RUNNER_TEMP/codex-result.txt"
           git add -A
           git diff --cached --binary "$GITHUB_SHA" > "$RUNNER_TEMP/result.patch"
-          test -s "$RUNNER_TEMP/result.patch"
+
+          status_line=$(grep -Eim1 'STATUS.*(Completed|Partial|Blocked)' "$RUNNER_TEMP/codex-result.txt" || true)
+          task_status=$(printf '%s' "$status_line" | grep -Eio '(Completed|Partial|Blocked)' | head -1 | tr '[:upper:]' '[:lower:]' || true)
+          reason=$(awk '
+            BEGIN { found=0 }
+            /STATUS/ && /(Completed|Partial|Blocked)/ { found=1; next }
+            found && NF { print; exit }
+          ' "$RUNNER_TEMP/codex-result.txt" | sed -E 's/^[[:space:]*#_-]+//; s/[[:space:]]+/ /g' | cut -c1-300)
+          has_patch=false
+          [[ -s "$RUNNER_TEMP/result.patch" ]] && has_patch=true
+          pipeline_failure=false
+
+          case "$task_status:$has_patch" in
+            completed:true|partial:true)
+              ;;
+            blocked:false)
+              [[ -n "$reason" ]] || reason='Codex explicitly reported Blocked; see the Actions run for details.'
+              ;;
+            blocked:true)
+              pipeline_failure=true
+              reason='Codex reported Blocked but also changed repository files.'
+              ;;
+            completed:false|partial:false)
+              pipeline_failure=true
+              reason='Codex reported work progress without producing a patch.'
+              ;;
+            *)
+              pipeline_failure=true
+              task_status=failure
+              reason='Codex did not return a recognized Completed, Partial, or Blocked status.'
+              ;;
+          esac
+
+          echo "task_status=$task_status" >> "$GITHUB_OUTPUT"
+          echo "has_patch=$has_patch" >> "$GITHUB_OUTPUT"
+          echo "pipeline_failure=$pipeline_failure" >> "$GITHUB_OUTPUT"
+          {
+            echo 'task_reason<<EOF'
+            echo "$reason"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+          if [[ "$pipeline_failure" == true ]]; then
+            exit 1
+          fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: steps.gate.outputs.task != ''
+        if: steps.gate.outputs.task != '' && steps.package.outputs.has_patch == 'true' && steps.package.outputs.task_status != 'blocked'
         with:
           name: codex-patch
           path: ${{ runner.temp }}/result.patch
           retention-days: 1
   publish:
     needs: route
-    if: github.run_attempt == '1' && needs.route.outputs.task != ''
+    if: github.run_attempt == '1' && needs.route.outputs.task != '' && needs.route.outputs.has_patch == 'true' && needs.route.outputs.task_status != 'blocked'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -185,11 +237,25 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TASK: ${{ needs.route.outputs.task }}
           SOURCE_ID: ${{ github.event.comment.id }}
-          RESULT: ${{ needs.publish.result }}
+          TASK_STATUS: ${{ needs.route.outputs.task_status }}
+          TASK_REASON: ${{ needs.route.outputs.task_reason }}
+          PIPELINE_FAILURE: ${{ needs.route.outputs.pipeline_failure }}
+          PUBLISH_RESULT: ${{ needs.publish.result }}
         shell: bash
         run: |
           set -euo pipefail
           [[ "$TASK" =~ ^[0-9]{3}$ && "$SOURCE_ID" =~ ^[0-9]+$ ]]
           link="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           draft=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "codex/task-$TASK-comment-$SOURCE_ID" --state open --json url --jq '.[0].url // ""')
-          gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body "Codex TASK-$TASK result: $RESULT. Source comment ID $SOURCE_ID. Actions: $link. Draft PR: ${draft:-none}."
+          if [[ "$TASK_STATUS" == blocked && "$PIPELINE_FAILURE" != true ]]; then
+            result=blocked
+          elif [[ "$TASK_STATUS" == partial && "$PUBLISH_RESULT" == success ]]; then
+            result=partial
+          elif [[ "$TASK_STATUS" == completed && "$PUBLISH_RESULT" == success ]]; then
+            result=success
+          else
+            result=failure
+          fi
+          reason_text=
+          [[ -z "$TASK_REASON" ]] || reason_text=" Reason: $TASK_REASON"
+          gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body "Codex TASK-$TASK result: $result. Task status: ${TASK_STATUS:-unknown}.${reason_text} Source comment ID $SOURCE_ID. Actions: $link. Draft PR: ${draft:-none}."
