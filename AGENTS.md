@@ -1,7 +1,5 @@
 # DebateOS repository instructions
 
-Read PLANS.md and the assigned work order before beginning.
-
 ## Working model
 
 - Dennis: product owner, debate-domain lead, and data/BI/programming perspective.
@@ -15,8 +13,8 @@ These roles describe how work is organized. Do not infer authority beyond an app
 
 ## Source-of-truth boundaries
 
-- GitHub is authoritative for source code, engineering history, repository instructions, and approved engineering work.
-- Dropbox is the durable home for architecture, research, product notes, data references, and handoffs.
+- GitHub is the system of record for code, tasks, decisions, and project state. [`PROJECT_STATE.md`](PROJECT_STATE.md) is the canonical shared state for Dennis Commander and Jared Commander.
+- Dropbox is the durable library for research and artifacts, including source material, product notes, data references, and large working files. Link to durable material from GitHub.
 - Canonical debate evidence must remain distinct from derived AI knowledge.
 - Generated summaries, indexes, embeddings, classifications, and model interpretations are derived data and must be labeled as such.
 
@@ -57,12 +55,11 @@ The canonical debate/round model should eventually bridge tournament data, discl
 
 ## Task execution protocol
 
-Before beginning an approved task:
+At session start, read `AGENTS.md`, `PLANS.md`, and `PROJECT_STATE.md` on trusted `main`, then read the active task files or linked GitHub issues and only the detailed handoffs referenced by `PROJECT_STATE.md`. Inspect relevant code and docs before making changes.
 
-1. Read this AGENTS.md.
-2. Read PLANS.md.
-3. Read the specific task under tasks/ or the linked GitHub issue.
-4. Inspect relevant existing code/docs before changing anything.
+When a task benefits from explicit coordination, add an `**Owner**` field to its work order with one value: Dennis Commander, Jared Commander, Work, or Codex. Coordinate with the listed owner before editing the same task or taking it over. Keep any separate worker assignment when ownership and execution differ.
+
+At session end, refresh `PROJECT_STATE.md` from the latest `main` and reconcile concurrent updates before committing. Keep the executive snapshot brief and record verified progress, decisions, blockers, and approved next actions. Create a detailed `docs/handoffs/YYYY-MM-DD-topic.md` only when the session produced substantial new technical or research context. Link it from Recent Detailed Handoffs. Link to durable handoffs or Dropbox paths for long research and artifacts.
 
 When finishing, report:
 
