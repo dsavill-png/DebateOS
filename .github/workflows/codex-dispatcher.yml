@@ -99,7 +99,7 @@ jobs:
             jq -sr --arg title "Codex dispatcher comment $id" '[.[].workflow_runs[] | select(.display_title == $title) | .id] | min')
           [[ "$first_run" == "$GITHUB_RUN_ID" ]] || exit 0
           if [[ "$task" == 999 ]]; then
-            printf '%s\n' 'Read AGENTS.md and PLANS.md. Create only codex-dispatch-verification.txt containing DEBATEOS_CODEX_PUBLISH_OK followed by a newline. Do not change application files.' > "$RUNNER_TEMP/task-prompt"
+            printf '%s\n' 'Read AGENTS.md and PLANS.md. Create only codex-dispatch-verification.txt containing DEBATEOS_CODEX_PUBLISH_OK followed by a newline. Do not change application files. Finish with a completion handoff whose first status line is exactly STATUS: Completed.' > "$RUNNER_TEMP/task-prompt"
           else
             shopt -s nullglob
             files=(tasks/"$task"-*.md)
@@ -132,11 +132,14 @@ jobs:
 
           status_line=$(grep -Eim1 'STATUS.*(Completed|Partial|Blocked)' "$RUNNER_TEMP/codex-result.txt" || true)
           task_status=$(printf '%s' "$status_line" | grep -Eio '(Completed|Partial|Blocked)' | head -1 | tr '[:upper:]' '[:lower:]' || true)
-          reason=$(awk '
-            BEGIN { found=0 }
-            /STATUS/ && /(Completed|Partial|Blocked)/ { found=1; next }
-            found && NF { print; exit }
-          ' "$RUNNER_TEMP/codex-result.txt" | sed -E 's/^[[:space:]*#_-]+//; s/[[:space:]]+/ /g' | cut -c1-300)
+          reason=$(printf '%s\n' "$status_line" | sed -E 's/.*(Completed|Partial|Blocked)[^[:alnum:]]*//; s/^[[:space:]*#_.:—-]+//; s/[[:space:]]+/ /g' | cut -c1-300)
+          if [[ -z "$reason" ]]; then
+            reason=$(awk '
+              BEGIN { IGNORECASE=1; found=0 }
+              /STATUS/ && /(Completed|Partial|Blocked)/ { found=1; next }
+              found && NF { print; exit }
+            ' "$RUNNER_TEMP/codex-result.txt" | sed -E 's/^[[:space:]*#_.:—-]+//; s/[[:space:]]+/ /g' | cut -c1-300)
+          fi
           has_patch=false
           [[ -s "$RUNNER_TEMP/result.patch" ]] && has_patch=true
           pipeline_failure=false
