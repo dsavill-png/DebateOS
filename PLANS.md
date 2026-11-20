@@ -8,7 +8,7 @@ Goal: make human/AI collaboration reliable before scaling implementation.
 - Keep GitHub and Dropbox responsibilities distinct.
 - Prove the manual loop: leadership decision → approved work order → Work/Codex execution → review.
 - The Work dispatcher loop has now been proven sufficiently to authorize the limited Codex dispatcher bootstrap in Task 005.
-- Task 005 may install and smoke-test the Codex dispatcher now. This is a bounded bootstrap exception, not approval for broader unattended automation.
+- Task 005 may install and verify the Codex dispatcher, including production routing and draft PR publishing after the reserved smoke test. This is a bounded bootstrap exception, not approval for broader unattended automation.
 
 ## Phase 1 — Consolidate the knowledge model
 
@@ -74,12 +74,12 @@ The automation layer should encode proven workflows rather than inventing them.
 Current authorization:
 
 - Work dispatch through GitHub PR #1 is operational.
-- Task 005 is explicitly authorized to install and run a harmless smoke test of the Codex dispatcher now.
-- Production Codex work remains gated until that smoke test succeeds.
+- The reserved read-only Codex smoke test passed. Task 005 is authorized to continue with production command routing and draft PR publishing, and to verify both with a harmless reserved test.
+- Task 002 remains on hold until production routing and draft PR publishing are verified and leadership separately authorizes release. A smoke or verification result alone does not release it.
 - Broader queueing, QA chains, retries, and unattended orchestration remain future work after the command path is proven.
 
 ## Accepted implementation stack
 
 The initial stack is now approved in `docs/architecture/ADR-001-initial-stack.md`: TypeScript + Next.js + PostgreSQL, with Python reserved for specialized later workloads.
 
-Task 002 is unblocked for Codex implementation of the public-only Tabroom adapter. Task 003 continues independently as Work research into supported authenticated Tabroom access.
+Task 002 is approved for Codex implementation of the public-only Tabroom adapter and remains on dispatch hold under Phase 6. Task 003 continues independently as Work research into supported authenticated Tabroom access.

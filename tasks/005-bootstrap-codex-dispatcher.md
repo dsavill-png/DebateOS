@@ -1,6 +1,6 @@
 # 005 · Bootstrap Codex dispatcher
 
-**Status** Approved  
+**Status** Partial (approved to continue)  
 **Worker** Work  
 **Review** Chat with Dennis and Jared  
 **Priority** High
@@ -22,7 +22,7 @@ The recommended pattern is:
 5. Codex works on a branch and produces a draft pull request or other reviewable result.
 6. Completion/failure is reported back through GitHub so Chat can review it.
 
-Task 002 is the first approved production coding task, but it must **not** run until the dispatcher passes a harmless smoke test.
+Task 002 is the first approved production coding task, but it remains on hold until production routing and draft PR publishing are verified and leadership separately authorizes its release.
 
 ## Scope
 
@@ -65,6 +65,8 @@ Create the repository workflow/configuration and a concise setup note in `/Debat
 
 The handoff must state one of:
 
+- **Codex dispatcher verified for production routing and draft PR publishing**
+- **Partial; production verification pending**
 - **Codex dispatcher ready for smoke test**
 - **Codex dispatcher installed; one-time user secret/authorization required**
 - **Blocked; supported dispatcher could not be installed**
@@ -87,4 +89,15 @@ Report:
 
 ## Prerequisite update
 
-**2026-11-20:** Dennis confirmed that the repository Actions secret `OPENAI_API_KEY` is now set for `dsavill-png/DebateOS`. Treat the secret value as unavailable and do not attempt to reveal or log it. Resume the approved setup, install the dispatcher workflow, and run only the reserved harmless smoke test. Task 002 remains unreleased until the smoke test succeeds.
+**2026-11-20:** Dennis confirmed that the repository Actions secret `OPENAI_API_KEY` is now set for `dsavill-png/DebateOS`. Treat the secret value as unavailable and do not attempt to reveal or log it. Resume the approved setup, install the dispatcher workflow, and start with the reserved harmless smoke test. The continuation below authorizes the next stage.
+
+## Post-smoke continuation (2026-11-20)
+
+The reserved `CODEX TASK-000` read-only smoke test [passed](https://github.com/dsavill-png/DebateOS/actions/runs/44744769927). Work received the [7:30:31 AM CST command](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7040788200) and completed a confirmation-only run. It confirmed the smoke result in ChatGPT and posted no new status to PR #1. That run did not satisfy Task 005. The task remains Partial.
+
+A fresh exact `WORK TASK-005` comment on PR #1 authorizes the implementation and verification batch. Read the current work order from `main`, continue past smoke confirmation, and post a new Task 005 result on PR #1 linked to the fresh source comment.
+
+1. Install production routing for exact `CODEX TASK-###` commands on `main`, retaining the source, approval, and deduplication checks in Scope and preserving the read-only smoke route. Resolve only approved Codex work orders from trusted `main`.
+2. Publish results from dedicated task branches as draft PRs against `main`. Keep publishing credentials out of the Codex execution step. Report success or failure and link any draft PR from the command bus.
+3. Verify the default-branch workflow with a harmless reserved production-path test that creates a reviewable test-only change. Record the source comment, Actions run, and draft PR, and verify that rejected commands and replayed comment IDs cannot invoke Codex or publish. Keep the status Partial or Blocked if verification is incomplete and name the precise blocker.
+4. Enforce the TASK-002 hold in the dispatcher before invoking Codex. Do not post `CODEX TASK-002` or release it as a result of the test or completion report. Release requires verified production routing and publishing plus a separate explicit leadership decision.
