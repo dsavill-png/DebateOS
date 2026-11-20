@@ -83,4 +83,6 @@ Current authorization:
 
 The initial stack is now approved in `docs/architecture/ADR-001-initial-stack.md`: TypeScript + Next.js + PostgreSQL, with Python reserved for specialized later workloads.
 
-Task 002 is approved for Codex implementation of the public-only Tabroom adapter and is released for dispatch under Phase 6. Task 003 continues independently as Work research into supported authenticated Tabroom access.
+Task 002 is complete. The first public-only Tabroom adapter and Next.js scaffold are now on `main` through [PR #3](https://github.com/dsavill-png/DebateOS/pull/3).
+
+Task 003 continues independently as Work research into supported authenticated Tabroom access.

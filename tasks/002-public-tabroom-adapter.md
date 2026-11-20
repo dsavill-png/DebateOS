@@ -1,6 +1,6 @@
 # 002 · Implement the public Tabroom adapter
 
-**Status** Approved  
+**Status** Completed  
 **Worker** Codex  
 **Dispatch** Released  
 **Review** Chat with Dennis and Jared  
@@ -78,3 +78,7 @@ Report:
 - ARCHITECTURE CONFLICTS
 - FILES / COMMITS
 - RECOMMENDED NEXT STEP
+
+## Completion
+
+[PR #3](https://github.com/dsavill-png/DebateOS/pull/3) merged into `main` in [`04b4cdd`](https://github.com/dsavill-png/DebateOS/commit/04b4cdd86266a644c246405cff974ec36d69187d). The pre-merge review recorded 7/7 tests passing and a successful production Next.js build that generated the root page. The offline Harvard replay verified tournament `40923`, event `389106`, round `1587204`, entries `7401836` and `7465627`, panel `9200905`, and the explicit link from tournament judge `2912715` to person `366665`. Source pointers and replay stability passed. The winner remains unresolved. The adapter uses only approved public JSON endpoints, reports protected REST resources as unavailable, and rejects HTML without a scraping fallback.
