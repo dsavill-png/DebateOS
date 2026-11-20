@@ -98,7 +98,9 @@ jobs:
           first_run=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/codex-dispatcher.yml/runs?event=issue_comment&per_page=100" |
             jq -sr --arg title "Codex dispatcher comment $id" '[.[].workflow_runs[] | select(.display_title == $title) | .id] | min')
           [[ "$first_run" == "$GITHUB_RUN_ID" ]] || exit 0
-          if [[ "$task" == 999 ]]; then
+          if [[ "$task" == 998 ]]; then
+            printf '%s\n' 'Read AGENTS.md and PLANS.md. This is a reserved blocked-result smoke test. Make no repository changes. Return a completion handoff whose first status line is exactly STATUS: Blocked and whose next non-empty line says Reserved blocked-result smoke test; no work performed.' > "$RUNNER_TEMP/task-prompt"
+          elif [[ "$task" == 999 ]]; then
             printf '%s\n' 'Read AGENTS.md and PLANS.md. Create only codex-dispatch-verification.txt containing DEBATEOS_CODEX_PUBLISH_OK followed by a newline. Do not change application files. Finish with a completion handoff whose first status line is exactly STATUS: Completed.' > "$RUNNER_TEMP/task-prompt"
           else
             shopt -s nullglob
