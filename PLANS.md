@@ -75,11 +75,11 @@ Current authorization:
 
 - Work dispatch through GitHub PR #1 is operational.
 - The reserved read-only Codex smoke test passed. TASK-999 verified production command routing, draft PR publishing, and reporting to PR #1. Evidence: [source comment 7041685281](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7041685281), [Actions run 44751105302](https://github.com/dsavill-png/DebateOS/actions/runs/44751105302), and [draft PR #2](https://github.com/dsavill-png/DebateOS/pull/2).
-- Task 002 remains on dispatch hold pending a separate explicit leadership decision to release it.
+- On November 20, 2026, Dennis explicitly approved releasing TASK-002 for Codex dispatch. The release authorizes implementation of the public-only Tabroom adapter and publication of a draft PR for review.
 - Broader queueing, QA chains, retries, and unattended orchestration remain future work after the command path is proven.
 
 ## Accepted implementation stack
 
 The initial stack is now approved in `docs/architecture/ADR-001-initial-stack.md`: TypeScript + Next.js + PostgreSQL, with Python reserved for specialized later workloads.
 
-Task 002 is approved for Codex implementation of the public-only Tabroom adapter and remains on dispatch hold under Phase 6. Task 003 continues independently as Work research into supported authenticated Tabroom access.
+Task 002 is approved for Codex implementation of the public-only Tabroom adapter and is released for dispatch under Phase 6. Task 003 continues independently as Work research into supported authenticated Tabroom access.

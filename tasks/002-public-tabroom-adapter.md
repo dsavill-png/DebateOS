@@ -2,6 +2,7 @@
 
 **Status** Approved  
 **Worker** Codex  
+**Dispatch** Released  
 **Review** Chat with Dennis and Jared  
 **Priority** High
 
