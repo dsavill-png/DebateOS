@@ -1,0 +1,89 @@
+{
+    "id":  40923,
+    "name":  "Harvard College Tournament",
+    "start":  "2026-10-30 19:00:00",
+    "end":  "2026-11-03 04:00:00",
+    "public":  "true",
+    "categories":  [
+                       {
+                           "id":  "109220",
+                           "name":  "Open",
+                           "abbr":  "OPN",
+                           "events":  [
+                                          {
+                                              "id":  "389106",
+                                              "name":  "Open",
+                                              "abbr":  "Open",
+                                              "type":  "debate",
+                                              "rounds":  [
+                                                             {
+                                                                 "id":  "1587204",
+                                                                 "name":  1,
+                                                                 "label":  "RD 1",
+                                                                 "type":  "prelim",
+                                                                 "sections":  [
+                                                                                  {
+                                                                                      "id":  "9200905",
+                                                                                      "round":  "1587204",
+                                                                                      "flight":  "1",
+                                                                                      "letter":  "1",
+                                                                                      "ballots":  [
+                                                                                                      {
+                                                                                                          "id":  "53294488",
+                                                                                                          "entry":  7401836,
+                                                                                                          "entry_code":  "Kansas SS",
+                                                                                                          "panel":  "9200905",
+                                                                                                          "judge":  2912715,
+                                                                                                          "judge_person":  366665
+                                                                                                      },
+                                                                                                      {
+                                                                                                          "id":  "53294489",
+                                                                                                          "entry":  7465627,
+                                                                                                          "entry_code":  "Texas BS",
+                                                                                                          "panel":  "9200905",
+                                                                                                          "judge":  2912715,
+                                                                                                          "judge_person":  366665
+                                                                                                      }
+                                                                                                  ]
+                                                                                  }
+                                                                              ]
+                                                             }
+                                                         ]
+                                          }
+                                      ],
+                           "judges":  [
+                                          {
+                                              "id":  "2912715"
+                                          }
+                                      ]
+                       }
+                   ],
+    "schools":  [
+                    {
+                        "id":  "891380",
+                        "name":  "University of Kansas",
+                        "code":  "Kansas",
+                        "entries":  [
+                                        {
+                                            "id":  "7401836",
+                                            "event":  389106,
+                                            "school":  "891380",
+                                            "code":  "Kansas SS"
+                                        }
+                                    ]
+                    },
+                    {
+                        "id":  "899864",
+                        "name":  "Texas",
+                        "code":  "Texas",
+                        "entries":  [
+                                        {
+                                            "id":  "7465627",
+                                            "event":  389106,
+                                            "school":  "899864",
+                                            "code":  "Texas BS"
+                                        }
+                                    ]
+                    }
+                ]
+}

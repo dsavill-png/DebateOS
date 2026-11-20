@@ -8,7 +8,7 @@
 
 ## Objective
 
-Implement the first DebateOS Tabroom adapter in **public-only mode** using the approved Task 001 ingestion contract.
+Implement the first DebateOS Tabroom adapter in **public-only mode** using the [approved Task 001 ingestion contract](../docs/research/001-tabroom-ingestion-contract-v1.md). Replay the [repo-local Harvard fixture](../fixtures/tabroom/harvard-40923/provenance.json) offline using the pinned public JSON files listed in its provenance manifest.
 
 ## Approved implementation stack
 

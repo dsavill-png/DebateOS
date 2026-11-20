@@ -1,0 +1,67 @@
+{
+  "scope": {
+    "tournament_id": "40923",
+    "event_id": "389106",
+    "round_id": "1587204"
+  },
+  "visibility": "anonymous public",
+  "fixture_format_version": 1,
+  "openapi": {
+    "url": "https://api.tabroom.com/v1",
+    "version": "1.2.0",
+    "status": 200,
+    "media_type": "application/json",
+    "fetched_at": "2026-11-20T14:35:46.1460325Z",
+    "source_sha256": "e01682f296589c599f6390127ef06a6c9fb10f8c6ab3019a700727322bd7e375"
+  },
+  "captures": {
+    "bulk": {
+      "source_method": "bulk",
+      "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=40923",
+      "status": 200,
+      "media_type": "application/json",
+      "file": "bulk.json",
+      "fetched_at": "2026-11-20T14:35:17.2040700Z",
+      "source_sha256": "0c5566d2d791772361e7f6061344e49c5396d68f530ffe1fc5348037706ddca0",
+      "fixture_sha256": "6db946831b244f154624f2a7ebd37d27c98d20052c304250c02f9ee7cd3ea5a2"
+    },
+    "tournament": {
+      "source_method": "REST",
+      "url": "https://api.tabroom.com/v1/rest/tourns/40923",
+      "status": 200,
+      "media_type": "application/json",
+      "file": "tournament.json",
+      "fetched_at": "2026-11-20T14:36:35.9158035Z",
+      "source_sha256": "bd303042b4f98a9066c95dbcdba9b29a5021da10799dc3ad2913523d741fbdcd",
+      "fixture_sha256": "e3342569b7d4703e05fd44b17664bde654e9e3feeec2cee13d02c50259dd572f"
+    },
+    "invite": {
+      "source_method": "REST",
+      "url": "https://api.tabroom.com/v1/rest/tourns/40923/invite",
+      "status": 200,
+      "media_type": "application/json",
+      "file": "invite.json",
+      "fetched_at": "2026-11-20T14:36:35.9669194Z",
+      "source_sha256": "1ef86551d4f5f261ac39c5ab2f1c7846cc26628e6147ef173bced83931b0e965",
+      "fixture_sha256": "e3342569b7d4703e05fd44b17664bde654e9e3feeec2cee13d02c50259dd572f"
+    }
+  },
+  "protected_rest": [
+    {
+      "url": "https://api.tabroom.com/v1/rest/tourns/40923/rounds",
+      "status": 401,
+      "evidence": "Approved Task 001 anonymous check"
+    },
+    {
+      "url": "https://api.tabroom.com/v1/rest/tourns/40923/results",
+      "status": 401,
+      "evidence": "Approved Task 001 anonymous check"
+    },
+    {
+      "url": "https://api.tabroom.com/v1/rest/tourns/40923/schedule",
+      "status": 401,
+      "evidence": "Approved Task 001 anonymous check"
+    }
+  ],
+  "projection": "Allowlisted source fields with original JSON nesting and scalar types. Arrays are filtered to the acceptance scope, so JSON pointers into these replay snapshots use the fixture indices. Source digests identify the original fetched response bytes. Fixture digests identify the checked-in replay bytes. No outcome is asserted."
+}
