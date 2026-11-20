@@ -69,3 +69,11 @@ Report:
 - ARCHITECTURE CONFLICTS
 - FILES / COMMITS
 - RECOMMENDED NEXT STEP
+
+## Delivered design note
+
+[Tabroom ingestion contract in Dropbox](https://www.dropbox.com/home/DebateOS/Research?preview=001-tabroom-ingestion-contract.md)
+
+Dropbox path: `/DebateOS/Research/001-tabroom-ingestion-contract.md`.
+
+The design handoff is complete. Exact REST route bindings and the Harvard payload replay are implementation verification steps. Protected authentication and ballot/outcome mapping remain unresolved.
