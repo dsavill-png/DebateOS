@@ -1,0 +1,60 @@
+name: Codex dispatcher smoke test
+run-name: Codex dispatcher comment ${{ github.event.comment.id }}
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  smoke:
+    if: github.repository == 'dsavill-png/DebateOS' && github.ref == 'refs/heads/main' && github.event.issue.number == 1 && github.event.issue.pull_request && github.actor == 'dsavill-png' && github.event.sender.login == 'dsavill-png' && github.event.comment.user.login == 'dsavill-png'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: codex-dispatch-comment-${{ github.event.comment.id }}
+    steps:
+      - name: Verify source and reserve smoke-only command
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_RUN_ATTEMPT" != 1 ]]; then exit 0; fi
+          id=$(jq -er '.comment.id | numbers | tostring | select(test("^[0-9]+$"))' "$GITHUB_EVENT_PATH")
+          record=$(gh api "repos/$GITHUB_REPOSITORY/issues/comments/$id")
+          if ! jq -e --arg id "$id" --arg repo "$GITHUB_REPOSITORY" --slurpfile event "$GITHUB_EVENT_PATH" '
+            (.id | tostring) == $id and
+            .issue_url == ("https://api.github.com/repos/" + $repo + "/issues/1") and
+            .user.login == "dsavill-png" and .user.type == "User" and
+            (.created_at | type) == "string" and .created_at == .updated_at and
+            .body == $event[0].comment.body and
+            (.body | gsub("^\\s+|\\s+$"; "")) == "CODEX TASK-000"
+          ' <<<"$record" >/dev/null; then exit 0; fi
+          first_run=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/codex-dispatcher.yml/runs?event=issue_comment&per_page=100" |
+            jq -sr --arg title "Codex dispatcher comment $id" '[.[].workflow_runs[] | select(.display_title == $title) | .id] | min')
+          if [[ "$first_run" != "$GITHUB_RUN_ID" ]]; then exit 0; fi
+          echo 'accepted=true' >> "$GITHUB_OUTPUT"
+      - name: Check out trusted main commit
+        if: steps.gate.outputs.accepted == 'true'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Run harmless read-only Codex smoke test
+        if: steps.gate.outputs.accepted == 'true'
+        uses: openai/codex-action@306c6a196a99dcc6582530c396a19d2672d5e9ec
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ":read-only"
+          prompt: Read AGENTS.md and PLANS.md in this trusted checkout. Perform no work order and make no changes. Return only DEBATEOS_CODEX_SMOKE_OK.
+          output-file: ${{ runner.temp }}/codex-smoke.txt
+      - name: Verify result
+        if: steps.gate.outputs.accepted == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat "$RUNNER_TEMP/codex-smoke.txt")" = DEBATEOS_CODEX_SMOKE_OK
+          test -z "$(git status --porcelain)"
+          echo "Read-only Codex smoke test passed for source comment $(jq -r '.comment.id' "$GITHUB_EVENT_PATH")." >> "$GITHUB_STEP_SUMMARY"
