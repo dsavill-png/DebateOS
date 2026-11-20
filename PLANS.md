@@ -7,7 +7,8 @@ Goal: make human/AI collaboration reliable before scaling implementation.
 - Establish GitHub repository instructions, roadmap, and work-order convention.
 - Keep GitHub and Dropbox responsibilities distinct.
 - Prove the manual loop: leadership decision → approved work order → Work/Codex execution → review.
-- Do not build the automated dispatcher yet.
+- The Work dispatcher loop has now been proven sufficiently to authorize the limited Codex dispatcher bootstrap in Task 005.
+- Task 005 may install and smoke-test the Codex dispatcher now. This is a bounded bootstrap exception, not approval for broader unattended automation.
 
 ## Phase 1 — Consolidate the knowledge model
 
@@ -68,15 +69,14 @@ The bottom line should appear first, with deeper evidence available through prog
 
 ## Phase 6 — Automation and dispatcher
 
-Only after the manual work-order loop is stable:
+The automation layer should encode proven workflows rather than inventing them.
 
-- introduce a shared queue
-- add event-driven dispatch
-- route research to Work and implementation to Codex
-- add status/result handoffs
-- add QA/review triggers
+Current authorization:
 
-The automation should encode a proven workflow rather than inventing one.
+- Work dispatch through GitHub PR #1 is operational.
+- Task 005 is explicitly authorized to install and run a harmless smoke test of the Codex dispatcher now.
+- Production Codex work remains gated until that smoke test succeeds.
+- Broader queueing, QA chains, retries, and unattended orchestration remain future work after the command path is proven.
 
 ## Accepted implementation stack
 
