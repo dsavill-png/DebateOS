@@ -76,6 +76,7 @@ Current authorization:
 - Work dispatch through GitHub PR #1 is operational.
 - The reserved read-only Codex smoke test passed. TASK-999 verified production command routing, draft PR publishing, and reporting to PR #1. Evidence: [source comment 7041685281](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7041685281), [Actions run 44751105302](https://github.com/dsavill-png/DebateOS/actions/runs/44751105302), and [draft PR #2](https://github.com/dsavill-png/DebateOS/pull/2).
 - On November 20, 2026, Dennis explicitly approved releasing TASK-002 for Codex dispatch. The release authorizes implementation of the public-only Tabroom adapter and publication of a draft PR for review.
+- Task 006 is complete. The Codex dispatcher now reports Codex task status separately from publishing status; explicit Blocked + zero-diff outcomes report cleanly without draft-PR publication. Completed and blocked smoke probes passed on November 20, 2026.
 - Broader queueing, QA chains, retries, and unattended orchestration remain future work after the command path is proven.
 
 ## Accepted implementation stack
