@@ -130,7 +130,7 @@ jobs:
           retention-days: 1
   publish:
     needs: route
-    if: needs.route.outputs.task != ''
+    if: github.run_attempt == '1' && needs.route.outputs.task != ''
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -158,6 +158,7 @@ jobs:
           test -n "$(git diff --cached --name-only)"
           if [[ "$TASK" == 999 ]]; then
             test "$(git diff --cached --name-only)" = codex-dispatch-verification.txt
+            test -f codex-dispatch-verification.txt && test ! -L codex-dispatch-verification.txt
             test "$(cat codex-dispatch-verification.txt)" = DEBATEOS_CODEX_PUBLISH_OK
             test "$(git diff --cached --name-status)" = $'A\tcodex-dispatch-verification.txt'
           fi
@@ -172,7 +173,7 @@ jobs:
           gh pr create --draft --base main --head "$branch" --title "Codex TASK-$TASK" --body "Review only. Source comment $SOURCE_ID; Actions run $GITHUB_RUN_ID."
   report:
     needs: [route, publish]
-    if: always() && needs.route.outputs.task != ''
+    if: always() && github.run_attempt == '1' && needs.route.outputs.task != ''
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
