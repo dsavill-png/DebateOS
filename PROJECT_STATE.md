@@ -4,7 +4,7 @@
 
 As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
 
-- New feature development is paused. The shared project-state protocol is in effect.
+- Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
 
@@ -15,6 +15,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - [TASK-007](tasks/007-shared-project-state.md) established the shared state and session protocol.
 
 ## Current Work
+
+- [TASK-009](tasks/009-tabroom-public-data-inventory.md) is Partial pending leadership review of [draft PR #7](https://github.com/dsavill-png/DebateOS/pull/7). The [public data inventory](docs/research/tabroom-public-data-inventory.md) is on `main`. The live spec matched the v1.2.0 pin. Offline replay passed 8/8 tests, including the Harvard judge/person link and unresolved winner.
 
 - [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
 
@@ -40,9 +42,12 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- For the already-approved TASK-003 research, verify authenticated access when an authorized session is available. New product work remains paused.
+- For the already-approved TASK-003 research, verify authenticated access when an authorized session is available.
+- Review TASK-009 draft PR #7 and use the inventory to decide the initial warehouse entities, relationship grain and provenance requirements. Schema implementation requires a separate work order.
 
 ## Recent Detailed Handoffs
+
+- [TASK-009 live verification and warehouse assessment](docs/research/tabroom-public-data-inventory.md).
 
 - [Dispatcher result handoff](docs/handoffs/2026-11-23-dispatcher-result-handoff.md).
 
