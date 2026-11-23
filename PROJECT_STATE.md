@@ -5,13 +5,13 @@
 As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
-- TASK-009 is complete on `main`. Dennis approved the [TASK-010 warehouse design](docs/architecture/ADR-002-canonical-warehouse-model.md) in [PR #8](https://github.com/dsavill-png/DebateOS/pull/8).
+- TASK-009 is complete on `main`. Dennis approved and merged the [TASK-010 warehouse design](docs/architecture/ADR-002-canonical-warehouse-model.md) in [PR #8](https://github.com/dsavill-png/DebateOS/pull/8).
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
 
 ## Completed Since Last Update
 
-- [TASK-010](tasks/010-canonical-warehouse-model.md) completed substantive backend review and received Dennis's approval on November 23. Consult Jared on downstream UI-facing contracts.
+- [TASK-010](tasks/010-canonical-warehouse-model.md) completed substantive backend review and received Dennis's approval on November 23. [PR #8](https://github.com/dsavill-png/DebateOS/pull/8) merged at [`457594e`](https://github.com/dsavill-png/DebateOS/commit/457594ead6768903099e0746ff1ac0f731d61c1f). Consult Jared on downstream UI-facing contracts.
 
 - [TASK-009](tasks/009-tabroom-public-data-inventory.md) merged via [PR #7](https://github.com/dsavill-png/DebateOS/pull/7) at [`b6cf6ff`](https://github.com/dsavill-png/DebateOS/commit/b6cf6ff271b373f58c613053869e2b32c8d1c579). Verified head `026a7655a6f4eef91fd921588c1992b02e75626a`. Node 24.22.3 passed all 8 tests. The locked Next.js 16.4.6 production build passed TypeScript checking and generated all 3 static pages. The public request set, fixture lineage, roster and ID boundaries, standalone timeslots and raw scores were verified. Harvard judge `2912715` links to person `366665`. Panel `9200905` remains unresolved.
 
@@ -20,6 +20,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - [TASK-007](tasks/007-shared-project-state.md) established the shared state and session protocol.
 
 ## Current Work
+
+- [TASK-012](tasks/012-public-canonical-physical-schema.md) is Draft and awaits leadership review. It proposes the first PostgreSQL/ORM implementation of the canonical model using public evidence.
 
 - [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
 
@@ -50,7 +52,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
-- Prepare a Draft physical schema work order for the public-evidence rollout of the canonical model. Leadership approval releases implementation. Review the corpus pilot separately after TASK-003 and vendor approval.
+- Next product step is leadership review of Draft [TASK-012](tasks/012-public-canonical-physical-schema.md) for the public-evidence physical schema rollout. Implementation begins after approval. Review the corpus pilot separately after TASK-003 and vendor approval.
 
 ## Recent Detailed Handoffs
 
