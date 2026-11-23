@@ -1,6 +1,6 @@
 # 003 · Verify Tabroom authenticated access
 
-**Status** Approved  
+**Status** Partial  
 **Worker** Work  
 **Review** Chat with Dennis and Jared  
 **Priority** High
@@ -57,4 +57,6 @@ Report:
 
 [Tabroom authenticated REST access](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md) · source comment `7039686188`
 
-[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records 14 successful in-browser API reads, including Harvard tournament and coach/judge-affiliated data. TASK-003 remains Partial pending an approved backend auth flow and a role-isolated, nonempty ballot test.
+[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records 14 successful in-browser API reads, including Harvard tournament and coach/judge-affiliated data. TASK-003 remains Partial. Before enabling backend ingestion, obtain Tabroom confirmation of supported unattended third-party backend credential use, session lifetime and renewal behavior, scopes and authorization boundaries, and rate limits. Role-isolated access and nonempty current-ballot coverage remain unverified.
+
+Dennis reports that current Tabroom login uses username/password only, without MFA. This is user-reported operational context. MFA is outside the current test plan.
