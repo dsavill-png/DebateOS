@@ -16,7 +16,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-008](tasks/008-dispatcher-reliability.md) adds a GitHub review handoff to the Codex result report. Local result and replay checks passed. Production smoke and automatic Commander receipt remain open.
+- [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
 
 - [TASK-003](tasks/003-tabroom-authentication.md) remains approved Work research. The [latest reported outcome](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7039755463) was Partial. Authenticated route coverage awaits an authorized Tabroom session.
 
@@ -37,7 +37,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Next Approved Actions
 
-- Review TASK-008 and verify the GitHub handoff with reserved dispatcher smoke tasks before resuming public Tabroom work.
+- Verify automatic Commander pickup during an active orchestrator run and exactly one review or escalation across duplicate deliveries before resuming public Tabroom work.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For the already-approved TASK-003 research, verify authenticated access when an authorized session is available. New product work remains paused.
