@@ -20,6 +20,28 @@ function record(value: unknown): Json {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Json : {};
 }
 
+function fields(value: unknown, keys: readonly string[]): Json {
+  const row = record(value);
+  return Object.fromEntries(keys.flatMap(key => {
+    const field = row[key];
+    return field === null || ['string', 'number', 'boolean'].includes(typeof field) ? [[key, field]] : [];
+  }));
+}
+
+const entityFields: Record<string, readonly string[]> = {
+  tournament: ['id', 'name', 'start', 'end', 'public'],
+  invitation: ['id', 'name', 'start', 'end', 'public'],
+  category: ['id', 'name', 'abbr'],
+  event: ['id', 'name', 'abbr', 'type'],
+  school: ['id', 'name', 'code', 'chapter'],
+  student: ['id', 'chapter'],
+  entry: ['id', 'event', 'school', 'code', 'active', 'waitlist', 'dropped'],
+  timeslot: ['id', 'name', 'start', 'end'],
+  round: ['id', 'name', 'label', 'type', 'published'],
+  panel: ['id', 'round', 'flight', 'room', 'letter', 'bye'],
+  judge: ['id', 'judge', 'active', 'hired'],
+};
+
 function sourceId(value: unknown): string | null {
   if (typeof value === 'string' && value.length) return value;
   if (typeof value === 'number' && Number.isSafeInteger(value)) return String(value);
@@ -91,7 +113,7 @@ export async function replayPublicTabroom(
       return at(inputs.get(p.snapshot_id)?.root, p.source_path);
     }
 
-    function evidence(p: Observation, role: string, subject: string | null, value: unknown = raw(p), rawId: unknown = record(raw(p)).id) {
+    function evidence(p: Observation, role: string, subject: string | null, value: unknown = fields(raw(p), entityFields[role] ?? []), rawId: unknown = record(raw(p)).id) {
       return observe(p.snapshot_id, p.source_path, role, subject, value, rawId);
     }
 
@@ -108,7 +130,7 @@ export async function replayPublicTabroom(
       const tournament = await identify(schema.tournaments, { sourceId });
       await evidence(item.provenance, 'tournament', tournament);
       const publication = record(raw(item.provenance)).public;
-      await evidence(item.provenance, 'tournament-publication', tournament, publication ?? null);
+      await observe(item.provenance.snapshot_id, '', 'tournament-publication', tournament, publication, null);
     }
     if (batch.invitation) {
       const p = batch.invitation.provenance;
@@ -126,13 +148,13 @@ export async function replayPublicTabroom(
       const categoryId = sourceId(categoryRow.id);
       if (categoryId) {
         const category = await identify(schema.categories, { tournament, sourceId: categoryId });
-        await observe(p.snapshot_id, categoryPointer, 'category', category, categoryRow, categoryRow.id);
+        await observe(p.snapshot_id, categoryPointer, 'category', category, fields(categoryRow, entityFields.category), categoryRow.id);
         await evidence(p, 'event-category', event, { category });
         for (const judge of collection(categoryRow.judges, categoryPointer + '/judges')) {
           const judgeId = sourceId(judge.row.id);
           if (!judgeId) continue;
           const id = await identify(schema.judges, { tournament, sourceId: judgeId });
-          await observe(p.snapshot_id, judge.pointer, 'category-judge', category, { judge: id, raw: judge.raw }, judge.row.id);
+          await observe(p.snapshot_id, judge.pointer, 'category-judge', category, { judge: id, raw: fields(judge.raw, entityFields.judge) }, judge.row.id);
         }
       }
       const resultPointer = p.source_path + '/result_sets';
@@ -195,7 +217,9 @@ export async function replayPublicTabroom(
       const p = item.provenance;
       const tournament = inputs.get(p.snapshot_id)!.snapshot.scope.tournament;
       const event = eventIds.get(item.eventId)!;
-      await evidence(p, 'round', await identify(schema.rounds, { tournament, event, sourceId: p.source_id }));
+      const round = await identify(schema.rounds, { tournament, event, sourceId: p.source_id });
+      await evidence(p, 'round', round);
+      await observe(p.snapshot_id, p.source_path + '/published', 'round-publication', round, record(raw(p)).published, null);
     }
     // Explicit judge and person IDs come from their independently validated adapter references.
     for (const item of batch.tournamentJudges) {
@@ -205,7 +229,7 @@ export async function replayPublicTabroom(
         const value = row.judge ?? row.id;
         const id = await identify(schema.judges, { tournament, sourceId: sourceId(value)! });
         judgeIds.set(item.id, id);
-        await evidence(p, 'judge', id, row, value);
+        await evidence(p, 'judge', id, fields(row, entityFields.judge), value);
       }
     }
     for (const item of batch.persons) {
@@ -238,7 +262,7 @@ export async function replayPublicTabroom(
         const row = record(raw(bp));
         const entry = entryIds.get(key(round.eventId, ballot.entryId));
         const judge = ballot.judgeId ? judgeIds.get(ballot.judgeId) : null;
-        await evidence(bp, 'ballot', id, { row, entry, judge });
+        await evidence(bp, 'ballot', id, { row: fields(row, ['id', 'entry', 'panel', 'judge', 'judge_person', 'side', 'score', 'bye', 'submitted', 'confirmed']), entry, judge });
         await evidence(bp, 'panel-entry', id, { entry }, row.entry);
         if (judge) {
           await tx.insert(schema.panelJudges).values({ panel: id, judge }).onConflictDoNothing();

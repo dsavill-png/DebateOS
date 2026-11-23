@@ -73,10 +73,11 @@ test('Harvard capture replay preserves lineage, evidence and assignment grain', 
         assert.equal(sha256(bytes), capture.fixture_sha256);
         if (synthetic && capture.file === 'bulk.json') {
           const data = JSON.parse(bytes.toString('utf8'));
+          data.schools[0].test_contact = 'excluded';
           const event = data.categories[0].events[0];
-          data.schools[0].students = [{ id: 123 }];
+          data.schools[0].students = [{ id: 123 }, { id: 789 }, { id: 789 }];
           data.schools[1].students = [{ id: 123 }, { id: 456 }];
-          data.schools[0].entries[0].students = [123, 456];
+          data.schools[0].entries[0].students = [123, 456, 789];
           data.schools[1].entries[0].students = [];
           data.timeslots = [{ id: 42, name: 'A standalone slot' }];
           event.rounds[0].sections[0].ballots[0].scores = [{ id: 17, tag: 'speaker', value: 28.5 }];
@@ -118,9 +119,11 @@ test('Harvard capture replay preserves lineage, evidence and assignment grain', 
     await replayPublicTabroom(db, variant, retained);
     const snapshot = variant.snapshots.find(row => row.path.includes('download_data'))!.id;
     const rows = await db.select().from(schema.publicEvidence).where(eq(schema.publicEvidence.snapshot, snapshot));
+    assert.ok(rows.filter(row => row.role === 'school').every(row => !Object.hasOwn(row.value as object, 'test_contact')));
     const roster = rows.filter(row => row.role === 'roster-member').sort((a, b) => a.pointer.localeCompare(b.pointer));
     assert.equal(typeof (roster[0].value as { student: unknown }).student, 'string');
     assert.deepEqual(roster[1].value, { student: null, raw: 456 });
+    assert.deepEqual(roster[2].value, { student: null, raw: 789 });
     assert.equal(rows.filter(row => row.role === 'timeslot' && row.sourceId === 42).length, 1);
     assert.equal(rows.filter(row => row.role === 'ballot-scores' && row.state === 'empty').length, 1);
     assert.deepEqual(rows.find(row => row.role === 'ballot-score')?.value, { id: 17, tag: 'speaker', value: 28.5 });
