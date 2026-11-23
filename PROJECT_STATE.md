@@ -11,6 +11,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Completed Since Last Update
 
+- [TASK-013](tasks/013-public-judge-activity-intelligence.md) is Completed on `main`. [PR #11](https://github.com/dsavill-png/DebateOS/pull/11) merged at [`db362ded6cd309714003127f6f1b59668b00e012`](https://github.com/dsavill-png/DebateOS/commit/db362ded6cd309714003127f6f1b59668b00e012). The pinned v2 replay produced 401 summaries, 8,868 scoped judge-ID observations and 8,868 distinct person-panel assignments. The [Jared handoff](docs/handoffs/2026-11-23-public-judge-activity.md) records the contract, coverage limits and verification.
+
 - [TASK-011 Phase A](tasks/011-college-judge-paradigm-corpus.md) is Completed on `main`. [PR #10](https://github.com/dsavill-png/DebateOS/pull/10) merged at [`47c4c89ee03933299010be35f1c575509b4cde9e`](https://github.com/dsavill-png/DebateOS/commit/47c4c89ee03933299010be35f1c575509b4cde9e). Across the included 2025–26 college policy divisions, 1,949 of 1,950 observed assigned judge IDs link explicitly to 401 distinct people. Four assigned IDs were absent from the observed category rosters. The [handoff](docs/handoffs/2026-11-23-college-policy-public-coverage.md) records the Dropbox archive, digests, replay and coverage limits.
 
 - [TASK-012](tasks/012-public-canonical-physical-schema.md) completed after Dennis approved the verified head. [PR #9](https://github.com/dsavill-png/DebateOS/pull/9) merged at [`c318236bf6e6af07a92b213876d66140aae455f7`](https://github.com/dsavill-png/DebateOS/commit/c318236bf6e6af07a92b213876d66140aae455f7). The [implementation handoff](docs/handoffs/2026-11-23-public-warehouse.md) records 12 passing tests on fresh, restored, and upgraded PostgreSQL 17.9 databases, plus passing TypeScript and production builds.
@@ -25,7 +27,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-013](tasks/013-public-judge-activity-intelligence.md) is Approved / In Progress. [Draft PR #11](https://github.com/dsavill-png/DebateOS/pull/11) is ready for Jared and leadership merge review after v2 verification. The pinned Phase A replay derives 401 activity summaries, 8,868 scoped judge-ID observations and 8,868 distinct person-panel assignments. Merge requires separate Dennis approval. See the [Jared handoff](docs/handoffs/2026-11-23-public-judge-activity.md) for the contract, exposure limits and samples.
+- [TASK-014](tasks/014-authenticated-judge-record-api-validation.md) is Draft / Gated. After TASK-003 clears, compare a bounded sample from Dennis's Tabroom judge record with supported API responses and propose the verified warehouse contract.
 
 - TASK-011 Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval.
 
@@ -55,10 +57,12 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
+- For TASK-003, obtain Tabroom confirmation of the supported backend integration and review the permitted validation scope before releasing TASK-014. Role-isolated and nonempty ballot verification remain follow-up work.
 ## Next Product Recommendation
 
-Review the TASK-013 v2 contract and samples with Jared before wiring the judge activity card. Use `panelAssignmentCount` for observed experience.
+Obtain Tabroom confirmation for supported backend use under TASK-003, then release the bounded TASK-014 judge-record validation within the approved scope. Persistent protected ingestion requires separate Dennis approval.
+
+Review the TASK-013 v2 contract and samples with Jared before wiring the public judge activity card. Use `panelAssignmentCount` for observed experience.
 
 ## Recent Detailed Handoffs
 
