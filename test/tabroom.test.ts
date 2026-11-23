@@ -177,3 +177,29 @@ test('real transport uses only pinned anonymous GET URLs and rejects HTML', asyn
   assert.equal(result.tournament, null);
   assert.deepEqual(result.snapshots, []);
 });
+
+test('public bulk roster, timeslots and score observations retain their source semantics', async () => {
+  const fixture = replay((url, reply) => {
+    if (url !== bulk.url) return reply;
+    const data = JSON.parse(reply.bytes.toString());
+    data.schools[0].students = [{ id: '123', chapter: 456 }];
+    data.schools[0].entries[0].students = ['123', '999'];
+    data.timeslots = [{ id: '42', name: 'Round 1', start: '2026-02-14 08:00:00', end: '2026-02-14 10:00:00' }];
+    data.categories[0].events[0].rounds[0].sections[0].ballots[0].scores = [{ id: 17, tag: 'example', value: 1 }];
+    return { ...reply, bytes: Buffer.from(JSON.stringify(data)) };
+  });
+  const result = await fixture.run();
+  const [student] = result.students;
+  assert.equal(student.chapterId, '456');
+  assert.equal(student.schoolId, result.entries[0].schoolId);
+  assert.equal(student.provenance.source_path, '/schools/0/students/0');
+  assert.deepEqual(result.entries[0].roster?.map(item => [item.sourceStudentId, item.studentId]), [
+    ['123', student.id], ['999', null],
+  ]);
+  assert.equal(result.entries[0].roster?.[1].provenance.source_path, '/schools/0/entries/0/students/1');
+  assert.equal(result.timeslots[0].provenance.source_id, '42');
+  assert.equal(result.timeslots[0].provenance.source_path, '/timeslots/0');
+  assert.equal(result.debates[0].ballots[0].sourceScore, null);
+  assert.deepEqual(result.debates[0].ballots[0].sourceScores, [{ id: 17, tag: 'example', value: 1 }]);
+  assert.equal(result.debates[0].outcome, 'unresolved');
+});
