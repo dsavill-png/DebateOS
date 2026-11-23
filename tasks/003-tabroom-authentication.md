@@ -56,3 +56,5 @@ Report:
 ## Research memo
 
 [Tabroom authenticated REST access](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md) · source comment `7039686188`
+
+[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records 14 successful in-browser API reads, including Harvard tournament and coach/judge-affiliated data. TASK-003 remains Partial pending an approved backend auth flow and a role-isolated, nonempty ballot test.

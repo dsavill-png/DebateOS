@@ -53,3 +53,17 @@ Bulk paths show the deployed JSON nesting. “Bulk only” means this is the onl
 Keep immutable authorized JSON bytes under controlled access with UTC capture time, full sanitized URL, request scope, HTTP status and media type, response SHA-256, parser version and OpenAPI version/digest. Hashes for this run were tournament `bd303042b4f98a9066c95dbcdba9b29a5021da10799dc3ad2913523d741fbdcd`, invite `1ef86551d4f5f261ac39c5ab2f1c7846cc26628e6147ef173bced83931b0e965`, field `725bfa7078653ac2349b4fa3da3c1bd8b01dd7b1f21a0598e94973e7826a1d04`, bulk `2a5c6c919883184bb22439cdf5e425001997aed337c1b9c19a18cc3e8e12d24c`. Published replay uses the existing [allowlisted Harvard projection](../../fixtures/tabroom/harvard-40923/provenance.json) and synthetic extensions of verified shapes. The live responses contain personal data and are excluded from the repository. Row-level provenance connects source method, source ID, JSON pointer and snapshot. Retain both observations when sources disagree. Visibility, missingness and parse failures need separate treatment from ordinary empty data.
 
 TASK-002 already normalized the Harvard matchup, judge-person link and unresolved outcome; it had no normalized student roster or timeslot collection and read scalar score rather than the observed scores array. The proposed adapter extension adds student references, explicit entry roster observations, standalone timeslots and raw score arrays. Invitation configuration, result sets and other fields in the matrix are assessable in source snapshots; they are not all normalized outputs. The [first-party exporter](https://github.com/speechanddebate/tabroom/blob/master/web/api/download_data.mhtml) documents publication-dependent export branches. Use the live response and replay to assess any particular tournament.
+
+## Authenticated coverage boundary
+
+The [TASK-003 discovery addendum](tabroom-authenticated-access.md) records the November 23 signed-in website observation and the API route checklist. No authenticated GET result is available. Keep the following access and semantic classifications in the warehouse assessment.
+
+| Classification | Evidence |
+| --- | --- |
+| Public structured | Anonymous REST and bulk fields in the matrices above. |
+| Authenticated coach access | Unverified for the API. A signed-in website view does not establish access to coach or team API records. |
+| Tournament-admin or role-dependent | Unverified for the API. User, chapter and judge routes require authenticated testing and scope checks. |
+| Protected-unavailable | Documented protected routes and the anonymous 401 observations above. Authenticated availability remains open. |
+| Semantics uncertain | Outcome and score semantics, result-set crosswalk, and publication completeness remain unresolved. |
+
+Design authenticated enrichment as a separately authorized source with access scope and provenance. Public reports and the TASK-009 adapter continue to use the public contract.
