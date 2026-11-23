@@ -68,16 +68,44 @@ export function normalize(scope: Scope, rest?: Capture, invite?: Capture, bulk?:
       id: ref('school', schoolId), tournamentId: t, name: label(school.row.name), provenance: evidence(schoolId, school.path),
     } }];
   });
+  const students = schools.flatMap(school =>
+    rows(school.row.students, school.path + '/students').flatMap(({ row, path }) => {
+      const studentId = id(row.id);
+      if (!studentId) return [];
+      return [{
+        id: ref('student', studentId), schoolId: school.record.id,
+        chapterId: id(row.chapter), provenance: evidence(studentId, path),
+      }];
+    }));
   const entries = schools.flatMap(school => rows(school.row.entries, school.path + '/entries').flatMap(({ row, path }) => {
     const entryId = id(row.id);
     const eventId = id(row.event);
     if (!entryId || !eventId || !events.some(event => event.id === ref('event', eventId))) return [];
+    const schoolId = !id(row.school) || id(row.school) === id(school.row.id) ? school.record.id : null;
+    const roster = Array.isArray(row.students) ? row.students.flatMap((value, index) => {
+      const studentId = id(value);
+      if (!studentId) return [];
+      const studentRef = ref('student', studentId);
+      return [{
+        sourceStudentId: studentId,
+        studentId: schoolId && students.filter(student =>
+          student.id === studentRef && student.schoolId === schoolId).length === 1 ? studentRef : null,
+        provenance: evidence(entryId, path + '/students/' + index),
+      }];
+    }) : null;
     return [{
       id: ref('entry', entryId), eventId: ref('event', eventId),
-      schoolId: !id(row.school) || id(row.school) === id(school.row.id) ? school.record.id : null,
-      code: label(row.code), provenance: evidence(entryId, path),
+      schoolId, roster, code: label(row.code), provenance: evidence(entryId, path),
     }];
   }));
+  const timeslots = rows(bulk?.data.timeslots, '/timeslots').flatMap(({ row, path }) => {
+    const timeslotId = id(row.id);
+    if (!timeslotId) return [];
+    return [{
+      id: ref('timeslot', timeslotId), tournamentId: t, name: label(row.name),
+      start: label(row.start), end: label(row.end), provenance: evidence(timeslotId, path),
+    }];
+  });
   const rounds = scopedEvents.flatMap(event => event.rounds.flatMap(round => {
     const roundId = id(round.row.id);
     if (!roundId || (scope.round && roundId !== scope.round)) return [];
@@ -130,7 +158,8 @@ export function normalize(scope: Scope, rest?: Capture, invite?: Capture, bulk?:
       return [{
         id: debateId + ':ballot:' + ballot, debateId, entryId: ref('entry', entry),
         judgeId: judge ? ref('judge', judge) : null,
-        sourceSide: row.side ?? null, sourceScore: row.score ?? null, provenance,
+        sourceSide: row.side ?? null, sourceScore: row.score ?? null,
+        sourceScores: Array.isArray(row.scores) ? row.scores : null, provenance,
       }];
     });
     const entryIds = [...new Set(ballots.map(ballot => ballot.entryId))];
@@ -153,7 +182,7 @@ export function normalize(scope: Scope, rest?: Capture, invite?: Capture, bulk?:
   });
   return {
     tournament, invitation: observed(invite, 'REST'), events,
-    schools: schools.map(school => school.record), entries, rounds: rounds.map(round => round.record),
+    schools: schools.map(school => school.record), entries, students, timeslots, rounds: rounds.map(round => round.record),
     debates, tournamentJudges, persons: [...persons.values()], issues,
   };
 }
