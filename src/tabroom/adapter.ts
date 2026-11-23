@@ -141,7 +141,7 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
         const snapshot: Snapshot = {
           id: sha256(Buffer.from(identity)),
           path: url, fetched_at: reply.fetchedAt, status, media_type: reply.mediaType,
-          sha256: sha, scope: { ...scope }, spec, parser_version: 1, visibility: 'anonymous public',
+          sha256: sha, scope: { ...scope }, spec, parser_version: 2, visibility: 'anonymous public',
         };
         await retain(snapshot, reply.bytes);
         snapshots.push(snapshot);
