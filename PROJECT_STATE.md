@@ -21,7 +21,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-012](tasks/012-public-canonical-physical-schema.md) is in progress on [draft PR #9](https://github.com/dsavill-png/DebateOS/pull/9). Dennis approved the scoped identity decision. The PostgreSQL foundation, collision checks, fixture replay, recovery and build passed. Remaining acceptance checks are tracked in the implementation handoff.
+- [TASK-012](tasks/012-public-canonical-physical-schema.md) passed implementation acceptance and is ready for leadership merge review on [PR #9](https://github.com/dsavill-png/DebateOS/pull/9). PostgreSQL 17.9 migration, recovery, replay and policy checks passed with all 12 tests. Standalone TypeScript and the production build passed.
 
 - [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
 
@@ -52,7 +52,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
-- Finish [TASK-012 acceptance checks](docs/handoffs/2026-11-23-public-warehouse.md#remaining-acceptance-work) on PR #9 and request separate Dennis merge approval after review. Review the corpus pilot separately after TASK-003 and vendor approval.
+- Review PR #9 and obtain separate Dennis merge approval. Review the corpus pilot separately after TASK-003 and vendor approval.
 
 ## Recent Detailed Handoffs
 

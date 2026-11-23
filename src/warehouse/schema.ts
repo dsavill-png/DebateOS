@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { foreignKey, integer, jsonb, pgTable, pgView, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
+import { check, foreignKey, integer, jsonb, pgTable, pgView, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 
 const pk = () => uuid('id').defaultRandom().primaryKey();
 const policy = () => ({
@@ -124,9 +124,59 @@ export const evidence = pgTable('warehouse_evidence', {
   ...policy(),
 }, t => [unique('captures_identity_key').on(t.snapshot, t.parser, t.pointer, t.role)]);
 
+export const operationOutcomes = pgTable('warehouse_operation_outcomes', {
+  id: text('id').primaryKey(),
+  provider: text('provider').notNull(),
+  operation: text('operation').notNull(),
+  route: text('route'),
+  scope: jsonb('request_scope').notNull(),
+  attemptedAt: timestamp('attempted_at', { withTimezone: true, mode: 'string' }).notNull(),
+  status: integer('status'),
+  mediaType: text('media_type'),
+  snapshot: text('snapshot_id').references(() => captures.id),
+  outcome: text('outcome').notNull(),
+}, t => [check('warehouse_operation_outcome_allowed', sql`${t.outcome} in
+  ('observed', 'empty', 'not-requested', 'unpublished', 'unauthorized', 'forbidden',
+   'ambiguous-not-found', 'invalid', 'rate-limited', 'transient-failure')`)]);
+
+export const evidenceRelationships = pgTable('warehouse_evidence_relationships', {
+  evidence: uuid('evidence_id').primaryKey().references(() => evidence.id),
+  parentEvidence: uuid('parent_evidence_id').references(() => evidence.id),
+  category: uuid('category_id').references(() => categories.id),
+  event: uuid('event_id').references(() => events.id),
+  school: uuid('school_id').references(() => schools.id),
+  chapter: uuid('chapter_id').references(() => chapters.id),
+  entry: uuid('entry_id').references(() => entries.id),
+  student: uuid('student_id').references(() => students.id),
+  round: uuid('round_id').references(() => rounds.id),
+  panel: uuid('panel_id').references(() => panels.id),
+  judge: uuid('judge_id').references(() => judges.id),
+  person: uuid('person_id').references(() => persons.id),
+});
+
+// Reconstruct public score and standing rows from named, typed scalars. Raw arrays,
+// result keys and arbitrary text stay internal. SQL also protects preexisting rows.
+const numericFields = (keys: string[]) => sql`jsonb_strip_nulls(jsonb_build_object(${sql.join(keys.map(key => {
+  const field = sql`${evidence.value}->${sql.raw("'" + key + "'")}`;
+  return sql`${sql.raw("'" + key + "'")} , case when jsonb_typeof(${field}) in ('number', 'string')
+    and (${evidence.value}->>${sql.raw("'" + key + "'")}) ~ '^-?[0-9]{1,20}([.][0-9]{1,10})?$' then ${field} end`;
+}), sql`, `)}))`;
+
 export const publicEvidence = pgView('warehouse_public_evidence').as(q => q.select({
   id: evidence.id, snapshot: evidence.snapshot, parser: evidence.parser, pointer: evidence.pointer,
-  role: evidence.role, subject: evidence.subject, sourceId: evidence.sourceId, value: evidence.value,
+  role: evidence.role, subject: evidence.subject, sourceId: sql`case when ${evidence.role} in ('ballot-score', 'standing', 'standing-value', 'result-set') then null else ${evidence.sourceId} end`.as('raw_source_id'),
+  value: sql`case ${evidence.role}
+    when 'ballot-score' then ${numericFields(['id', 'value'])} || case when ${evidence.value}->>'tag' = 'speaker' then '{"tag":"speaker"}'::jsonb else '{}'::jsonb end
+    when 'standing' then ${numericFields(['place', 'rank', 'percentile'])}
+    when 'standing-value' then ${numericFields(['result_key', 'value'])}
+    when 'result-sets' then null
+    when 'result-set' then null
+    when 'result-set-publication' then case when ${evidence.value} in ('true', 'false', '"true"', '"false"') then ${evidence.value} end
+    when 'ballot-scores' then null
+    when 'ballot' then case when (${evidence.value}#>>'{row,score}') ~ '^-?[0-9]{1,20}([.][0-9]{1,10})?$'
+      and jsonb_typeof(${evidence.value}#>'{row,score}') in ('number', 'string')
+      then ${evidence.value} else ${evidence.value} #- '{row,score}' end
+    else ${evidence.value} end`.as('observed_value'),
   verification: evidence.verification, state: evidence.state,
 }).from(evidence).innerJoin(captures, sql`${evidence.snapshot} = ${captures.id}`)
   .where(sql`${evidence.authorization} = 'public' and ${evidence.audience} = 'public'
@@ -170,4 +220,3 @@ export const seasonMembershipEvidence = pgTable('season_membership_evidence', {
   membership: uuid('membership_id').notNull().references(() => seasonMemberships.id),
   evidence: uuid('evidence_id').notNull().references(() => evidence.id),
 }, t => [unique('seasonMembershipEvidence_identity_key').on(t.membership, t.evidence)]);
-

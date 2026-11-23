@@ -60,6 +60,13 @@ export async function replayPublicTabroom(
   retained: ReadonlyMap<string, ReplayCapture>,
 ) {
   return db.transaction(async tx => {
+    for (const outcome of batch.outcomes ?? []) {
+      if (outcome.snapshot && !batch.snapshots.some(snapshot =>
+        snapshot.id === outcome.snapshot && snapshot.path === outcome.route &&
+        snapshot.status === outcome.status && snapshot.media_type === outcome.mediaType)) {
+        throw new Error('Operation outcome conflicts with capture provenance');
+      }
+    }
     const inputs = new Map<string, { snapshot: Snapshot; root: unknown }>();
     for (const snapshot of batch.snapshots) {
       const capture = retained.get(snapshot.id);
@@ -86,7 +93,15 @@ export async function replayPublicTabroom(
       await observe(snapshot.id, '', 'capture', null, undefined, null,
         snapshot.status === 401 ? 'unauthorized' : snapshot.status === 403 ? 'forbidden' :
           snapshot.status === 404 ? 'ambiguous-not-found' : snapshot.status >= 500 || snapshot.status === 429 ? 'transient-failure' :
-          root === undefined ? 'invalid' : 'observed');
+          batch.outcomes?.find(outcome => outcome.snapshot === snapshot.id)?.outcome ??
+          (root === undefined ? 'invalid' : 'observed'));
+    }
+    for (const outcome of batch.outcomes ?? []) {
+      await tx.insert(schema.operationOutcomes).values({ ...outcome, provider: 'tabroom',
+        id: sha256(Buffer.from(JSON.stringify([outcome.operation, outcome.route, outcome.scope.tournament,
+          outcome.scope.event, outcome.scope.round, outcome.attemptedAt, outcome.snapshot,
+          outcome.status, outcome.mediaType, outcome.outcome]))),
+      }).onConflictDoNothing();
     }
 
     async function identify(table: Identity, keys: Record<string, string>): Promise<string> {
@@ -109,6 +124,21 @@ export async function replayPublicTabroom(
       }).onConflictDoNothing();
     }
 
+    type Relationship = Omit<typeof schema.evidenceRelationships.$inferInsert, 'evidence'>;
+    async function evidenceId(snapshot: string, pointer: string, role: string) {
+      const [row] = await tx.select({ id: schema.evidence.id }).from(schema.evidence).where(and(
+        eq(schema.evidence.snapshot, snapshot), eq(schema.evidence.pointer, pointer),
+        eq(schema.evidence.parser, inputs.get(snapshot)!.snapshot.parser_version), eq(schema.evidence.role, role),
+      ));
+      return row.id;
+    }
+
+    async function link(snapshot: string, pointer: string, role: string, relationship: Relationship) {
+      await tx.insert(schema.evidenceRelationships).values({
+        evidence: await evidenceId(snapshot, pointer, role), ...relationship,
+      }).onConflictDoNothing();
+    }
+
     function raw(p: Observation) {
       return at(inputs.get(p.snapshot_id)?.root, p.source_path);
     }
@@ -117,6 +147,8 @@ export async function replayPublicTabroom(
       return observe(p.snapshot_id, p.source_path, role, subject, value, rawId);
     }
 
+    const canonicalEvents = new Map<string, string>();
+    const canonicalRounds = new Map<string, string>();
     const eventIds = new Map<string, string>();
     const schoolIds = new Map<string, { sourceId: string; id: string }>();
     const entryIds = new Map<string, string>();
@@ -141,6 +173,7 @@ export async function replayPublicTabroom(
       const input = inputs.get(p.snapshot_id)!;
       const tournament = input.snapshot.scope.tournament;
       const event = await identify(schema.events, { tournament, sourceId: p.source_id });
+      canonicalEvents.set(key(p.snapshot_id, p.source_path), event);
       eventIds.set(item.id, p.source_id);
       await evidence(p, 'event', event);
       const categoryPointer = p.source_path.split('/events/')[0];
@@ -150,24 +183,13 @@ export async function replayPublicTabroom(
         const category = await identify(schema.categories, { tournament, sourceId: categoryId });
         await observe(p.snapshot_id, categoryPointer, 'category', category, fields(categoryRow, entityFields.category), categoryRow.id);
         await evidence(p, 'event-category', event, { category });
+        await link(p.snapshot_id, p.source_path, 'event-category', { event, category });
         for (const judge of collection(categoryRow.judges, categoryPointer + '/judges')) {
           const judgeId = sourceId(judge.row.id);
           if (!judgeId) continue;
           const id = await identify(schema.judges, { tournament, sourceId: judgeId });
           await observe(p.snapshot_id, judge.pointer, 'category-judge', category, { judge: id, raw: fields(judge.raw, entityFields.judge) }, judge.row.id);
-        }
-      }
-      const resultPointer = p.source_path + '/result_sets';
-      const resultSets = record(raw(p)).result_sets;
-      await observe(p.snapshot_id, resultPointer, 'result-sets', event, resultSets, null);
-      for (const set of collection(resultSets, resultPointer)) {
-        await observe(p.snapshot_id, set.pointer, 'result-set', event, set.raw, set.row.id);
-        await observe(p.snapshot_id, set.pointer + '/published', 'result-set-publication', event, set.row.published, null);
-        for (const standing of collection(set.row.results, set.pointer + '/results')) {
-          await observe(p.snapshot_id, standing.pointer, 'standing', event, standing.raw, standing.row.id);
-          for (const value of collection(standing.row.values, standing.pointer + '/values')) {
-            await observe(p.snapshot_id, value.pointer, 'standing-value', event, value.raw, value.row.id);
-          }
+          await link(p.snapshot_id, judge.pointer, 'category-judge', { category, judge: id });
         }
       }
     }
@@ -182,6 +204,7 @@ export async function replayPublicTabroom(
       if (chapterId) {
         const chapter = await identify(schema.chapters, { sourceId: chapterId });
         await evidence(p, 'school-chapter', id, { chapter }, chapterValue);
+        await link(p.snapshot_id, p.source_path, 'school-chapter', { school: id, chapter });
       }
     }
     for (const item of batch.students) {
@@ -201,10 +224,14 @@ export async function replayPublicTabroom(
       await evidence(p, 'entry', id);
       const school = item.schoolId && schoolIds.get(item.schoolId);
       await evidence(p, 'entry-school', id, { school: school ? school.id : null });
+      await link(p.snapshot_id, p.source_path, 'entry-school', { entry: id, school: school ? school.id : null });
       await observe(p.snapshot_id, p.source_path + '/students', 'entry-roster', id, record(raw(p)).students, null);
       for (const member of item.roster ?? []) {
         const student = item.schoolId && member.studentId ? studentIds.get(key(item.schoolId, member.studentId)) : null;
         await evidence(member.provenance, 'roster-member', id, { student, raw: raw(member.provenance) }, raw(member.provenance));
+        await link(member.provenance.snapshot_id, member.provenance.source_path, 'roster-member', {
+          entry: id, school: school ? school.id : null, student,
+        });
       }
     }
     for (const item of batch.timeslots) {
@@ -218,8 +245,68 @@ export async function replayPublicTabroom(
       const tournament = inputs.get(p.snapshot_id)!.snapshot.scope.tournament;
       const event = eventIds.get(item.eventId)!;
       const round = await identify(schema.rounds, { tournament, event, sourceId: p.source_id });
+      canonicalRounds.set(key(p.snapshot_id, p.source_path), round);
       await evidence(p, 'round', round);
       await observe(p.snapshot_id, p.source_path + '/published', 'round-publication', round, record(raw(p)).published, null);
+    }
+    // A standing may only bind to a unique candidate from its own validated bulk snapshot.
+    const one = <T>(matches: T[]) => matches.length === 1 ? matches[0] : undefined;
+    for (const item of batch.events) {
+      const p = item.provenance;
+      const snapshot = p.snapshot_id;
+      const event = canonicalEvents.get(key(snapshot, p.source_path))!;
+      const resultPointer = p.source_path + '/result_sets';
+      const resultSets = record(raw(p)).result_sets;
+      await observe(snapshot, resultPointer, 'result-sets', event, resultSets, null);
+      for (const set of collection(resultSets, resultPointer)) {
+        await observe(snapshot, set.pointer, 'result-set', event, set.raw, set.row.id);
+        await link(snapshot, set.pointer, 'result-set', { event });
+        const published = set.row.published;
+        await observe(snapshot, set.pointer + '/published', 'result-set-publication', event, published, null,
+          published === false || published === 'false' ? 'unpublished' : undefined);
+        if (published === false || published === 'false') {
+          const capture = inputs.get(snapshot)!.snapshot;
+          const operation = 'bulk.result-set-publication';
+          await tx.insert(schema.operationOutcomes).values({
+            id: sha256(Buffer.from(JSON.stringify([operation, snapshot, set.pointer, capture.parser_version]))),
+            provider: 'tabroom', operation, route: capture.path,
+            scope: { ...capture.scope, event: p.source_id, pointer: set.pointer + '/published' },
+            attemptedAt: capture.fetched_at, status: capture.status, mediaType: capture.media_type,
+            snapshot, outcome: 'unpublished',
+          }).onConflictDoNothing();
+        }
+        const parentEvidence = await evidenceId(snapshot, set.pointer, 'result-set');
+        for (const standing of collection(set.row.results, set.pointer + '/results')) {
+          const row = standing.row;
+          const scoped = row.event === undefined || sourceId(row.event) === p.source_id;
+          const tournament = inputs.get(snapshot)!.snapshot.scope.tournament;
+          const inScope = scoped && (row.tournament === undefined || sourceId(row.tournament) === tournament);
+          const entry = inScope && one(batch.entries.filter(candidate => candidate.provenance.snapshot_id === snapshot &&
+            candidate.eventId === item.id && candidate.provenance.source_id === sourceId(row.entry)));
+          const round = inScope && one(batch.rounds.filter(candidate => candidate.provenance.snapshot_id === snapshot &&
+            candidate.eventId === item.id && candidate.provenance.source_id === sourceId(row.round)));
+          const declaredSchool = one(batch.schools.filter(candidate => candidate.provenance.snapshot_id === snapshot &&
+            candidate.provenance.source_id === sourceId(row.school)));
+          const entrySchool = entry && one(batch.schools.filter(candidate =>
+            candidate.provenance.snapshot_id === snapshot && candidate.id === entry.schoolId));
+          const schoolId = row.school === undefined ? (entrySchool && entrySchool.id) :
+            declaredSchool && (row.entry === undefined || (entry && entry.schoolId === declaredSchool.id)) ? declaredSchool.id : null;
+          const student = inScope && schoolId && one(batch.students.filter(candidate =>
+            candidate.provenance.snapshot_id === snapshot && candidate.schoolId === schoolId &&
+            candidate.provenance.source_id === sourceId(row.student)));
+          await observe(snapshot, standing.pointer, 'standing', event, standing.raw, row.id);
+          await link(snapshot, standing.pointer, 'standing', { parentEvidence, event,
+            entry: entry && (row.school === undefined || schoolId) ? entryIds.get(key(item.id, entry.id)) : null,
+            round: round ? canonicalRounds.get(key(snapshot, round.provenance.source_path)) : null,
+            student: student ? studentIds.get(key(student.schoolId, student.id)) : null,
+          });
+          const standingEvidence = await evidenceId(snapshot, standing.pointer, 'standing');
+          for (const value of collection(row.values, standing.pointer + '/values')) {
+            await observe(snapshot, value.pointer, 'standing-value', event, value.raw, value.row.id);
+            await link(snapshot, value.pointer, 'standing-value', { parentEvidence: standingEvidence });
+          }
+        }
+      }
     }
     // Explicit judge and person IDs come from their independently validated adapter references.
     for (const item of batch.tournamentJudges) {
@@ -241,11 +328,12 @@ export async function replayPublicTabroom(
       }
     }
     for (const judge of batch.tournamentJudges) {
-      for (const link of judge.personObservations) {
-        for (const p of link.provenance) {
+      for (const candidate of judge.personObservations) {
+        for (const p of candidate.provenance) {
           await observe(p.snapshot_id, p.source_path, 'judge-person', judgeIds.get(judge.id)!,
-            { person: personIds.get(link.personId) }, record(raw(p)).judge_person, 'observed',
+            { person: personIds.get(candidate.personId) }, record(raw(p)).judge_person, 'observed',
             judge.personId === null ? 'conflicting' : 'verified');
+          await link(p.snapshot_id, p.source_path, 'judge-person', { judge: judgeIds.get(judge.id), person: personIds.get(candidate.personId) });
         }
       }
     }
@@ -264,13 +352,19 @@ export async function replayPublicTabroom(
         const judge = ballot.judgeId ? judgeIds.get(ballot.judgeId) : null;
         await evidence(bp, 'ballot', id, { row: fields(row, ['id', 'entry', 'panel', 'judge', 'judge_person', 'side', 'score', 'bye', 'submitted', 'confirmed']), entry, judge });
         await evidence(bp, 'panel-entry', id, { entry }, row.entry);
+        await link(bp.snapshot_id, bp.source_path, 'ballot', { panel: id, entry, judge });
+        await link(bp.snapshot_id, bp.source_path, 'panel-entry', { panel: id, entry });
         if (judge) {
           await tx.insert(schema.panelJudges).values({ panel: id, judge }).onConflictDoNothing();
           await evidence(bp, 'panel-judge', id, { judge }, row.judge);
+          await link(bp.snapshot_id, bp.source_path, 'panel-judge', { panel: id, judge });
         }
         await observe(bp.snapshot_id, bp.source_path + '/scores', 'ballot-scores', id, row.scores, null);
         for (const score of collection(row.scores, bp.source_path + '/scores')) {
           await observe(bp.snapshot_id, score.pointer, 'ballot-score', id, score.raw, score.row.id);
+          await link(bp.snapshot_id, score.pointer, 'ballot-score', {
+            parentEvidence: await evidenceId(bp.snapshot_id, bp.source_path, 'ballot'),
+          });
         }
       }
     }

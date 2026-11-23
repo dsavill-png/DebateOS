@@ -1,6 +1,6 @@
 # 012 · Implement the canonical physical schema — Phase 1 public evidence
 
-**Status** In progress  
+**Status** Implementation complete, ready for leadership merge review  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Review** Dennis approved execution and the refinements below on 2026-11-23. Consult Jared on downstream UI-facing contracts.  
@@ -17,7 +17,7 @@ Implement the first PostgreSQL/ORM slice of the approved canonical evidence ware
 
 ## Approved identity decision
 
-Dennis approved preserving caller-facing adapter IDs, using complete provider-scoped natural keys in PostgreSQL, and storing source identifiers separately from internal UUIDs. The PostgreSQL collision probe passed before the scoped foreign keys were added. The [implementation handoff](../docs/handoffs/2026-11-23-public-warehouse.md) records the exact keys, verified work and remaining acceptance checks.
+Dennis approved preserving caller-facing adapter IDs, using complete provider-scoped natural keys in PostgreSQL, and storing source identifiers separately from internal UUIDs. The PostgreSQL collision probe passed before the scoped foreign keys were added. The [implementation handoff](../docs/handoffs/2026-11-23-public-warehouse.md) records the exact keys, verified implementation and acceptance results.
 
 ## Approved scope
 
@@ -29,3 +29,8 @@ Dennis approved preserving caller-facing adapter IDs, using complete provider-sc
 ## Acceptance and release
 
 Prove migration and rollback in a disposable PostgreSQL database and replay the pinned Harvard fixtures. Verify same-school roster resolution and rejection of ambiguous or cross-school matches, explicit judge/person links, deduplicated panel assignments, independently scoped timeslots, unresolved panel 9200905, raw scores and standings, missing versus empty observations, replay idempotency and protected-evidence exclusion. Validate TypeScript and the existing test suite. Record limitations and fixture lineage in the implementation PR. The implementation PR remains subject to separate Dennis merge approval.
+
+
+## Verified acceptance
+
+Both migrations applied on empty PostgreSQL 17.9. The full 12-test suite passed on that database, after restoring its backup, and after migrating a restore of the earlier warehouse. Standalone TypeScript and the Next.js 16.4.6 production build passed. The handoff records the evidence relationships, standing scope rules, operation outcomes, public projection and matched recovery counts. Separate Dennis approval is required to merge PR #9.
