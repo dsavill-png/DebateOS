@@ -51,6 +51,7 @@ function counts(target: Evidence, seasonLinks: Evidence['links']) {
     rostered: target.roster.size, assigned: target.assigned.size, linkedJudges,
     linkedPeople: people.size, unlinked: unlinked.length, conflicting: conflicts.length,
     rosterOnly: [...target.roster].filter(judge => !target.assigned.has(judge)).length,
+    assignedNotRostered: [...target.assigned].filter(judge => !target.roster.has(judge)).length,
     unlinkedJudgeIds: unlinked, conflictingMappings: conflicts,
     duplicatePersonIds: [...people].filter(([, judges]) => judges.size > 1)
       .map(([person, judges]) => ({ person, judges: [...judges] })),
@@ -140,3 +141,5 @@ export function measureCoverage(
     events,
   };
 }
+
+

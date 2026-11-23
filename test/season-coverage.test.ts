@@ -54,6 +54,7 @@ test('deduplicates scoped judges and persons while retaining roster and coverage
   assert.equal(aggregate.assigned, 4);
   assert.equal(aggregate.rostered, 4);
   assert.equal(aggregate.rosterOnly, 2);
+  assert.equal(aggregate.assignedNotRostered, 2);
   assert.equal(aggregate.linkedJudges, 2);
   assert.equal(aggregate.linkedPeople, 1);
   assert.equal(aggregate.unlinked, 1);
@@ -63,6 +64,7 @@ test('deduplicates scoped judges and persons while retaining roster and coverage
   assert.equal(aggregate.exportsAvailable, 3);
   assert.equal(aggregate.assignmentCoverageUnknown, 1);
   assert.equal(events[0].assigned, 3);
+  assert.deepEqual(events.map(event => event.assignedNotRostered), [2, 1, 0, 0]);
   assert.equal(events[1].conflicting, 1);
   assert.equal(events[3].exportAvailable, false);
 });

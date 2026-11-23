@@ -19,6 +19,7 @@
     "unlinked": 1,
     "conflicting": 0,
     "rosterOnly": 315,
+    "assignedNotRostered": 4,
     "duplicatePersonIds": 302,
     "duplicatePeopleAcrossEvents": 335
   },
@@ -38,6 +39,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 4,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -55,6 +57,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 7,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -72,6 +75,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -89,6 +93,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 98,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -106,6 +111,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 12,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -123,6 +129,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 88,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -140,6 +147,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 48,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -157,6 +165,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 39,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -174,6 +183,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 10,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -191,6 +201,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 5,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -208,6 +219,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 23,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -225,6 +237,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 1,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -242,6 +255,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 71,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -259,6 +273,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 57,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -276,6 +291,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 15,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -293,6 +309,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 28,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -310,6 +327,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 78,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -327,6 +345,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 87,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -344,6 +363,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -361,6 +381,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 22,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -378,6 +399,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 28,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -395,6 +417,7 @@
       "unlinked": 1,
       "conflicting": 0,
       "rosterOnly": 12,
+      "assignedNotRostered": 1,
       "duplicatePeople": 0
     },
     {
@@ -412,6 +435,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 10,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -429,6 +453,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 20,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -446,6 +471,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 32,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -463,6 +489,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 26,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -480,6 +507,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 30,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -497,6 +525,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 25,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -514,6 +543,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -531,6 +561,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 22,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -548,6 +579,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 100,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -565,6 +597,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 110,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -582,6 +615,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 13,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -599,6 +633,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 54,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -616,6 +651,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 32,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -633,6 +669,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 33,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -650,6 +687,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -667,6 +705,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -684,6 +723,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -701,6 +741,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 55,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -718,6 +759,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 41,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -735,6 +777,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 6,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -752,6 +795,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 4,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -769,6 +813,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 77,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -786,6 +831,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -803,6 +849,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 37,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -820,6 +867,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 11,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -837,6 +885,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 34,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -854,6 +903,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 25,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -871,6 +921,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 15,
+      "assignedNotRostered": 3,
       "duplicatePeople": 0
     },
     {
@@ -888,6 +939,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -905,6 +957,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -922,6 +975,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 31,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -939,6 +993,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 31,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -956,6 +1011,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 15,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -973,6 +1029,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 8,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -990,6 +1047,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 5,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1007,6 +1065,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 33,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1024,6 +1083,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 45,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1041,6 +1101,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 11,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1058,6 +1119,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 13,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1075,6 +1137,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 37,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1092,6 +1155,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 6,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1109,6 +1173,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1126,6 +1191,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 28,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1143,6 +1209,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 18,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1160,6 +1227,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 11,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1177,6 +1245,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 27,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1194,6 +1263,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 25,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1211,6 +1281,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 36,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1228,6 +1299,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 18,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1245,6 +1317,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 3,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1262,6 +1335,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1279,6 +1353,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 10,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1296,6 +1371,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 13,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1313,6 +1389,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 6,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1330,6 +1407,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 21,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1347,6 +1425,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 46,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1364,6 +1443,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 14,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1381,6 +1461,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 5,
+      "assignedNotRostered": 8,
       "duplicatePeople": 0
     },
     {
@@ -1398,6 +1479,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 27,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1415,6 +1497,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 13,
+      "assignedNotRostered": 15,
       "duplicatePeople": 0
     },
     {
@@ -1432,6 +1515,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 1,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1449,6 +1533,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 6,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1466,6 +1551,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 0,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1483,6 +1569,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 3,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     },
     {
@@ -1500,6 +1587,7 @@
       "unlinked": 0,
       "conflicting": 0,
       "rosterOnly": 16,
+      "assignedNotRostered": 0,
       "duplicatePeople": 0
     }
   ]
