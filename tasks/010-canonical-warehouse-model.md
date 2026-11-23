@@ -15,6 +15,7 @@ Define the logical grain, keys, relationships, provenance and authorization boun
 | --- | --- |
 | Tournament and competition | Define tournament, event/division, round, tournament timeslot and panel/section grain, keys and cardinality. Keep timeslots independent and require explicit source evidence for a round-to-timeslot link. |
 | Schools and participation | Distinguish tournament school from chapter and entry from any durable team identity. Define evidence and scope for student references, roster membership, and any debater identity crosswalk. Resolve a public roster reference only against a unique match in the verified containing school. |
+| Season and event scope | Define reusable season scopes with immutable manifest revisions, dates, format, division, circuit and evidence-backed event membership. Pin revisions for judge eligibility and season analytics. |
 | Judges and assignments | Distinguish tournament judge from person. Define panel judge assignment grain, deduplication and supporting observations. Require explicit source evidence for judge-to-person links and preserve conflicts. |
 | Ballots and standings | Define ballot observation, score observation, result set and standings observation grain. Preserve raw score arrays and standing values when semantics are uncertain. Keep event placement distinct from panel outcomes and require an explicit crosswalk between result-set identifiers from different sources. |
 | Publication and lineage | Model publication state and immutable provenance snapshots. Each observation must trace to source method, source ID when supplied, JSON pointer, UTC capture timestamp, snapshot ID and digest, parser version, authorization class (public or authenticated), and uncertainty state. Define replay, conflicting observations and the distinction between missing, empty, unpublished, forbidden and invalid responses. |
@@ -24,7 +25,7 @@ Reserve verified debate decisions and winners until side, decision, vote aggrega
 
 ## College judge paradigm corpus
 
-Define auditable event and season coverage, supported structured discovery, production search versus global enumeration evidence, explicit judge-person resolution, versioning, restricted serving and a method for measuring reach. Separate raw paradigms from derived tendencies. Bulk collection requires a separate approved work order.
+Define auditable event and season coverage, supported structured discovery, production search versus global enumeration evidence, explicit judge-person resolution, versioning, restricted serving and a method for measuring reach. Where retention permits, preserve sanitized source-faithful content and normalized text with hashes, transformation versions, capture provenance and immutable revisions within the authorization partition. Label derived tendencies separately and enforce serving entitlements. Bulk collection requires a separate approved work order.
 
 ## Deliverable and acceptance
 
@@ -34,4 +35,4 @@ PostgreSQL tables, migrations, and ingestion changes require a separate approved
 
 ## Design submitted for review
 
-[ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) records the proposed logical warehouse and staged plan. [TASK-011](011-college-judge-paradigm-corpus.md) is a separate Draft for coverage measurement and an authorized pilot. Review and approval are pending.
+[ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) records the proposed logical warehouse and staged plan. [TASK-011](011-college-judge-paradigm-corpus.md) is a separate Draft for coverage measurement and an authorized pilot. On November 23, 2026, Dennis approved the design direction subject to first-class season manifests and dual paradigm representations where retention permits. Both refinements are in ADR-002. Jared's substantive review is pending. Review the logical entity grain and keys, identity and conflict rules, season manifest and eligibility, evidence and publication rules, paradigm retention and serving boundaries, and the staged public implementation plan.
