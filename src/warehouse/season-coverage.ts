@@ -58,10 +58,19 @@ function counts(target: Evidence, seasonLinks: Evidence['links']) {
   };
 }
 
+export type IncludedEventObservation = {
+  tournamentId: string;
+  eventId: string;
+  division: string;
+  bulk: Capture;
+  batch: ReturnType<typeof normalize>;
+};
+
 export function measureCoverage(
   manifest: Manifest,
   pin: { scopeId: string; revision: number; sha256: string },
   captures: ReadonlyMap<string, { snapshot: Snapshot; bytes: Uint8Array }>,
+  observe?: (event: IncludedEventObservation) => void,
 ) {
   if (manifest.scopeId !== pin.scopeId || manifest.revision !== pin.revision ||
       manifestDigest(manifest) !== pin.sha256) throw new Error('Manifest pin mismatch');
@@ -89,6 +98,7 @@ export function measureCoverage(
     return tournament.events.filter(event => event.decision === 'included').map(event => {
       const scoped = evidence();
       const batch = bulk && normalize({ tournament: tournament.id, event: event.id }, undefined, undefined, bulk);
+      if (bulk && batch) observe?.({ tournamentId: tournament.id, eventId: event.id, division: event.division, bulk, batch });
       for (const judge of batch?.tournamentJudges ?? []) {
         if (judge.provenance.some(row => row.source_path.includes('/judges/'))) {
           scoped.roster.add(judge.id);
