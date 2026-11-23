@@ -40,9 +40,22 @@ type Diagnostic = {
   status?: number;
 };
 
+export type OperationOutcome = {
+  operation: Resource;
+  route?: string;
+  scope: Scope;
+  attemptedAt: string;
+  status?: number;
+  mediaType?: string;
+  snapshot?: string;
+  outcome: 'observed' | 'empty' | 'not-requested' | 'unpublished' | 'unauthorized' |
+    'forbidden' | 'ambiguous-not-found' | 'invalid' | 'rate-limited' | 'transient-failure';
+};
+
 type ImportBatch = ReturnType<typeof normalize> & {
   snapshots: Snapshot[];
   diagnostics: Diagnostic[];
+  outcomes?: OperationOutcome[];
 };
 
 export const sha256 = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
@@ -107,6 +120,7 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
         resource, state: 'unavailable', reason: 'Protected REST operation',
       }));
       const snapshots: Snapshot[] = [];
+      const outcomes: OperationOutcome[] = [];
 
       async function capture(resource: keyof typeof urls): Promise<Capture | undefined> {
         const url = urls[resource];
@@ -127,12 +141,18 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
         }
 
         const status = reply?.status;
+        const operation = { operation: resource, route: url, scope: { ...scope },
+          attemptedAt: reply?.fetchedAt ?? new Date().toISOString(), status, mediaType: reply?.mediaType };
         if (!reply || status === undefined || status < 200 || status >= 300 || !isJson(reply.mediaType)) {
           diagnostics.push({
             resource, status,
             state: status === 401 || status === 403 ? 'unavailable' : 'failed',
             reason: !reply ? 'Connection failed' : reply.status >= 200 && reply.status < 300 ? 'Unexpected media type' : 'HTTP response',
           });
+          const outcome = status === 401 ? 'unauthorized' : status === 403 ? 'forbidden' :
+            status === 404 ? 'ambiguous-not-found' : status === 429 ? 'rate-limited' :
+            !reply || (status !== undefined && status >= 500 && status < 600) ? 'transient-failure' : 'invalid';
+          outcomes.push({ ...operation, outcome });
           return;
         }
 
@@ -152,8 +172,13 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
             throw Error('Incompatible payload');
           }
           diagnostics.push({ resource, state: 'available', status });
+          const empty = resource === 'bulk' && ['categories', 'schools'].every(key =>
+            Array.isArray(data[key]) && data[key].length === 0) &&
+            (data.timeslots === undefined || (Array.isArray(data.timeslots) && data.timeslots.length === 0));
+          outcomes.push({ ...operation, snapshot: snapshot.id, outcome: empty ? 'empty' : 'observed' });
           return { data, snapshot };
         } catch {
+          outcomes.push({ ...operation, snapshot: snapshot.id, outcome: 'invalid' });
           diagnostics.push({ resource, state: 'failed', status, reason: 'Invalid JSON, schema or tournament scope' });
         }
       }
@@ -161,8 +186,13 @@ export function publicTabroom({ retain, read = readPublic, wait = ms => new Prom
       const tournament = await capture('tournament');
       const invite = await capture('invite');
       const bulk = await capture('bulk');
+      const attemptedAt = outcomes.map(outcome => outcome.attemptedAt).sort().at(-1)!;
+      for (const operation of protectedRestResources) {
+        outcomes.push({ operation, route: urls.tournament + '/' + operation, scope: { ...scope },
+          attemptedAt, outcome: 'not-requested' });
+      }
       const batch = normalize(scope, tournament, invite, bulk);
-      return { ...batch, snapshots, diagnostics: [...diagnostics, ...batch.issues] };
+      return { ...batch, snapshots, outcomes, diagnostics: [...diagnostics, ...batch.issues] };
     },
   };
 }
