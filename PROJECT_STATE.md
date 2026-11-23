@@ -5,11 +5,13 @@
 As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
-- TASK-009 is complete on `main`. Dennis approved and merged the [TASK-010 warehouse design](docs/architecture/ADR-002-canonical-warehouse-model.md) in [PR #8](https://github.com/dsavill-png/DebateOS/pull/8).
+- TASK-012 is complete on `main`. The first public-evidence PostgreSQL warehouse implements the [TASK-010 design](docs/architecture/ADR-002-canonical-warehouse-model.md) and preserves capture lineage and row-level eligibility.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
 
 ## Completed Since Last Update
+
+- [TASK-012](tasks/012-public-canonical-physical-schema.md) completed after Dennis approved the verified head. [PR #9](https://github.com/dsavill-png/DebateOS/pull/9) merged at [`c318236bf6e6af07a92b213876d66140aae455f7`](https://github.com/dsavill-png/DebateOS/commit/c318236bf6e6af07a92b213876d66140aae455f7). The [implementation handoff](docs/handoffs/2026-11-23-public-warehouse.md) records 12 passing tests on fresh, restored, and upgraded PostgreSQL 17.9 databases, plus passing TypeScript and production builds.
 
 - [TASK-010](tasks/010-canonical-warehouse-model.md) completed substantive backend review and received Dennis's approval on November 23. [PR #8](https://github.com/dsavill-png/DebateOS/pull/8) merged at [`457594e`](https://github.com/dsavill-png/DebateOS/commit/457594ead6768903099e0746ff1ac0f731d61c1f). Consult Jared on downstream UI-facing contracts.
 
@@ -20,8 +22,6 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - [TASK-007](tasks/007-shared-project-state.md) established the shared state and session protocol.
 
 ## Current Work
-
-- [TASK-012](tasks/012-public-canonical-physical-schema.md) passed implementation acceptance and is ready for leadership merge review on [PR #9](https://github.com/dsavill-png/DebateOS/pull/9). PostgreSQL 17.9 migration, recovery, replay and policy checks passed with all 12 tests. Standalone TypeScript and the production build passed.
 
 - [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
 
@@ -52,7 +52,9 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
-- Review PR #9 and obtain separate Dennis merge approval. Review the corpus pilot separately after TASK-003 and vendor approval.
+## Next Product Recommendation
+
+Seek Dennis and Jared’s approval for the public coverage portion of [TASK-011](tasks/011-college-judge-paradigm-corpus.md). Pin one closed college policy season manifest and use approved structured public exports to measure rostered and assigned judge coverage separately. Report verified person links, missing mappings, conflicts, and unknown coverage. Protected acquisition remains gated on TASK-003, Tabroom authorization, and separate pilot approval.
 
 ## Recent Detailed Handoffs
 
