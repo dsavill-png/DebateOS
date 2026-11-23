@@ -2,7 +2,7 @@
 
 ## Executive Snapshot
 
-As of 2026-11-20. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
+As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
 
 - New feature development is paused. The shared project-state protocol is in effect.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
@@ -15,6 +15,8 @@ As of 2026-11-20. Shared state for Dennis Commander and Jared Commander, maintai
 - [TASK-007](tasks/007-shared-project-state.md) established the shared state and session protocol.
 
 ## Current Work
+
+- [TASK-008](tasks/008-dispatcher-reliability.md) adds a GitHub review handoff to the Codex result report. Local result and replay checks passed. Production smoke and automatic Commander receipt remain open.
 
 - [TASK-003](tasks/003-tabroom-authentication.md) remains approved Work research. The [latest reported outcome](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7039755463) was Partial. Authenticated route coverage awaits an authorized Tabroom session.
 
@@ -31,13 +33,17 @@ As of 2026-11-20. Shared state for Dennis Commander and Jared Commander, maintai
 ## Known Blockers / Risks
 
 - TASK-003 needs an authorized Tabroom session to verify protected routes and role-specific access.
-- Event-orchestrator wakeup remains an open orchestration gap. [PLANS.md](PLANS.md#phase-6--automation-and-dispatcher) defers unattended orchestration and records the verified Codex command path.
+- The Event Orchestrator may miss a follow-up wake when a result arrives during another run. OpenAI Support case 20524159 has no confirmed fix. The GitHub handoff supports human triage while automatic receipt remains open.
 
 ## Next Approved Actions
+
+- Review TASK-008 and verify the GitHub handoff with reserved dispatcher smoke tasks before resuming public Tabroom work.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For the already-approved TASK-003 research, verify authenticated access when an authorized session is available. New product work remains paused.
 
 ## Recent Detailed Handoffs
+
+- [Dispatcher result handoff](docs/handoffs/2026-11-23-dispatcher-result-handoff.md).
 
 - [TASK-003 authenticated-access research memo](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md), linked from its work order.
