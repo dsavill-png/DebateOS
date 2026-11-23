@@ -22,8 +22,16 @@ Define the logical grain, keys, relationships, provenance and authorization boun
 
 Reserve verified debate decisions and winners until side, decision, vote aggregation, bye and forfeit semantics are established. Harvard panel 9200905 remains unresolved.
 
+## College judge paradigm corpus
+
+Define auditable event and season coverage, supported structured discovery, production search versus global enumeration evidence, explicit judge-person resolution, versioning, restricted serving and a method for measuring reach. Separate raw paradigms from derived tendencies. Bulk collection requires a separate approved work order.
+
 ## Deliverable and acceptance
 
 Produce an ADR-style logical model and a staged implementation plan for Dennis and Jared to review. Include an entity and relationship catalog with grain, keys, cardinality, optionality, source mappings and evidence requirements. Walk through Harvard examples covering roster resolution, judge-to-person linkage, an explicit authenticated timeslot link, and an unresolved outcome. Document open identity, publication and authorization decisions and record the review outcome before marking the design approved.
 
 PostgreSQL tables, migrations, and ingestion changes require a separate approved implementation work order. Dennis and Jared review the logical model and implementation plan before schema work is released.
+
+## Design submitted for review
+
+[ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) records the proposed logical warehouse and staged plan. [TASK-011](011-college-judge-paradigm-corpus.md) is a separate Draft for coverage measurement and an authorized pilot. Review and approval are pending.
