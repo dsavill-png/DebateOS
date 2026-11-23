@@ -246,21 +246,52 @@ jobs:
           TASK_REASON: ${{ needs.route.outputs.task_reason }}
           PIPELINE_FAILURE: ${{ needs.route.outputs.pipeline_failure }}
           PUBLISH_RESULT: ${{ needs.publish.result }}
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
-          [[ "$TASK" =~ ^[0-9]{3}$ && "$SOURCE_ID" =~ ^[0-9]+$ ]]
-          link="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          draft=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "codex/task-$TASK-comment-$SOURCE_ID" --state open --json url --jq '.[0].url // ""')
-          if [[ "$TASK_STATUS" == blocked && "$PIPELINE_FAILURE" != true ]]; then
-            result=blocked
-          elif [[ "$TASK_STATUS" == partial && "$PUBLISH_RESULT" == success ]]; then
-            result=partial
-          elif [[ "$TASK_STATUS" == completed && "$PUBLISH_RESULT" == success ]]; then
-            result=success
-          else
-            result=failure
-          fi
-          reason_text=
-          [[ -z "$TASK_REASON" ]] || reason_text=" Reason: $TASK_REASON"
-          gh pr comment 1 --repo "$GITHUB_REPOSITORY" --body "Codex TASK-$TASK result: $result. Task status: ${TASK_STATUS:-unknown}.${reason_text} Source comment ID $SOURCE_ID. Actions: $link. Draft PR: ${draft:-none}."
+          $ErrorActionPreference = 'Stop'
+          if ($env:TASK -cnotmatch '^[0-9]{3}$' -or $env:SOURCE_ID -cnotmatch '^[0-9]+$') {
+            throw 'Invalid dispatcher result identifiers.'
+          }
+
+          $link = "$env:GITHUB_SERVER_URL/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+          $marker = "<!-- debateos-codex-result:$env:SOURCE_ID -->"
+          $comments = gh api --paginate "repos/$env:GITHUB_REPOSITORY/issues/1/comments?per_page=100" --jq '.[] | @json'
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to check for an existing dispatcher result.' }
+          # gh emits one compact JSON object per comment across all pages.
+          $existing = @($comments | ForEach-Object { ConvertFrom-Json -InputObject $_ } | Where-Object {
+            $_.user.login -ceq 'github-actions[bot]' -and ($_.body -split "\r?\n")[-1] -ceq $marker
+          })
+          if ($existing.Count -gt 1) { throw 'Multiple dispatcher results found for this source comment.' }
+          if ($existing.Count -eq 1) {
+            "Dispatcher result already recorded: $($existing[0].html_url)" >> $env:GITHUB_STEP_SUMMARY
+            return
+          }
+
+          $draft = gh pr list --repo $env:GITHUB_REPOSITORY --head "codex/task-$env:TASK-comment-$env:SOURCE_ID" --state open --json url --jq '.[0].url // ""'
+          if ($LASTEXITCODE -ne 0) { throw 'Unable to look up the dispatcher draft PR.' }
+
+          $result = 'failure'
+          $nextStep = 'Escalate to Dennis Commander and inspect the Actions run.'
+          if ($env:TASK_STATUS -ceq 'blocked' -and $env:PIPELINE_FAILURE -cne 'true') {
+            $result = 'blocked'
+            $nextStep = 'Review the blocker and decide whether the work order can proceed.'
+          } elseif ($env:PUBLISH_RESULT -ceq 'success' -and $env:TASK_STATUS -cin @('completed', 'partial')) {
+            $result = @{ completed = 'success'; partial = 'partial' }[$env:TASK_STATUS]
+            $nextStep = 'Review the draft PR and decide the next step.'
+          }
+
+          $status = if ($env:TASK_STATUS) { $env:TASK_STATUS } else { 'unknown' }
+          $draftLink = if ($draft) { $draft } else { 'none' }
+          # Keep worker-provided prose on the result line and prevent it from mentioning other accounts.
+          $reason = if ($env:TASK_REASON) { ' Reason: ' + ($env:TASK_REASON -replace '[\r\n]+', ' ' -replace '@', '＠') } else { '' }
+          $body = @(
+            "Codex TASK-$env:TASK result: $result. Task status: ${status}.${reason} Source comment ID $env:SOURCE_ID. Actions: $link. Draft PR: $draftLink."
+            ''
+            "@dsavill-png — $nextStep"
+            ''
+            $marker
+          ) -join "`n"
+
+          $url = gh api --method POST "repos/$env:GITHUB_REPOSITORY/issues/1/comments" -f "body=$body" --jq .html_url
+          if ($LASTEXITCODE -ne 0 -or -not $url) { throw 'Unable to record the dispatcher result.' }
+          "Dispatcher result recorded: $url" >> $env:GITHUB_STEP_SUMMARY
