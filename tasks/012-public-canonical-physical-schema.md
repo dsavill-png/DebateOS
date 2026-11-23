@@ -1,6 +1,6 @@
 # 012 · Implement the canonical physical schema — Phase 1 public evidence
 
-**Status** Implementation complete, ready for leadership merge review  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Review** Dennis approved execution and the refinements below on 2026-11-23. Consult Jared on downstream UI-facing contracts.  
@@ -28,9 +28,9 @@ Dennis approved preserving caller-facing adapter IDs, using complete provider-sc
 
 ## Acceptance and release
 
-Prove migration and rollback in a disposable PostgreSQL database and replay the pinned Harvard fixtures. Verify same-school roster resolution and rejection of ambiguous or cross-school matches, explicit judge/person links, deduplicated panel assignments, independently scoped timeslots, unresolved panel 9200905, raw scores and standings, missing versus empty observations, replay idempotency and protected-evidence exclusion. Validate TypeScript and the existing test suite. Record limitations and fixture lineage in the implementation PR. The implementation PR remains subject to separate Dennis merge approval.
+Prove migration and rollback in a disposable PostgreSQL database and replay the pinned Harvard fixtures. Verify same-school roster resolution and rejection of ambiguous or cross-school matches, explicit judge/person links, deduplicated panel assignments, independently scoped timeslots, unresolved panel 9200905, raw scores and standings, missing versus empty observations, replay idempotency and protected-evidence exclusion. Validate TypeScript and the existing test suite. Record limitations and fixture lineage in the implementation PR. Dennis approved merging the verified head.
 
 
 ## Verified acceptance
 
-Both migrations applied on empty PostgreSQL 17.9. The full 12-test suite passed on that database, after restoring its backup, and after migrating a restore of the earlier warehouse. Standalone TypeScript and the Next.js 16.4.6 production build passed. The handoff records the evidence relationships, standing scope rules, operation outcomes, public projection and matched recovery counts. Separate Dennis approval is required to merge PR #9.
+Both migrations applied on empty PostgreSQL 17.9. The full 12-test suite passed on that database, after restoring its backup, and after migrating a restore of the earlier warehouse. Standalone TypeScript and the Next.js 16.4.6 production build passed. The handoff records the evidence relationships, standing scope rules, operation outcomes, public projection and matched recovery counts. [PR #9](https://github.com/dsavill-png/DebateOS/pull/9) merged into `main` on November 23, 2026 at [`c318236bf6e6af07a92b213876d66140aae455f7`](https://github.com/dsavill-png/DebateOS/commit/c318236bf6e6af07a92b213876d66140aae455f7).
