@@ -5,11 +5,13 @@
 As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
-- TASK-009 is complete on `main`. The next product design decision is Dennis and Jared's review of the TASK-010 canonical warehouse model.
+- TASK-009 is complete on `main`. Dennis approved the [TASK-010 warehouse design](docs/architecture/ADR-002-canonical-warehouse-model.md) in [PR #8](https://github.com/dsavill-png/DebateOS/pull/8).
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
 
 ## Completed Since Last Update
+
+- [TASK-010](tasks/010-canonical-warehouse-model.md) completed substantive backend review and received Dennis's approval on November 23. Consult Jared on downstream UI-facing contracts.
 
 - [TASK-009](tasks/009-tabroom-public-data-inventory.md) merged via [PR #7](https://github.com/dsavill-png/DebateOS/pull/7) at [`b6cf6ff`](https://github.com/dsavill-png/DebateOS/commit/b6cf6ff271b373f58c613053869e2b32c8d1c579). Verified head `026a7655a6f4eef91fd921588c1992b02e75626a`. Node 24.22.3 passed all 8 tests. The locked Next.js 16.4.6 production build passed TypeScript checking and generated all 3 static pages. The public request set, fixture lineage, roster and ID boundaries, standalone timeslots and raw scores were verified. Harvard judge `2912715` links to person `366665`. Panel `9200905` remains unresolved.
 
@@ -19,7 +21,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-010](tasks/010-canonical-warehouse-model.md) is Draft. Dennis Commander owns the logical model work order. Dennis and Jared review the design and implementation plan.
+- [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
 
 - [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
 
@@ -31,6 +33,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - Both commanders use this file for session startup and shutdown. The [repository instructions](AGENTS.md#task-execution-protocol) define the process.
 
 ## Architecture / Guardrails
+
+- [ADR-002](docs/architecture/ADR-002-canonical-warehouse-model.md) establishes one canonical evidence warehouse with observation-level authorization and a public-evidence first rollout.
 
 - The [approved stack](docs/architecture/ADR-001-initial-stack.md) is TypeScript, Next.js, and PostgreSQL. The v1 Tabroom adapter stays public-only.
 - Codex dispatch remains approval-gated and publishes draft PRs for review. Leadership controls merges. See [PLANS.md](PLANS.md#phase-6--automation-and-dispatcher).
@@ -46,9 +50,11 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
-- Next product development step is Dennis and Jared's review and approval of the [TASK-010 canonical warehouse model](tasks/010-canonical-warehouse-model.md). The ADR-style design and implementation plan must clear that review. Schema implementation requires a separate work order.
+- Prepare a Draft physical schema work order for the public-evidence rollout of the canonical model. Leadership approval releases implementation. Review the corpus pilot separately after TASK-003 and vendor approval.
 
 ## Recent Detailed Handoffs
+
+- [TASK-010 warehouse design handoff](docs/handoffs/2026-11-23-warehouse-design.md).
 
 - [TASK-003 authenticated API discovery addendum](docs/research/tabroom-authenticated-access.md).
 
