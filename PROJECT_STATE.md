@@ -11,6 +11,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Completed Since Last Update
 
+- [TASK-011 Phase A](tasks/011-college-judge-paradigm-corpus.md) is Completed on `main`. [PR #10](https://github.com/dsavill-png/DebateOS/pull/10) merged at [`47c4c89ee03933299010be35f1c575509b4cde9e`](https://github.com/dsavill-png/DebateOS/commit/47c4c89ee03933299010be35f1c575509b4cde9e). Across the included 2025–26 college policy divisions, 1,949 of 1,950 observed assigned judge IDs link explicitly to 401 distinct people. Four assigned IDs were absent from the observed category rosters. The [handoff](docs/handoffs/2026-11-23-college-policy-public-coverage.md) records the Dropbox archive, digests, replay and coverage limits.
+
 - [TASK-012](tasks/012-public-canonical-physical-schema.md) completed after Dennis approved the verified head. [PR #9](https://github.com/dsavill-png/DebateOS/pull/9) merged at [`c318236bf6e6af07a92b213876d66140aae455f7`](https://github.com/dsavill-png/DebateOS/commit/c318236bf6e6af07a92b213876d66140aae455f7). The [implementation handoff](docs/handoffs/2026-11-23-public-warehouse.md) records 12 passing tests on fresh, restored, and upgraded PostgreSQL 17.9 databases, plus passing TypeScript and production builds.
 
 - [TASK-010](tasks/010-canonical-warehouse-model.md) completed substantive backend review and received Dennis's approval on November 23. [PR #8](https://github.com/dsavill-png/DebateOS/pull/8) merged at [`457594e`](https://github.com/dsavill-png/DebateOS/commit/457594ead6768903099e0746ff1ac0f731d61c1f). Consult Jared on downstream UI-facing contracts.
@@ -23,7 +25,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Phase A Approved / In Progress. Dennis approved public coverage. Draft PR #10 pins the 2025–26 college policy manifest and reports 1,950 observed assigned tournament judge IDs and 401 distinct explicitly linked people. Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval. Consult Jared on UI-facing contracts.
+- TASK-011 Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval.
 
 - [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
 
@@ -54,7 +56,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
 ## Next Product Recommendation
 
-Review [draft PR #10](https://github.com/dsavill-png/DebateOS/pull/10) and its coverage gaps. Reconcile unresolved divisions and discovery gaps before making representativeness claims. The linked public cohort can support a bounded sample once the protected pilot clears its separate gates. Merge requires Dennis’s approval.
+Seek Dennis’s approval for a bounded public judge-intelligence prototype using the 401 explicitly linked people. Produce a provenance-linked judge activity card with observed assignments, event history, and coverage gaps from the pinned 2025–26 captures. This tests dossier value using verified public evidence while TASK-003 vendor authorization remains open. Consult Jared on the UI-facing contract before implementation.
 
 ## Recent Detailed Handoffs
 

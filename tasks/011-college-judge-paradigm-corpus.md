@@ -1,6 +1,6 @@
 # 011 · Validate coverage and pilot the college judge paradigm corpus
 
-**Status** Phase A Approved / In Progress · Phase B Draft / Gated  
+**Status** Phase A Completed · Phase B Draft / Gated  
 **Owner** Dennis Commander  
 **Review** Dennis leads Phase A backend review. Consult Jared on UI-facing contracts.  
 **Dependencies** [TASK-010](010-canonical-warehouse-model.md) design review and [TASK-003](003-tabroom-authentication.md) vendor confirmation for protected work
@@ -11,7 +11,7 @@ Measure coverage for a leadership-approved season and collegiate event manifest.
 
 ## Approved Phase A · Public coverage
 
-Dennis approved Phase A on November 23, 2026. Scope is the closed 2025–26 collegiate policy season, all verified divisions, using anonymous structured Tabroom data. Keep roster and panel-assignment denominators separate. Resolve only explicit judge-to-person links. Report missing, conflicting and unavailable coverage against a pinned manifest. The draft PR requires separate Dennis approval to merge.
+Dennis approved Phase A on November 23, 2026. Scope is the closed 2025–26 collegiate policy season, all verified divisions, using anonymous structured Tabroom data. Keep roster and panel-assignment denominators separate. Resolve only explicit judge-to-person links. Report missing, conflicting and unavailable coverage against a pinned manifest. Dennis approved the archive and roster-gap follow-up and merge. [PR #10](https://github.com/dsavill-png/DebateOS/pull/10) merged at [`47c4c89ee03933299010be35f1c575509b4cde9e`](https://github.com/dsavill-png/DebateOS/commit/47c4c89ee03933299010be35f1c575509b4cde9e). See the [public coverage handoff](../docs/handoffs/2026-11-23-college-policy-public-coverage.md) for coverage, verification and replay.
 
 ## Phase A and gated Phase B scope
 
