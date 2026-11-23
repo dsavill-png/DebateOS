@@ -21,7 +21,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-012](tasks/012-public-canonical-physical-schema.md) is Draft and awaits leadership review. It proposes the first PostgreSQL/ORM implementation of the canonical model using public evidence.
+- [TASK-012](tasks/012-public-canonical-physical-schema.md) is approved by Dennis and blocked on an adapter identity decision. ADR-002 scopes rounds to events and student references to schools. The existing normalized IDs omit those scopes. Drizzle is approved for the Phase 1 public-evidence slice of the canonical warehouse.
 
 - [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
 
@@ -52,7 +52,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
-- Next product step is leadership review of Draft [TASK-012](tasks/012-public-canonical-physical-schema.md) for the public-evidence physical schema rollout. Implementation begins after approval. Review the corpus pilot separately after TASK-003 and vendor approval.
+- For [TASK-012](tasks/012-public-canonical-physical-schema.md), Dennis should confirm whether to preserve the adapter IDs and add explicit scoped identity components for persistence. Consult Jared on downstream UI-facing contracts. Resume schema implementation after the decision. Review the corpus pilot separately after TASK-003 and vendor approval.
 
 ## Recent Detailed Handoffs
 
