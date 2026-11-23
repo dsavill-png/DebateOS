@@ -1,0 +1,2860 @@
+{
+  "scopeId": "tabroom-college-policy-2025-26",
+  "revision": 1,
+  "predecessor": null,
+  "approval": "Dennis, 2026-11-23, public coverage only",
+  "start": "2025-07-01",
+  "endInclusive": "2026-06-30",
+  "timezone": "UTC",
+  "dateRule": "Tournament start in [2025-07-01T00:00:00Z, 2026-07-01T00:00:00Z)",
+  "format": "collegiate policy",
+  "divisions": "all evidenced divisions",
+  "discovery": [
+    {
+      "id": "483f4b921b77f896694ffe7bffc5faf55cc347de8d17bf3e6e03ff358e21573f",
+      "sha256": "19f93b289fe6c54d5f9483afcd59fec140abf24f14305c6bd920f05b236443f1",
+      "url": "https://api.tabroom.com/v1/rest/tourns?circuit=43&limit=100&offset=0&startAfter=2025-06-30T23:59:59Z&startBefore=2026-07-01T00:00:00Z",
+      "fetchedAt": "2026-11-23T18:04:34.000Z",
+      "status": 200,
+      "mediaType": "application/json; charset=utf-8",
+      "authorization": "anonymous public"
+    },
+    {
+      "id": "624a8a519babee3456e3cf9382d69be0f79a38f55b54ed211c364e01e74c1c1c",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "url": "https://api.tabroom.com/v1/rest/tourns?circuit=43&limit=100&offset=41&startAfter=2025-06-30T23:59:59Z&startBefore=2026-07-01T00:00:00Z",
+      "fetchedAt": "2026-11-23T18:05:44.000Z",
+      "status": 200,
+      "mediaType": "application/json; charset=utf-8",
+      "authorization": "anonymous public"
+    }
+  ],
+  "tournaments": [
+    {
+      "id": "35973",
+      "name": "George Mason Debate Tournament",
+      "start": "2025-09-12T18:00:00.000Z",
+      "invite": {
+        "id": "9e8e959d4fd4f1c5ee21d425d53d4d82fce1525ab4bdb7a2145e04dfa8f3d164",
+        "sha256": "78b1cb60c7ba9c1972450e377fb4d1770f952049b861037073eb1bf4f19646c7",
+        "url": "https://api.tabroom.com/v1/rest/tourns/35973/invite",
+        "fetchedAt": "2026-11-23T18:05:06.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "b53f181aa3d81246c1dff8baf7f9cb16602ae2f31c62ecd2db5271101af9965b",
+        "sha256": "b4e2654f7df0be375715cbbbe3f11698586fffc65914e10d05d2fe1c736048d7",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=35973",
+        "fetchedAt": "2026-11-23T18:05:06.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "338258",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "9e8e959d4fd4f1c5ee21d425d53d4d82fce1525ab4bdb7a2145e04dfa8f3d164",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "338260",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "9e8e959d4fd4f1c5ee21d425d53d4d82fce1525ab4bdb7a2145e04dfa8f3d164",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "338259",
+          "division": "Observer",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "b53f181aa3d81246c1dff8baf7f9cb16602ae2f31c62ecd2db5271101af9965b",
+            "pointer": "/categories/0/events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36165",
+      "name": "53rd Annual Run for the Roses hosted by UK",
+      "start": "2025-09-24T12:00:00.000Z",
+      "invite": {
+        "id": "96a7f6ba75241cfd7184a0eacea968ab6c4626d0490c88e3ec5fc71c01f37cc1",
+        "sha256": "00f2f440d255edd0b52ffe496cae9dc1b81c77f26067a8039f412edda2d55b62",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36165/invite",
+        "fetchedAt": "2026-11-23T18:05:07.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "7041d35afa9a92d65dbe5a83f0173c872e20027e230a7b04dd8155f41126ca58",
+        "sha256": "d35d1203929fbddfda7fbffae9779410561db6976d67e508b293171cac4020e6",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36165",
+        "fetchedAt": "2026-11-23T18:05:08.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "339673",
+          "division": "Run for the Roses",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "96a7f6ba75241cfd7184a0eacea968ab6c4626d0490c88e3ec5fc71c01f37cc1",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "343482",
+          "division": "Observers",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "7041d35afa9a92d65dbe5a83f0173c872e20027e230a7b04dd8155f41126ca58",
+            "pointer": "/categories/0/events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36166",
+      "name": "55th Annual JW Patterson Debates hosted by UK",
+      "start": "2025-09-27T11:00:00.000Z",
+      "invite": {
+        "id": "d9b9f3f5b86c45d3434f700da5aa83b9230ed790e5ea2fe417538d9d6f3a0687",
+        "sha256": "ff2ffe16299c36b44581aeaed2369705e3f54bd54e0b1000c3020c4faeeb8d4b",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36166/invite",
+        "fetchedAt": "2026-11-23T18:05:08.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "938fc428b57764aab71e5300f875ddd300dfad939ba370faf72c3433fe4568a9",
+        "sha256": "07739dd61c59f6abcd30364faf9eedafb6aa500d55956aa8d58af790dea5939d",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36166",
+        "fetchedAt": "2026-11-23T18:05:08.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "339674",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "d9b9f3f5b86c45d3434f700da5aa83b9230ed790e5ea2fe417538d9d6f3a0687",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "339675",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "d9b9f3f5b86c45d3434f700da5aa83b9230ed790e5ea2fe417538d9d6f3a0687",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "339676",
+          "division": "Wildcat",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "d9b9f3f5b86c45d3434f700da5aa83b9230ed790e5ea2fe417538d9d6f3a0687",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36167",
+      "name": "Minnesota College Debate Invitational",
+      "start": "2025-10-17T13:00:00.000Z",
+      "invite": {
+        "id": "50e41d301c84be30fc65518629a76f2509e9db424bdc145dfc2cbfe62bcc45a3",
+        "sha256": "c6d3729aacedb51f343942687f4d2812f7cb76dc942bfd2d79ec5b2879febb07",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36167/invite",
+        "fetchedAt": "2026-11-23T18:05:11.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "21a01beb4219759608248b71838863920e46257219698b15ce28a40a86488180",
+        "sha256": "0be58048d8f23660499546675eceac23b76445dcb686a49b718ded414b826b03",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36167",
+        "fetchedAt": "2026-11-23T18:05:12.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "339677",
+          "division": "NDT JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "50e41d301c84be30fc65518629a76f2509e9db424bdc145dfc2cbfe62bcc45a3",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "339678",
+          "division": "NDT Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "50e41d301c84be30fc65518629a76f2509e9db424bdc145dfc2cbfe62bcc45a3",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "339679",
+          "division": "NDT Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "50e41d301c84be30fc65518629a76f2509e9db424bdc145dfc2cbfe62bcc45a3",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "339680",
+          "division": "Observer",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "50e41d301c84be30fc65518629a76f2509e9db424bdc145dfc2cbfe62bcc45a3",
+            "pointer": "/Events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36226",
+      "name": "Hoosier Invitational Tournament HIT",
+      "start": "2026-01-24T12:00:00.000Z",
+      "invite": {
+        "id": "350be2807603738af69ea91de759f28d4c2d9b6c3d8523ebb2f50f416d32e9cf",
+        "sha256": "215bfbc5f034a63f7a6187b376e21d5534993448f955509f448c4c976a842ba5",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36226/invite",
+        "fetchedAt": "2026-11-23T18:05:14.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "9f4ee6fc174c0846fb22d377ea89283f904dc1108a3523c57e5237c6553ea8f5",
+        "sha256": "47f1b8a3a0185bcbd249cb39c36ce8190d53170cbec4e294a1df1c73a7996e83",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36226",
+        "fetchedAt": "2026-11-23T18:05:14.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "340313",
+          "division": "1-Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "350be2807603738af69ea91de759f28d4c2d9b6c3d8523ebb2f50f416d32e9cf",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "340315",
+          "division": "3-Nov",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "350be2807603738af69ea91de759f28d4c2d9b6c3d8523ebb2f50f416d32e9cf",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36419",
+      "name": "Gonzaga University  Jesuit Debates",
+      "start": "2025-11-01T14:00:00.000Z",
+      "invite": {
+        "id": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+        "sha256": "46e0340dde68635f1566bfbb92104106f85a814762fe7abd8388d64bef7babd7",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36419/invite",
+        "fetchedAt": "2026-11-23T18:05:15.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+        "sha256": "e4f6616f19798d260a69ed5fd98a107cef8c33123c08bae688814e358c1c728a",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36419",
+        "fetchedAt": "2026-11-23T18:05:15.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "341756",
+          "division": "Open Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "341757",
+          "division": "Open CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "342191",
+          "division": "Junior CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "357636",
+          "division": "JV Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+            "pointer": "/Events/3"
+          }
+        },
+        {
+          "id": "341755",
+          "division": "Observers",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+            "pointer": "/categories/2/events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36431",
+      "name": "Binghamton  8th Annual Phyllis Schatz Invitational",
+      "start": "2025-09-25T11:00:00.000Z",
+      "invite": {
+        "id": "b1b9838a6779e5a922179800345eda44c6948469ad413c6bdc2db457825b04bf",
+        "sha256": "10b918ea419124d622e4dc430da00ec8e3bfcaa2895b01d67a74346b06404033",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36431/invite",
+        "fetchedAt": "2026-11-23T18:05:18.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "e95bc5295b137e733c1f35c705af4772610be3019b8229d5e44f26ae1a23ba70",
+        "sha256": "f2bd5ec5088bc2a7b64feec506f488de090cc93786dd618c29a6918cf8e376bc",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36431",
+        "fetchedAt": "2026-11-23T18:05:18.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "342029",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "b1b9838a6779e5a922179800345eda44c6948469ad413c6bdc2db457825b04bf",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "342030",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "b1b9838a6779e5a922179800345eda44c6948469ad413c6bdc2db457825b04bf",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "342031",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "b1b9838a6779e5a922179800345eda44c6948469ad413c6bdc2db457825b04bf",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36610",
+      "name": "FR Shirley and ADA Fall Champions at WFU",
+      "start": "2025-11-15T12:00:00.000Z",
+      "invite": {
+        "id": "15d5a534d561ab10a74dbf0a8f421537c7ff19afac469c96db44668c6bd39e10",
+        "sha256": "35c3ba87262c9a0ea24bb0687826d2b06e3e02aa5b0a549e8cee5b7267f3d50c",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36610/invite",
+        "fetchedAt": "2026-11-23T18:05:19.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "b60823426e7945bd2a1f776ded15b22aa86c4f484e66a03c6217ed30c90becaf",
+        "sha256": "c9ece60566cf70b0e056ee7b0ace35f7fe3ae2849b2b67b4e61f3a30003645ac",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36610",
+        "fetchedAt": "2026-11-23T18:05:19.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "343690",
+          "division": "JV-ADA Fall Champs",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "15d5a534d561ab10a74dbf0a8f421537c7ff19afac469c96db44668c6bd39e10",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "343691",
+          "division": "Novice-ADA Fall Champs",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "15d5a534d561ab10a74dbf0a8f421537c7ff19afac469c96db44668c6bd39e10",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "343692",
+          "division": "Shirley",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "15d5a534d561ab10a74dbf0a8f421537c7ff19afac469c96db44668c6bd39e10",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "343693",
+          "division": "X-Observer Division",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "15d5a534d561ab10a74dbf0a8f421537c7ff19afac469c96db44668c6bd39e10",
+            "pointer": "/Events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36669",
+      "name": "MoState College Tournament",
+      "start": "2025-09-12T19:00:00.000Z",
+      "invite": {
+        "id": "8555f13b078227463746b04fef83346235b51809c8aef97d926c7a2c8a79ac1e",
+        "sha256": "2e201cef46a4198824bebae8618bd3758a4edac150353a1201416253e9913634",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36669/invite",
+        "fetchedAt": "2026-11-23T18:05:24.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "14088a5b8b03618150dba943f54697b7d609902663fa9d08a16d28d56fed6141",
+        "sha256": "57af6f38810e1a2650d322197823d5458736f8d3eaf664903fce8a4b78bf8cad",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36669",
+        "fetchedAt": "2026-11-23T18:05:24.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "344529",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "8555f13b078227463746b04fef83346235b51809c8aef97d926c7a2c8a79ac1e",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "344530",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "8555f13b078227463746b04fef83346235b51809c8aef97d926c7a2c8a79ac1e",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "344532",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "8555f13b078227463746b04fef83346235b51809c8aef97d926c7a2c8a79ac1e",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "344531",
+          "division": "Observers",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "14088a5b8b03618150dba943f54697b7d609902663fa9d08a16d28d56fed6141",
+            "pointer": "/categories/0/events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36743",
+      "name": "Rochester  Brad Smith Memorial",
+      "start": "2025-11-08T11:00:00.000Z",
+      "invite": {
+        "id": "a9f0dcc16dc19317e07ca8b6cd74d9b79e0d8eeee1601c22649945c59d9e0d3b",
+        "sha256": "29531043dd1e1d5182bdbe214b24dcc449cd651c15b020573122a7421c353d2c",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36743/invite",
+        "fetchedAt": "2026-11-23T18:05:25.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "727e3114421bf0249cb9db7964b92e26008f0db7d7dec537b300547a464fe1f6",
+        "sha256": "86da1d2b90948b0f5da27d63b4bc6a1076e1c60e41d2230f5c3a7e7feb685cba",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36743",
+        "fetchedAt": "2026-11-23T18:05:25.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "345461",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "a9f0dcc16dc19317e07ca8b6cd74d9b79e0d8eeee1601c22649945c59d9e0d3b",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "345462",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "a9f0dcc16dc19317e07ca8b6cd74d9b79e0d8eeee1601c22649945c59d9e0d3b",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "345463",
+          "division": "JV",
+          "type": "academic",
+          "decision": "unresolved",
+          "rationale": "Conflicting or insufficient structured format evidence",
+          "evidence": {
+            "source": "a9f0dcc16dc19317e07ca8b6cd74d9b79e0d8eeee1601c22649945c59d9e0d3b",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36816",
+      "name": "University of Houston College Debate Tournament",
+      "start": "2025-10-11T13:00:00.000Z",
+      "invite": {
+        "id": "1ae4c1dd1fad9bad4a8c5d325d62cce36423fbe927505ecb890ebf18b2d0df35",
+        "sha256": "fa6a192948f7422c1a55585c0e253a9afc240beabe65cd8c73bc255b2703653e",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36816/invite",
+        "fetchedAt": "2026-11-23T18:05:26.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "95322ecb1de664af82952aca14d0f2640bda4b3058c7ddc5658d60459011f768",
+        "sha256": "f2b78f2901c5b63c45f0dfec3f2ed3f3dcc3ec65f56f138001bd90f74b00676b",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36816",
+        "fetchedAt": "2026-11-23T18:05:26.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "346388",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "1ae4c1dd1fad9bad4a8c5d325d62cce36423fbe927505ecb890ebf18b2d0df35",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "346389",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "1ae4c1dd1fad9bad4a8c5d325d62cce36423fbe927505ecb890ebf18b2d0df35",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "346391",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "1ae4c1dd1fad9bad4a8c5d325d62cce36423fbe927505ecb890ebf18b2d0df35",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "36936",
+      "name": "University of Oklahoma Tournament",
+      "start": "2025-10-31T18:00:00.000Z",
+      "invite": {
+        "id": "aee01713fc0a9bdb816f4a95a5b16d2667f98a087eec4d4e04af0440a17bda8e",
+        "sha256": "fa8c6f81ba14537cdfff5947d9a96f58c44911f15c0aa3385602a940f44569bd",
+        "url": "https://api.tabroom.com/v1/rest/tourns/36936/invite",
+        "fetchedAt": "2026-11-23T18:05:28.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "fa8471a1ce3897c5da642474cb1d2afaf32ad55e20cfb61e0ce1a7c7d02671ce",
+        "sha256": "3a0f97b736cdb0bd08248149f1fadeb5093c74454bc431a6a3f5615aa89af42a",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=36936",
+        "fetchedAt": "2026-11-23T18:05:28.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "347453",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "aee01713fc0a9bdb816f4a95a5b16d2667f98a087eec4d4e04af0440a17bda8e",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "347454",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "aee01713fc0a9bdb816f4a95a5b16d2667f98a087eec4d4e04af0440a17bda8e",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "347455",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "aee01713fc0a9bdb816f4a95a5b16d2667f98a087eec4d4e04af0440a17bda8e",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37010",
+      "name": "Texas Open",
+      "start": "2026-01-31T13:00:00.000Z",
+      "invite": {
+        "id": "4d29f3e8c355b1546b78c8f0f0ca32e8e315baa3d645f2634bcf87f32ff9138d",
+        "sha256": "9128c15157f0b3571f668ac3b2d7f4a20363aba2f23df54831a5dc0e178837c2",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37010/invite",
+        "fetchedAt": "2026-11-23T18:05:30.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "810710f00f657575a30a2f08f24ad4f61c85e46d9ff83bc5929fae488711a95d",
+        "sha256": "4c8381e8217c15ede7146d92afddcde5402e99b6523964d74aa4c942eaa90316",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37010",
+        "fetchedAt": "2026-11-23T18:05:30.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "348102",
+          "division": "JV Policy Debate",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4d29f3e8c355b1546b78c8f0f0ca32e8e315baa3d645f2634bcf87f32ff9138d",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "348103",
+          "division": "Novice Policy Debate",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4d29f3e8c355b1546b78c8f0f0ca32e8e315baa3d645f2634bcf87f32ff9138d",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "348104",
+          "division": "Open Policy Debate",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4d29f3e8c355b1546b78c8f0f0ca32e8e315baa3d645f2634bcf87f32ff9138d",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37011",
+      "name": "4th Big Tent Online",
+      "start": "2025-12-05T12:00:00.000Z",
+      "invite": {
+        "id": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+        "sha256": "6974be099ba32ce4368e11f9b20ed3a680ad2f5561074ab8d0fd08fc629eef84",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37011/invite",
+        "fetchedAt": "2026-11-23T18:05:33.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "01674ef896265efc234d5d3599d7960677cbff5640f3ec4a489858ffb6e945ab",
+        "sha256": "f48426cfe96946254163a85e6375785fa1a3e703fde039e8ef48ac5c2722e9a8",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37011",
+        "fetchedAt": "2026-11-23T18:05:33.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "348375",
+          "division": "A College Communication Analysis",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "348376",
+          "division": "A College Extemp",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "348377",
+          "division": "A College Informative",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "348378",
+          "division": "A College Program of Oral Interp",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/3"
+          }
+        },
+        {
+          "id": "348379",
+          "division": "A College Prose",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/4"
+          }
+        },
+        {
+          "id": "348380",
+          "division": "B College After Dinner Speaking",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/5"
+          }
+        },
+        {
+          "id": "348381",
+          "division": "B College Dramatic Interp",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/6"
+          }
+        },
+        {
+          "id": "348382",
+          "division": "B College Duo",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/7"
+          }
+        },
+        {
+          "id": "348383",
+          "division": "B College Impromptu",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/8"
+          }
+        },
+        {
+          "id": "348384",
+          "division": "B College Persuasion",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/9"
+          }
+        },
+        {
+          "id": "348385",
+          "division": "B College Poetry",
+          "type": "speech",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/10"
+          }
+        },
+        {
+          "id": "348386",
+          "division": "JV APDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/11"
+          }
+        },
+        {
+          "id": "348387",
+          "division": "JV British Parliamentary",
+          "type": "wudc",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/12"
+          }
+        },
+        {
+          "id": "348388",
+          "division": "JV CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/13"
+          }
+        },
+        {
+          "id": "348389",
+          "division": "JV CFP",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/14"
+          }
+        },
+        {
+          "id": "348390",
+          "division": "JV HS Lincoln Douglas",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/15"
+          }
+        },
+        {
+          "id": "348391",
+          "division": "JV HS Policy",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/16"
+          }
+        },
+        {
+          "id": "348392",
+          "division": "JV HS Public Forum",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/17"
+          }
+        },
+        {
+          "id": "348393",
+          "division": "JV IPDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/18"
+          }
+        },
+        {
+          "id": "348394",
+          "division": "JV NDT/CEDA",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/19"
+          }
+        },
+        {
+          "id": "348395",
+          "division": "JV NEDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/20"
+          }
+        },
+        {
+          "id": "348396",
+          "division": "JV NFA LD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/21"
+          }
+        },
+        {
+          "id": "348397",
+          "division": "JV NPDA/NPTE",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/22"
+          }
+        },
+        {
+          "id": "348398",
+          "division": "JV Team IPDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/23"
+          }
+        },
+        {
+          "id": "348399",
+          "division": "Novice APDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/24"
+          }
+        },
+        {
+          "id": "348400",
+          "division": "Novice British Parliamentary",
+          "type": "wudc",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/25"
+          }
+        },
+        {
+          "id": "348401",
+          "division": "Novice CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/26"
+          }
+        },
+        {
+          "id": "348402",
+          "division": "Novice CPF",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/27"
+          }
+        },
+        {
+          "id": "348403",
+          "division": "Novice HS Lincoln Douglas",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/28"
+          }
+        },
+        {
+          "id": "348404",
+          "division": "Novice HS Policy",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/29"
+          }
+        },
+        {
+          "id": "348405",
+          "division": "Novice HS Public Forum",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/30"
+          }
+        },
+        {
+          "id": "348407",
+          "division": "Novice NDT/CEDA",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/31"
+          }
+        },
+        {
+          "id": "348408",
+          "division": "Novice NEDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/32"
+          }
+        },
+        {
+          "id": "348409",
+          "division": "Novice NFA-LD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/33"
+          }
+        },
+        {
+          "id": "348410",
+          "division": "Novice NPDA/NPTE",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/34"
+          }
+        },
+        {
+          "id": "348411",
+          "division": "Novice Team IPDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/35"
+          }
+        },
+        {
+          "id": "348412",
+          "division": "Varsity APDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/36"
+          }
+        },
+        {
+          "id": "348413",
+          "division": "Varsity British Parliamentary",
+          "type": "wudc",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/37"
+          }
+        },
+        {
+          "id": "348414",
+          "division": "Varsity CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/38"
+          }
+        },
+        {
+          "id": "348415",
+          "division": "Varsity CPF",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/39"
+          }
+        },
+        {
+          "id": "348416",
+          "division": "Varsity HS Lincoln Douglas",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/40"
+          }
+        },
+        {
+          "id": "348417",
+          "division": "Varsity HS Policy",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/41"
+          }
+        },
+        {
+          "id": "348418",
+          "division": "Varsity HS Public Forum",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/42"
+          }
+        },
+        {
+          "id": "348419",
+          "division": "Varsity IPDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/43"
+          }
+        },
+        {
+          "id": "348420",
+          "division": "Varsity NDT/CEDA",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/44"
+          }
+        },
+        {
+          "id": "348421",
+          "division": "Varsity NEDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/45"
+          }
+        },
+        {
+          "id": "348422",
+          "division": "Varsity NFA LD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/46"
+          }
+        },
+        {
+          "id": "348423",
+          "division": "Varsity NPDA/NPTE",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/47"
+          }
+        },
+        {
+          "id": "348424",
+          "division": "Varsity Team IPDA",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Mixed-format tournament, division outside the explicit college NDT/CEDA track",
+          "evidence": {
+            "source": "8c88746ef0c9aff491f3ae651e1d38587289d6af0246de0864f9796cfb74163f",
+            "pointer": "/Events/48"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37029",
+      "name": "James Madison University College Debate Tournament",
+      "start": "2025-10-31T18:00:00.000Z",
+      "invite": {
+        "id": "671582454565b073aa466ebd8ad96f471ce318907c34ddbc51ab3bfcafab8253",
+        "sha256": "a9b864b25c80134293bdc8e819863f868b6f2c12a667516906c3ce9e4a0420f6",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37029/invite",
+        "fetchedAt": "2026-11-23T18:05:36.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "797f2cf11d550e044cf501a6dbbc7757c55d52f61bc4d473fbff7408d80690f5",
+        "sha256": "d633da47a3cdb97b4ac508f32b8f9eabd5af5a0a0c99a43c3bef644fe631662c",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37029",
+        "fetchedAt": "2026-11-23T18:05:37.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "348498",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "671582454565b073aa466ebd8ad96f471ce318907c34ddbc51ab3bfcafab8253",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "348499",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "671582454565b073aa466ebd8ad96f471ce318907c34ddbc51ab3bfcafab8253",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "348500",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "671582454565b073aa466ebd8ad96f471ce318907c34ddbc51ab3bfcafab8253",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37153",
+      "name": "ADA Nationals at Emory University",
+      "start": "2026-03-07T13:00:00.000Z",
+      "invite": {
+        "id": "ddb03ad9755a50c2ef05c8f4150db2f184e804e003b256806d228c6b4493fb81",
+        "sha256": "d885575cc92bc8d722819970d2dc08f409e572ed4677522748be8e840d8f301d",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37153/invite",
+        "fetchedAt": "2026-11-23T18:05:37.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "821b57b854b9d789634afa424022c146c995b849986c08cb88476ee6c7f76f77",
+        "sha256": "629e3ee5c623b536acfc38071ff17d8fdaa736389a0a2c7e53348662b552d08f",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37153",
+        "fetchedAt": "2026-11-23T18:05:37.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "350028",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "ddb03ad9755a50c2ef05c8f4150db2f184e804e003b256806d228c6b4493fb81",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "350029",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "ddb03ad9755a50c2ef05c8f4150db2f184e804e003b256806d228c6b4493fb81",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "350031",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "ddb03ad9755a50c2ef05c8f4150db2f184e804e003b256806d228c6b4493fb81",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "350030",
+          "division": "Observers",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "821b57b854b9d789634afa424022c146c995b849986c08cb88476ee6c7f76f77",
+            "pointer": "/categories/1/events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37193",
+      "name": "Georgetown College Tournament",
+      "start": "2026-01-03T08:00:00.000Z",
+      "invite": {
+        "id": "18f7a62a3b9c33a5ef87a8fda04ff728bdbcdfbec6acbdeab62dece4e4d43b98",
+        "sha256": "13211ad0953309d49a62f6bd1347116c1fb09107572f32bf1376ce1c868686a5",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37193/invite",
+        "fetchedAt": "2026-11-23T18:05:39.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "68e5e6631e6e7729cb1ed0ce31cd6a31556017bb3ba72a5372172daf27ad4a4b",
+        "sha256": "b5f1d8992e54fc21e59c99c74fa6203bb16035bcf2fb8ad5550425bfce53443b",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37193",
+        "fetchedAt": "2026-11-23T18:05:40.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "363930",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "18f7a62a3b9c33a5ef87a8fda04ff728bdbcdfbec6acbdeab62dece4e4d43b98",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "363932",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "18f7a62a3b9c33a5ef87a8fda04ff728bdbcdfbec6acbdeab62dece4e4d43b98",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37322",
+      "name": "Baird Debates",
+      "start": "2025-10-03T13:00:00.000Z",
+      "invite": {
+        "id": "df3bf5ea126952436adbc3221ae712652bfe529f6002e5f65a417a47041d2122",
+        "sha256": "250a1c7a140defe0833e6d13d761cdc3d1f0375abc0fe59914244a13cfad6e91",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37322/invite",
+        "fetchedAt": "2026-11-23T18:05:41.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "53228ce267c32ad9e665e531682e3d58456c14c862f6bfd2d21cfea0535529a4",
+        "sha256": "93a350cf65fe7ceedbba59fd18abf683cb150d98b2c04f1d64aa9d4de716c92c",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37322",
+        "fetchedAt": "2026-11-23T18:05:41.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "352124",
+          "division": "Round Robin",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "df3bf5ea126952436adbc3221ae712652bfe529f6002e5f65a417a47041d2122",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37376",
+      "name": "West Point Debate Tournament",
+      "start": "2025-10-17T16:00:00.000Z",
+      "invite": {
+        "id": "94510bbed07cdae73386d08858854b802286505eb105ea381029b9bfb6a98576",
+        "sha256": "125540839d2bf78910f383f6fc346597bd7452bd2aab066a025c566cc1be0f15",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37376/invite",
+        "fetchedAt": "2026-11-23T18:05:42.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "6cf7b1d7c378cd160c0a9223fc5d7229be7ffa5c34cd72d5980ba97fd346917f",
+        "sha256": "af60b9442789af950d3a3b02c7516fe8bfda25ae02e33bae33d257503006e70d",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37376",
+        "fetchedAt": "2026-11-23T18:05:42.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "352837",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "94510bbed07cdae73386d08858854b802286505eb105ea381029b9bfb6a98576",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "352838",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "94510bbed07cdae73386d08858854b802286505eb105ea381029b9bfb6a98576",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "352839",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "94510bbed07cdae73386d08858854b802286505eb105ea381029b9bfb6a98576",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37578",
+      "name": "Robert Barbera Invitational",
+      "start": "2025-11-07T22:30:00.000Z",
+      "invite": {
+        "id": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+        "sha256": "e1cbcf8d95d93c61a1df7ab8705cff1da2a38477b77b38a4ca243fd69110725b",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37578/invite",
+        "fetchedAt": "2026-11-23T18:05:43.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+        "sha256": "af55a04a8c3115cd76cb2dfb67c658d57599ac50bf5c05e7e3468858c9fad5e7",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37578",
+        "fetchedAt": "2026-11-23T18:05:43.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "355635",
+          "division": "Novice Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "355636",
+          "division": "Open Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "355637",
+          "division": "Open CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "355638",
+          "division": "Junior CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+            "pointer": "/Events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37762",
+      "name": "Great Salt Lake Invitational",
+      "start": "2026-01-16T08:00:00.000Z",
+      "invite": {
+        "id": "2efbd0095d7e444180b573957d7d05f914036f1dfcdacf60a940b7ba0c3f08bf",
+        "sha256": "7aa499c410e6af7aecc9d729682188c3259ac365f704930ecc2bfbd5d7ae3fed",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37762/invite",
+        "fetchedAt": "2026-11-23T18:05:44.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "0aa64d3728cdc5115e2b6666bf9fd160a7279c7066471876353c311e6764ced0",
+        "sha256": "fa9ab2ca1e02824b4df68b75d93f73da58ae1d1d8b3d170fc3bdc16046d32290",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37762",
+        "fetchedAt": "2026-11-23T18:05:44.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "357268",
+          "division": "Novice JV Round Robin (CEDA)",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "2efbd0095d7e444180b573957d7d05f914036f1dfcdacf60a940b7ba0c3f08bf",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "357521",
+          "division": "NPDA pt. 2",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "2efbd0095d7e444180b573957d7d05f914036f1dfcdacf60a940b7ba0c3f08bf",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "357523",
+          "division": "NPDA pt. 1 (Topic Area Tournament)",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "2efbd0095d7e444180b573957d7d05f914036f1dfcdacf60a940b7ba0c3f08bf",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "357541",
+          "division": "Open CEDA",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "2efbd0095d7e444180b573957d7d05f914036f1dfcdacf60a940b7ba0c3f08bf",
+            "pointer": "/Events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37783",
+      "name": "Pi Kappa Delta",
+      "start": "2026-03-18T13:00:00.000Z",
+      "invite": {
+        "id": "7f43d05e1d0d8abe99dbc1ecbf5cab659e1aa799b1c1bf1697d4b01be8d805d0",
+        "sha256": "2c7fc416e33f2aee839252e3558da17a18dc661b186bf692be082760ce259a34",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37783/invite",
+        "fetchedAt": "2026-11-23T18:05:45.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "112b81e35d1acb4619bb66680efea2810233bde55255e3bbdecd35eac394ca77",
+        "sha256": "5afee5fb751600697e4ab2be21c1138c36971b6bcc9da18433ea413c3091ccc4",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37783",
+        "fetchedAt": "2026-11-23T18:05:45.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "357351",
+          "division": "Junior",
+          "type": "debate",
+          "decision": "unresolved",
+          "rationale": "Conflicting or insufficient structured format evidence",
+          "evidence": {
+            "source": "7f43d05e1d0d8abe99dbc1ecbf5cab659e1aa799b1c1bf1697d4b01be8d805d0",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "357352",
+          "division": "Open",
+          "type": "debate",
+          "decision": "unresolved",
+          "rationale": "Conflicting or insufficient structured format evidence",
+          "evidence": {
+            "source": "7f43d05e1d0d8abe99dbc1ecbf5cab659e1aa799b1c1bf1697d4b01be8d805d0",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37885",
+      "name": "UTSA Earthseed Invitational",
+      "start": "2026-01-16T08:00:00.000Z",
+      "invite": {
+        "id": "3b0855690e0f48013f55369bbbd809ade2b4bc1b2b73909e486dcfa03d537a84",
+        "sha256": "85e828b54f4737cf9874223ab8459acb46207d1618e450add17341b8f8e08ead",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37885/invite",
+        "fetchedAt": "2026-11-23T18:05:45.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "d453e46ee6491caeab7406d9ecaa75fe7b8fa667ef7367c0d733599d96e25cf0",
+        "sha256": "a992a9d76376716fee6770693f4bfe94bcfa778ddc2c916912aa403d112f4916",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37885",
+        "fetchedAt": "2026-11-23T18:05:46.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "358652",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "3b0855690e0f48013f55369bbbd809ade2b4bc1b2b73909e486dcfa03d537a84",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "358653",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "3b0855690e0f48013f55369bbbd809ade2b4bc1b2b73909e486dcfa03d537a84",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "358654",
+          "division": "Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "3b0855690e0f48013f55369bbbd809ade2b4bc1b2b73909e486dcfa03d537a84",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37971",
+      "name": "Jersey Shore Invitational at Monmouth",
+      "start": "2025-11-21T20:00:00.000Z",
+      "invite": {
+        "id": "313c7f51f7470ca3b373d53abb5f81d7ccba8b0ac4a6af068f1dc165e9b6c8a8",
+        "sha256": "e0ffe15ab7456afb8fb2c19f3ad36085437ee31d709109cf90c6b6eb1cfa2bda",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37971/invite",
+        "fetchedAt": "2026-11-23T18:05:46.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "1558890de60208bdf88782230ab0122da64780dc4cc8f81b5fb43451a592ea7e",
+        "sha256": "e0d760ec115ce6ba49676c17d852b6dcbd827bbb56d5cf51cef9fa51a67b003d",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37971",
+        "fetchedAt": "2026-11-23T18:05:46.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "359570",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "313c7f51f7470ca3b373d53abb5f81d7ccba8b0ac4a6af068f1dc165e9b6c8a8",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "359571",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "313c7f51f7470ca3b373d53abb5f81d7ccba8b0ac4a6af068f1dc165e9b6c8a8",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "37980",
+      "name": "Sunflower Swing 2 K State 2026",
+      "start": "2026-01-07T14:00:00.000Z",
+      "invite": {
+        "id": "f99870e92d454b0ac010f43a60ff402517ac421845b41a24b8c3eaf61db8454f",
+        "sha256": "9be00c1fe6bd0d5260aa263cdb6b6d57c5f3b8287aae4fdd019d904c10144cc5",
+        "url": "https://api.tabroom.com/v1/rest/tourns/37980/invite",
+        "fetchedAt": "2026-11-23T18:05:47.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "7cca8df7ce7f4e51427297ae8eeee8fb6d64b8b435d55c6f4791400b2f99ede6",
+        "sha256": "67d725c31a369d6b89d07549f9818b7b61a3afb7afb85e4c698af80d9dab966d",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=37980",
+        "fetchedAt": "2026-11-23T18:05:48.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "359717",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "f99870e92d454b0ac010f43a60ff402517ac421845b41a24b8c3eaf61db8454f",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "359718",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "f99870e92d454b0ac010f43a60ff402517ac421845b41a24b8c3eaf61db8454f",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "359719",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "f99870e92d454b0ac010f43a60ff402517ac421845b41a24b8c3eaf61db8454f",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "359720",
+          "division": "xObserver",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "7cca8df7ce7f4e51427297ae8eeee8fb6d64b8b435d55c6f4791400b2f99ede6",
+            "pointer": "/categories/0/events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38004",
+      "name": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+      "start": "2026-01-03T07:00:00.000Z",
+      "invite": {
+        "id": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+        "sha256": "b39e8050b4be3b128625f353dcb3dcde3dd892c019d57e6cc05010629fe19705",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38004/invite",
+        "fetchedAt": "2026-11-23T18:05:49.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+        "sha256": "cf928350f73c07a809946386d0a9cf01d568d37b0ed2347b151d55abd3de493c",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38004",
+        "fetchedAt": "2026-11-23T18:05:49.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "359935",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "359936",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "359937",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "359938",
+          "division": "xObserver",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/3"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38490",
+      "name": "ASU College Tournament",
+      "start": "2026-01-24T07:00:00.000Z",
+      "invite": {
+        "id": "0eaf566ae4d3a4976f88555b5568dce35663911122d9a87d352cac47ccf72405",
+        "sha256": "98383014c6906d215fafe5d679b36d98ea95ed28cdc09569192d95c0cedc6b59",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38490/invite",
+        "fetchedAt": "2026-11-23T18:05:50.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "017e1b0cd9d3d2bafd9647cc90f648c91eb26685c9db96248a932f318ea68a61",
+        "sha256": "0c82ee918b51335a3e2782aa3dec1d58d5ba313457645bd21012e802ca1ce792",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38490",
+        "fetchedAt": "2026-11-23T18:05:50.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "365660",
+          "division": "JV CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "0eaf566ae4d3a4976f88555b5568dce35663911122d9a87d352cac47ccf72405",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "365661",
+          "division": "Varsity CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "0eaf566ae4d3a4976f88555b5568dce35663911122d9a87d352cac47ccf72405",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "365662",
+          "division": "Open policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "0eaf566ae4d3a4976f88555b5568dce35663911122d9a87d352cac47ccf72405",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38522",
+      "name": "USNA Crowe Warken Debates",
+      "start": "2026-01-17T11:00:00.000Z",
+      "invite": {
+        "id": "08460672912e72c3a20cd4b44cc66eb1d69165ad3e1891aed768c066b7923bdb",
+        "sha256": "8f5cde7ae984a3e036c04b857ffdba0917da879afc7fc367934ea401996f9bd6",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38522/invite",
+        "fetchedAt": "2026-11-23T18:05:51.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "680ffd79250d8059aafdffa1540002352c85219a383096826062ed8ccab3e6be",
+        "sha256": "7b40f82e768429f92cb0aa657fb4dcbdca635f5301143ddc62a11fd6b6301035",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38522",
+        "fetchedAt": "2026-11-23T18:05:51.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "366202",
+          "division": "JV",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "08460672912e72c3a20cd4b44cc66eb1d69165ad3e1891aed768c066b7923bdb",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "366203",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "08460672912e72c3a20cd4b44cc66eb1d69165ad3e1891aed768c066b7923bdb",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "366204",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "08460672912e72c3a20cd4b44cc66eb1d69165ad3e1891aed768c066b7923bdb",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38602",
+      "name": "CEDA Nationals at Binghamton University",
+      "start": "2026-04-02T23:00:00.000Z",
+      "invite": {
+        "id": "4499ea0c239cbb074e3dea4f358d007f4b0403f9f72382befec0049618d6fac3",
+        "sha256": "a34db23d32709f85a2a417afdfe307118d1242acde5cd8704bfaef2642ff2399",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38602/invite",
+        "fetchedAt": "2026-11-23T18:05:52.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "6ef33d606295f05821dca79d89f8fc06ee6a44f42aebffd4d11f1a2c1aea2cef",
+        "sha256": "73e3b7a9cce5d2d29ab587cce5b3e8b21e15f2830b540b51a697094cce2a9d2a",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38602",
+        "fetchedAt": "2026-11-23T18:05:52.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "367102",
+          "division": "Policy Debate",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "4499ea0c239cbb074e3dea4f358d007f4b0403f9f72382befec0049618d6fac3",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38796",
+      "name": "D1 Pacific Champs NDT Qual and CARD at Beach",
+      "start": "2026-02-20T20:00:00.000Z",
+      "invite": {
+        "id": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+        "sha256": "838e0a99cc72a7f667b1cfb77689bb3805696521a13d8cabf8f7965e5cc28008",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38796/invite",
+        "fetchedAt": "2026-11-23T18:05:54.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "bc50fa7c8c308f8f39c475c448412559e2a94adf29ab4b65f45b5947e7f6148f",
+        "sha256": "050ab4c93735de13e876f9d437adf5b83e044106d7360b2d1dd15aa988890949",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38796",
+        "fetchedAt": "2026-11-23T18:05:54.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "369209",
+          "division": "NDT Qualifier",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "369210",
+          "division": "Pacific Championship Novice",
+          "type": "debate",
+          "decision": "unresolved",
+          "rationale": "Conflicting or insufficient structured format evidence",
+          "evidence": {
+            "source": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "369211",
+          "division": "Pacific Champs Open",
+          "type": "debate",
+          "decision": "unresolved",
+          "rationale": "Conflicting or insufficient structured format evidence",
+          "evidence": {
+            "source": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+            "pointer": "/Events/2"
+          }
+        },
+        {
+          "id": "369932",
+          "division": "Open CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+            "pointer": "/Events/3"
+          }
+        },
+        {
+          "id": "369933",
+          "division": "Junior CARD",
+          "type": "debate",
+          "decision": "excluded",
+          "rationale": "Structured division name identifies a different format",
+          "evidence": {
+            "source": "161e92f04cbf2127194ed727d6aed7b4407cba14abe5ed9b3289a2b078f2ac9e",
+            "pointer": "/Events/4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38894",
+      "name": "JVNovice Nationals at Fairmont State University",
+      "start": "2026-02-27T13:00:00.000Z",
+      "invite": {
+        "id": "27dea737e76c5d7ceea2b3fb5a44dd61322b2547bf6edc8079ae5651e3ded563",
+        "sha256": "8dff76861cd7654c0e4126b12f1030768e03fcb4a213376dc9674cc47f05afad",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38894/invite",
+        "fetchedAt": "2026-11-23T18:05:55.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+        "sha256": "63a56d23efa013b8a3e38b5ec281fc17ffad6b6a89da32655f3be09123731b0f",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38894",
+        "fetchedAt": "2026-11-23T18:05:55.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "370675",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "27dea737e76c5d7ceea2b3fb5a44dd61322b2547bf6edc8079ae5651e3ded563",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "370676",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "27dea737e76c5d7ceea2b3fb5a44dd61322b2547bf6edc8079ae5651e3ded563",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38955",
+      "name": "NDT District VII Qualifier",
+      "start": "2026-02-16T08:00:00.000Z",
+      "invite": {
+        "id": "c7b348da23811f6fa633d59772bd3a713fa8c9797f9580d12c4fa6932625da55",
+        "sha256": "5e382efd2fb52dddb186a23c6c485f8d8492b666f766c459f4fbdbd2524f7695",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38955/invite",
+        "fetchedAt": "2026-11-23T18:05:57.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "0e1222b677eeb579438f2d816387d72f75635503c4553561270f2c66e6df10b0",
+        "sha256": "984aca21dd6037f1908d5f9472c159fb1f820d53e123751cec7372c3d73e820a",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38955",
+        "fetchedAt": "2026-11-23T18:05:57.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "371325",
+          "division": "Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "c7b348da23811f6fa633d59772bd3a713fa8c9797f9580d12c4fa6932625da55",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "373352",
+          "division": "Observer",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "0e1222b677eeb579438f2d816387d72f75635503c4553561270f2c66e6df10b0",
+            "pointer": "/categories/0/events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38966",
+      "name": "Herbert L James Debates at Dartmouth",
+      "start": "2026-01-17T13:00:00.000Z",
+      "invite": {
+        "id": "460eb793d96a1b8b7577ff8857479237187811392e50bd9f5ed9009f13951f88",
+        "sha256": "b32c7dfb22da64510533dcd2dc96470146cfd94b1244f2f9d568eab62bc27fb5",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38966/invite",
+        "fetchedAt": "2026-11-23T18:05:57.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "5650d5c038e0288280f5b18b6ed7979e05bd8ebcc5284bc8d70ec2c5192a1e81",
+        "sha256": "868da740704191a36e391b75a2f42ba2615e5e0c17ac9dec7b32e519f8a55290",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38966",
+        "fetchedAt": "2026-11-23T18:05:58.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "371615",
+          "division": "Round Robin",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "460eb793d96a1b8b7577ff8857479237187811392e50bd9f5ed9009f13951f88",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38986",
+      "name": "Rutgers University Newark Brick City Round Robin",
+      "start": "2026-01-17T13:00:00.000Z",
+      "invite": {
+        "id": "72a76a1767e909e273d22accf0849c3ff4d9829b1a89ade040482d0f454caa4f",
+        "sha256": "7a6ed1db5a97d795a0ae7b472fbe3bfe07a89f9193e6f577bffbef2308a13649",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38986/invite",
+        "fetchedAt": "2026-11-23T18:05:58.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "037a997a743325e80eacba7efdf066e207491dcb82bda411e1edc15f09b1edae",
+        "sha256": "f9cd26e6e33633599d77f4e9bb460f66e03c3bbbc677448e12ce7d12d6dda37a",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38986",
+        "fetchedAt": "2026-11-23T18:05:58.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "371837",
+          "division": "Brick City RR",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "72a76a1767e909e273d22accf0849c3ff4d9829b1a89ade040482d0f454caa4f",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "38995",
+      "name": "NDT D3 And The Mid America Championship",
+      "start": "2026-02-20T14:00:00.000Z",
+      "invite": {
+        "id": "ad8c9ba616356e61748d749cc1123923ff6b2e7ce7b50a577d362744e297ba63",
+        "sha256": "511770844cf9a4f5ae9c40634b32bd4ba6df38cdd416fab822b7cadaabce88de",
+        "url": "https://api.tabroom.com/v1/rest/tourns/38995/invite",
+        "fetchedAt": "2026-11-23T18:05:59.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "bee6e5c04f1794b7d9eb851c596051c6a1778a9840a19549ddf75b68c9ad4fad",
+        "sha256": "0543ec91970fc47cc090fc69fd84591bc6fc3e7fdf17c98471295c5c2b5677c2",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=38995",
+        "fetchedAt": "2026-11-23T18:05:59.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "371937",
+          "division": "Mid America Championship",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "ad8c9ba616356e61748d749cc1123923ff6b2e7ce7b50a577d362744e297ba63",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "371938",
+          "division": "NDT Qualifying",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "ad8c9ba616356e61748d749cc1123923ff6b2e7ce7b50a577d362744e297ba63",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39031",
+      "name": "Gotham Debates at The New SchoolNYC",
+      "start": "2026-02-07T12:30:00.000Z",
+      "invite": {
+        "id": "c901b97e9d0821542124d160f720fb26e2b40464067035ba42096d45aa82a1f8",
+        "sha256": "131465622035ccedd08b5bf90420b45ddc5402cc770729255f3b4cb4323c2d27",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39031/invite",
+        "fetchedAt": "2026-11-23T18:06:00.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "5b4da41fe74bbcc5d8fd399bd294bd7c73a3148489dab88d9cdc67f509923fb7",
+        "sha256": "09ce0f1f0138fa651866adcc0ab780770fdd2d3d18ebb8343b557ee6b5ed4031",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39031",
+        "fetchedAt": "2026-11-23T18:06:00.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "372405",
+          "division": "Open Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "c901b97e9d0821542124d160f720fb26e2b40464067035ba42096d45aa82a1f8",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "372406",
+          "division": "JV Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "c901b97e9d0821542124d160f720fb26e2b40464067035ba42096d45aa82a1f8",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "372407",
+          "division": "Novice Policy",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "c901b97e9d0821542124d160f720fb26e2b40464067035ba42096d45aa82a1f8",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39232",
+      "name": "D8 NDT Qualifier and NE Championship At Suffolk University",
+      "start": "2026-02-21T12:00:00.000Z",
+      "invite": {
+        "id": "7e9e9a3e37c9a3c6b70c5fa975ae5ca057ebfaf8b4873803b7dc62b030162694",
+        "sha256": "316642f8cb05efa4df9aabb673e41753dab089b1563bec3dd967731deb2e4823",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39232/invite",
+        "fetchedAt": "2026-11-23T18:06:01.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "e688c03a17d4b56b71f0984e84e0c6a38515855d3ced54cc4944d5ab03a544d7",
+        "sha256": "e13f1a11e6a370f3de8d00163c9b8a53cfc4ba25411ee392d91bbc43f835e431",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39232",
+        "fetchedAt": "2026-11-23T18:06:02.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "374707",
+          "division": "Districts",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "7e9e9a3e37c9a3c6b70c5fa975ae5ca057ebfaf8b4873803b7dc62b030162694",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "374708",
+          "division": "Junior Varsity",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "7e9e9a3e37c9a3c6b70c5fa975ae5ca057ebfaf8b4873803b7dc62b030162694",
+            "pointer": "/Events/1"
+          }
+        },
+        {
+          "id": "374709",
+          "division": "Novice",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "7e9e9a3e37c9a3c6b70c5fa975ae5ca057ebfaf8b4873803b7dc62b030162694",
+            "pointer": "/Events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39306",
+      "name": "80th National Debate Tournament",
+      "start": "2026-03-26T12:00:00.000Z",
+      "invite": {
+        "id": "03f04749a4931cbd662434d5a1a0fe215000e90661930183ea556605c7db1c08",
+        "sha256": "3a4c8edd47651afe42437088da14daec933e651445116e8e706d35348f43daa2",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39306/invite",
+        "fetchedAt": "2026-11-23T18:06:02.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "207be3df5449f20d63350d8f2c232f5fa2bdd73e79355b18716a7ea43e1d0ac1",
+        "sha256": "bae9deb51865f949b0047d4ea5c65b2964c3d6d4efcfdafe30df1196a598d203",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39306",
+        "fetchedAt": "2026-11-23T18:06:03.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "375370",
+          "division": "Open",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "03f04749a4931cbd662434d5a1a0fe215000e90661930183ea556605c7db1c08",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "375371",
+          "division": "xOn Site Observers",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "207be3df5449f20d63350d8f2c232f5fa2bdd73e79355b18716a7ea43e1d0ac1",
+            "pointer": "/categories/0/events/1"
+          }
+        },
+        {
+          "id": "375372",
+          "division": "xScouts",
+          "type": "attendee",
+          "decision": "excluded",
+          "rationale": "Observer or scout registration",
+          "evidence": {
+            "source": "207be3df5449f20d63350d8f2c232f5fa2bdd73e79355b18716a7ea43e1d0ac1",
+            "pointer": "/categories/0/events/2"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39405",
+      "name": "D6 Districts",
+      "start": "2026-02-14T13:00:00.000Z",
+      "invite": {
+        "id": "e3e31b2dbfec057eb6de466d5518f66f05bd95108cb92e367892a2bff6e10820",
+        "sha256": "0b3804e5eecf8054683b3635755828d41ecf0aa924b0193e09527c6af8f306bf",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39405/invite",
+        "fetchedAt": "2026-11-23T18:06:05.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "db0f27ffc1cdd9a7107f70d338ac7e14e4299e7a812ce9eecc11cbefdb3ba8f8",
+        "sha256": "3e6bc949deeb5c517daf5db9168e234588c6f1c27cc946edbb4c14648b127a2f",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39405",
+        "fetchedAt": "2026-11-23T18:06:05.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "376281",
+          "division": "NDT Qualifiers",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "Explicit policy or NDT/CEDA division in the college circuit",
+          "evidence": {
+            "source": "e3e31b2dbfec057eb6de466d5518f66f05bd95108cb92e367892a2bff6e10820",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39452",
+      "name": "District 2 NDT Qualifier Rankings",
+      "start": "2026-02-20T16:00:00.000Z",
+      "invite": {
+        "id": "2643191caad1f9c5a994ab957124fcbc270577e0f282b0a9b3a8ea5b370b1f2e",
+        "sha256": "e1210b5cd29b4c14af357b54770635131f2b7168250f1c2a0df01f790a94c985",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39452/invite",
+        "fetchedAt": "2026-11-23T18:06:05.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "17fa66e4f33832d87ca3956d91bc3a4a2314e7bd8d4ef36e5795b70701db8e0d",
+        "sha256": "316ba349422cb4b8e5de57ec6c20b85af9c70db2f4d74a15ad858244671a225e",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39452",
+        "fetchedAt": "2026-11-23T18:06:06.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "376632",
+          "division": "D2 Qualification",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "2643191caad1f9c5a994ab957124fcbc270577e0f282b0a9b3a8ea5b370b1f2e",
+            "pointer": "/Events/0"
+          }
+        }
+      ]
+    },
+    {
+      "id": "39462",
+      "name": "D4 D5 NDT Qualifiers",
+      "start": "2026-02-20T14:00:00.000Z",
+      "invite": {
+        "id": "9ce8177d072cada392948771ee4686a8afdf54253fea24b438353f39505e82be",
+        "sha256": "9b29be1329b2ea38d4dc3d3810e326b5940a46293c446662b0f97d31d371f198",
+        "url": "https://api.tabroom.com/v1/rest/tourns/39462/invite",
+        "fetchedAt": "2026-11-23T18:06:06.000Z",
+        "status": 200,
+        "mediaType": "application/json; charset=utf-8",
+        "authorization": "anonymous public"
+      },
+      "bulk": {
+        "id": "96b3e2163d15b6243916bf6d7c679d1f804be28554abf6f7cb56e173e24153b1",
+        "sha256": "8f67581d85cdd589876a60ffc1459de8497f3338c76ac245bb033a564b14903e",
+        "url": "https://www.tabroom.com/api/download_data.mhtml?tourn_id=39462",
+        "fetchedAt": "2026-11-23T18:06:06.000Z",
+        "status": 200,
+        "mediaType": "application/json",
+        "authorization": "anonymous public"
+      },
+      "bulkAttempt": null,
+      "events": [
+        {
+          "id": "376666",
+          "division": "District 4",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "9ce8177d072cada392948771ee4686a8afdf54253fea24b438353f39505e82be",
+            "pointer": "/Events/0"
+          }
+        },
+        {
+          "id": "376667",
+          "division": "District 5",
+          "type": "debate",
+          "decision": "included",
+          "rationale": "NDT-CEDA circuit membership and structured debate division in a college policy tournament",
+          "evidence": {
+            "source": "9ce8177d072cada392948771ee4686a8afdf54253fea24b438353f39505e82be",
+            "pointer": "/Events/1"
+          }
+        }
+      ]
+    }
+  ]
+}
