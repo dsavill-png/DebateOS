@@ -25,6 +25,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
+- [TASK-013](tasks/013-public-judge-activity-intelligence.md) is Approved / In Progress. [Draft PR #11](https://github.com/dsavill-png/DebateOS/pull/11) is ready for Jared and leadership merge review after v2 verification. The pinned Phase A replay derives 401 activity summaries, 8,868 scoped judge-ID observations and 8,868 distinct person-panel assignments. Merge requires separate Dennis approval. See the [Jared handoff](docs/handoffs/2026-11-23-public-judge-activity.md) for the contract, exposure limits and samples.
+
 - TASK-011 Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval.
 
 - [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
@@ -56,9 +58,11 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
 ## Next Product Recommendation
 
-Seek Dennis’s approval for a bounded public judge-intelligence prototype using the 401 explicitly linked people. Produce a provenance-linked judge activity card with observed assignments, event history, and coverage gaps from the pinned 2025–26 captures. This tests dossier value using verified public evidence while TASK-003 vendor authorization remains open. Consult Jared on the UI-facing contract before implementation.
+Review the TASK-013 v2 contract and samples with Jared before wiring the judge activity card. Use `panelAssignmentCount` for observed experience.
 
 ## Recent Detailed Handoffs
+
+- [TASK-013 public judge activity](docs/handoffs/2026-11-23-public-judge-activity.md).
 
 - [TASK-011 public coverage](docs/handoffs/2026-11-23-college-policy-public-coverage.md).
 

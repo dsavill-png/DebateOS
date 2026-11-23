@@ -19,6 +19,8 @@ export type RetainedManifest = Omit<Manifest, 'tournaments'> & {
   approval: string;
   discovery: ManifestSource[];
   tournaments: (Omit<Tournament, 'bulk' | 'events'> & {
+    name?: string;
+    start?: string;
     bulk: ManifestSource | null;
     bulkAttempt: ManifestSource | null;
     invite: ManifestSource;
