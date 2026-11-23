@@ -168,17 +168,20 @@ export function deriveJudgeActivity(
     const dates = assignments.flatMap(row => row.assignmentDate ? [row.assignmentDate] : []).sort();
     const tournamentIds = [...new Set(eventHistory.map(row => row.tournamentId))];
     const judgeLinks = new Map<string, { tournamentId: string; judgeId: string; personEvidence: EvidenceRef[]; seasonRosterEvidence: EvidenceRef[] }>();
-    const divisions = new Map<string, { division: string; eventCount: number; assignmentCount: number }>();
+    const divisions = new Map<string, { division: string; eventCount: number; assignmentObservationCount: number; panelAssignmentCount: number }>();
     const schoolCounts = new Map<string, {
       schoolKey: string; names: Set<string>; panels: Set<string>; rounds: Set<string>; explicitSnu: boolean;
     }>();
     let panelsWithUnresolvedSchoolCoverage = 0;
+    const panels = new Set<string>();
     const snuPanels = new Set<string>();
     const snuRounds = new Set<string>();
     for (const event of eventHistory) {
-      const division = divisions.get(event.division) ?? { division: event.division, eventCount: 0, assignmentCount: 0 };
+      const division = divisions.get(event.division) ?? {
+        division: event.division, eventCount: 0, assignmentObservationCount: 0, panelAssignmentCount: 0,
+      };
       division.eventCount++;
-      division.assignmentCount += event.assignments.length;
+      division.assignmentObservationCount += event.assignments.length;
       divisions.set(event.division, division);
       const unresolved = new Set<string>();
       for (const assignment of event.assignments) {
@@ -190,6 +193,11 @@ export function deriveJudgeActivity(
         });
         const round = JSON.stringify([event.tournamentId, event.eventId, assignment.roundId]);
         const panel = JSON.stringify([round, assignment.panelId]);
+        // The sets are scoped to this person. Only the first observation counts toward experience.
+        if (!panels.has(panel)) {
+          panels.add(panel);
+          division.panelAssignmentCount++;
+        }
         if (assignment.panelEntryCoverage !== 'two-observed-entries' || assignment.unresolvedEntryEvidence.length) {
           unresolved.add(panel);
         }
@@ -218,7 +226,8 @@ export function deriveJudgeActivity(
     return {
       provider: 'tabroom' as const, personId: person.slice('tabroom:person:'.length),
       judgeLinks: links, tournamentIds, tournamentCount: tournamentIds.length,
-      eventDivisionCount: eventHistory.length, assignmentCount: assignments.length,
+      eventDivisionCount: eventHistory.length,
+      assignmentObservationCount: assignments.length, panelAssignmentCount: panels.size,
       firstAssignmentDate: dates[0] ?? null, mostRecentAssignmentDate: dates.at(-1) ?? null,
       assignmentsWithoutDate: assignments.length - dates.length,
       divisionDistribution: [...divisions.values()],
@@ -236,7 +245,7 @@ export function deriveJudgeActivity(
   });
 
   return {
-    derivationVersion: 1 as const,
+    derivationVersion: 2 as const,
     parserVersion: 1 as const,
     manifest: coverage.pin,
     evidenceCutoff: [...manifest.discovery, ...manifest.tournaments.flatMap(row =>

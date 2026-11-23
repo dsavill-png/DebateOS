@@ -14,7 +14,7 @@ function event(id: number, division: string, day: string, ballots: object[]) {
   }] };
 }
 
-function replayFixture() {
+function replayFixture(addSecondPanel = false) {
   const manifest: RetainedManifest = {
     scopeId: 'synthetic', revision: 1, predecessor: null, approval: 'test', discovery: [], tournaments: [],
   };
@@ -29,6 +29,9 @@ function replayFixture() {
       ]),
       event(12, 'JV', '2025-11-02', [{ id: 51, entry: 103, judge: 10 }]),
     ] : [event(11, 'Open', '2026-02-01', [{ id: 61, entry: 101, judge: 10, judge_person: 8 }])];
+    if (addSecondPanel && id === '1') {
+      events[0].rounds[0].sections[1].ballots.push({ id: 45, entry: 101, judge: 10 });
+    }
     const bytes = Buffer.from(JSON.stringify({
       id, public: true, categories: [{ judges: [{ id: 10 }, { id: 99, person: 900 }], events }],
       schools: [
@@ -65,14 +68,19 @@ test('resolves only explicit assigned people, retaining scoped links, roster sta
   const [person] = report.people;
   assert.deepEqual(person.judgeLinks.map(row => [row.tournamentId, row.judgeId]), [['1', '10'], ['1', '13'], ['2', '10']]);
   assert.equal(person.judgeLinks[0].personEvidence.length, 2);
-  assert.equal(person.assignmentCount, 4);
+  assert.equal(report.derivationVersion, 2);
+  assert.equal(person.assignmentObservationCount, 4);
+  assert.equal(person.panelAssignmentCount, 3);
+  assert.equal(person.eventHistory[0].assignments.length, 2);
+  assert.equal(person.repeatedAcrossTournaments, true);
+  assert.equal(person.repeatedAcrossEvents, true);
   assert.equal(person.tournamentCount, 2);
   assert.equal(person.eventDivisionCount, 3);
   assert.equal(person.firstAssignmentDate, '2025-11-01');
   assert.equal(person.mostRecentAssignmentDate, '2026-02-01');
   assert.deepEqual(person.divisionDistribution, [
-    { division: 'Open', eventCount: 2, assignmentCount: 3 },
-    { division: 'JV', eventCount: 1, assignmentCount: 1 },
+    { division: 'Open', eventCount: 2, assignmentObservationCount: 3, panelAssignmentCount: 2 },
+    { division: 'JV', eventCount: 1, assignmentObservationCount: 1, panelAssignmentCount: 1 },
   ]);
   assert.deepEqual(person.rosterStatus, {
     assignedJudgeIdsObservedOnSeasonRosters: 2, assignedJudgeIdsAbsentFromSeasonRosters: 1,
@@ -81,6 +89,21 @@ test('resolves only explicit assigned people, retaining scoped links, roster sta
   assert.deepEqual(report.coverage.aggregate.unlinkedJudgeIds, ['tabroom:tournament:1:judge:12']);
   assert.equal(report.coverage.aggregate.assignmentCoverageUnknown, 3);
   assert.ok(report.coverage.events.every(row => row.panelsWithoutAssignments === 1));
+});
+
+test('counts distinct panels within one round while retaining both same-panel judge IDs', () => {
+  const { run } = replayFixture(true);
+  const [person] = run().people;
+  const [event] = person.eventHistory;
+  assert.deepEqual(event.assignments.map(row => [row.roundId, row.panelId, row.judgeId]), [
+    ['1', '1', '10'], ['1', '1', '13'], ['1', '2', '10'],
+  ]);
+  assert.equal(person.assignmentObservationCount, 5);
+  assert.equal(person.panelAssignmentCount, 4);
+  assert.deepEqual(person.divisionDistribution[0], {
+    division: 'Open', eventCount: 2, assignmentObservationCount: 4, panelAssignmentCount: 3,
+  });
+  assert.deepEqual(person.schoolExposure.explicitSnu, { panelCount: 3, roundCount: 2 });
 });
 
 test('requires validated panel-entry and entry-school evidence, deduplicating school panels and rounds', () => {
@@ -120,10 +143,13 @@ test('pinned Phase A archive replays byte-for-byte and matches its published cov
     'src/warehouse/run-judge-activity.ts', base + '.json', capturesDirectory!, published.pin.sha256,
   ], { maxBuffer: 128 * 1024 * 1024, timeout: 55_000 });
   const first = replay();
-  assert.equal(sha256(first), sha256(replay()));
+  assert.ok(first.equals(replay()), 'pinned replay bytes differ');
   const report = JSON.parse(first.toString('utf8')) as ReturnType<typeof deriveJudgeActivity>;
+  assert.equal(report.derivationVersion, 2);
   assert.equal(report.people.length, 401);
-  assert.equal(report.people.reduce((sum, row) => sum + row.assignmentCount, 0), 8868);
+  assert.equal(report.people.reduce((sum, row) => sum + row.assignmentObservationCount, 0), 8868);
+  assert.equal(report.people.reduce((sum, row) => sum + row.panelAssignmentCount, 0), 8868);
+  assert.ok(report.people.every(row => row.assignmentObservationCount === row.panelAssignmentCount));
   assert.equal(report.people.filter(row => row.schoolExposure.explicitSnu.panelCount > 0).length, 99);
   for (const [key, expected] of Object.entries(published.aggregate)) {
     const observed = report.coverage.aggregate[key as keyof typeof report.coverage.aggregate];
@@ -132,5 +158,6 @@ test('pinned Phase A archive replays byte-for-byte and matches its published cov
   assert.deepEqual(report.coverage.aggregate.unlinkedJudgeIds, ['tabroom:tournament:36669:judge:2587546']);
   assert.equal(report.people.reduce((sum, row) => sum + row.rosterStatus.assignedJudgeIdsAbsentFromSeasonRosters, 0), 3);
   const samples = JSON.parse(readFileSync(base + '-judge-activity-samples.json', 'utf8')) as typeof report;
+  assert.equal(samples.derivationVersion, report.derivationVersion);
   assert.deepEqual(samples.people, samples.people.map(sample => report.people.find(row => row.personId === sample.personId)));
 });

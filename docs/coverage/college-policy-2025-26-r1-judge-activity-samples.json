@@ -1,5 +1,5 @@
 {
-  "derivationVersion": 1,
+  "derivationVersion": 2,
   "parserVersion": 1,
   "manifest": {
     "scopeId": "tabroom-college-policy-2025-26",
@@ -75,7 +75,8 @@
       ],
       "tournamentCount": 2,
       "eventDivisionCount": 3,
-      "assignmentCount": 4,
+      "assignmentObservationCount": 4,
+      "panelAssignmentCount": 4,
       "firstAssignmentDate": "2025-11-01",
       "mostRecentAssignmentDate": "2026-01-03",
       "assignmentsWithoutDate": 0,
@@ -83,17 +84,20 @@
         {
           "division": "Open Policy",
           "eventCount": 1,
-          "assignmentCount": 1
+          "assignmentObservationCount": 1,
+          "panelAssignmentCount": 1
         },
         {
           "division": "JV",
           "eventCount": 1,
-          "assignmentCount": 2
+          "assignmentObservationCount": 2,
+          "panelAssignmentCount": 2
         },
         {
           "division": "Open",
           "eventCount": 1,
-          "assignmentCount": 1
+          "assignmentObservationCount": 1,
+          "panelAssignmentCount": 1
         }
       ],
       "repeatedAcrossTournaments": true,
@@ -561,7 +565,8 @@
       ],
       "tournamentCount": 1,
       "eventDivisionCount": 1,
-      "assignmentCount": 1,
+      "assignmentObservationCount": 1,
+      "panelAssignmentCount": 1,
       "firstAssignmentDate": null,
       "mostRecentAssignmentDate": null,
       "assignmentsWithoutDate": 1,
@@ -569,7 +574,8 @@
         {
           "division": "Novice",
           "eventCount": 1,
-          "assignmentCount": 1
+          "assignmentObservationCount": 1,
+          "panelAssignmentCount": 1
         }
       ],
       "repeatedAcrossTournaments": false,
@@ -745,7 +751,8 @@
       ],
       "tournamentCount": 1,
       "eventDivisionCount": 1,
-      "assignmentCount": 3,
+      "assignmentObservationCount": 3,
+      "panelAssignmentCount": 3,
       "firstAssignmentDate": "2025-11-07",
       "mostRecentAssignmentDate": "2025-11-08",
       "assignmentsWithoutDate": 0,
@@ -753,7 +760,8 @@
         {
           "division": "Open Policy",
           "eventCount": 1,
-          "assignmentCount": 3
+          "assignmentObservationCount": 3,
+          "panelAssignmentCount": 3
         }
       ],
       "repeatedAcrossTournaments": false,
