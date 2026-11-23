@@ -57,7 +57,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- For TASK-003, obtain Tabroom confirmation of the supported backend integration and review the permitted validation scope before releasing TASK-014. Role-isolated and nonempty ballot verification remain follow-up work.
+- For TASK-003, Dennis reviews the [vendor confirmation draft](docs/research/tabroom-vendor-confirmation.md) for Tabroom Support. Outreach requires his separate approval. Record the vendor's answer and approved validation scope before considering release of TASK-014. Role-isolated and nonempty ballot verification remain follow-up work.
 ## Next Product Recommendation
 
 Obtain Tabroom confirmation for supported backend use under TASK-003, then release the bounded TASK-014 judge-record validation within the approved scope. Persistent protected ingestion requires separate Dennis approval.
@@ -65,6 +65,8 @@ Obtain Tabroom confirmation for supported backend use under TASK-003, then relea
 Review the TASK-013 v2 contract and samples with Jared before wiring the public judge activity card. Use `panelAssignmentCount` for observed experience.
 
 ## Recent Detailed Handoffs
+
+- [TASK-003 Tabroom vendor confirmation plan and draft](docs/research/tabroom-vendor-confirmation.md).
 
 - [TASK-013 public judge activity](docs/handoffs/2026-11-23-public-judge-activity.md).
 
