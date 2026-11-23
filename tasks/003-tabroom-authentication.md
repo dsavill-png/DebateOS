@@ -56,3 +56,5 @@ Report:
 ## Research memo
 
 [Tabroom authenticated REST access](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md) · source comment `7039686188`
+
+[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records the signed-in website observation, documented routes and remaining authenticated API verification.
