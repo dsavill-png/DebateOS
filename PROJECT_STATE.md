@@ -23,7 +23,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
-- [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Draft and unexecuted. It proposes manifest-pinned college judge coverage measurement and a separately authorized paradigm pilot. Production documents authenticated search pagination. Global enumeration remains unverified.
+- [TASK-011](tasks/011-college-judge-paradigm-corpus.md) is Phase A Approved / In Progress. Dennis approved public coverage. Draft PR #10 pins the 2025–26 college policy manifest and reports 1,950 observed assigned tournament judge IDs and 401 distinct explicitly linked people. Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval. Consult Jared on UI-facing contracts.
 
 - [TASK-008](tasks/008-dispatcher-reliability.md) remains Partial. The human-safe GitHub handoff passed the production probes on [merge `562c1d8`](https://github.com/dsavill-png/DebateOS/commit/562c1d844bf80a6859a2aaeff28173014c16ddae). TASK-998 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103563936), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103584571), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191160409) show blocked with no draft. TASK-999 [source](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103564339), [result](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7103600699), and [run](https://github.com/dsavill-png/DebateOS/actions/runs/45191163133) show completed with [one test draft](https://github.com/dsavill-png/DebateOS/pull/6), now closed without merging. Each replay produced zero additional reports or drafts. Dennis's GitHub inbox showed the TASK-998 mention. Separate TASK-999 receipt awaits confirmation.
 
@@ -54,9 +54,11 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - For TASK-003, obtain Tabroom confirmation of the production integration before enabling backend ingestion. Role-isolated and nonempty ballot verification remain follow-up work.
 ## Next Product Recommendation
 
-Seek Dennis and Jared’s approval for the public coverage portion of [TASK-011](tasks/011-college-judge-paradigm-corpus.md). Pin one closed college policy season manifest and use approved structured public exports to measure rostered and assigned judge coverage separately. Report verified person links, missing mappings, conflicts, and unknown coverage. Protected acquisition remains gated on TASK-003, Tabroom authorization, and separate pilot approval.
+Review [draft PR #10](https://github.com/dsavill-png/DebateOS/pull/10) and its coverage gaps. Reconcile unresolved divisions and discovery gaps before making representativeness claims. The linked public cohort can support a bounded sample once the protected pilot clears its separate gates. Merge requires Dennis’s approval.
 
 ## Recent Detailed Handoffs
+
+- [TASK-011 public coverage](docs/handoffs/2026-11-23-college-policy-public-coverage.md).
 
 - [TASK-012 public warehouse implementation](docs/handoffs/2026-11-23-public-warehouse.md).
 

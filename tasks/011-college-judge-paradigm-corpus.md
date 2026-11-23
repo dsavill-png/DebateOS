@@ -1,15 +1,19 @@
 # 011 · Validate coverage and pilot the college judge paradigm corpus
 
-**Status** Draft  
+**Status** Phase A Approved / In Progress · Phase B Draft / Gated  
 **Owner** Dennis Commander  
-**Review** Dennis and Jared  
+**Review** Dennis leads Phase A backend review. Consult Jared on UI-facing contracts.  
 **Dependencies** [TASK-010](010-canonical-warehouse-model.md) design review and [TASK-003](003-tabroom-authentication.md) vendor confirmation for protected work
 
 ## Objective
 
 Measure coverage for a leadership-approved season and collegiate event manifest. Validate a small, authorized person-keyed paradigm acquisition and servicing workflow before proposing broader implementation.
 
-## Proposed scope
+## Approved Phase A · Public coverage
+
+Dennis approved Phase A on November 23, 2026. Scope is the closed 2025–26 collegiate policy season, all verified divisions, using anonymous structured Tabroom data. Keep roster and panel-assignment denominators separate. Resolve only explicit judge-to-person links. Report missing, conflicting and unavailable coverage against a pinned manifest. The draft PR requires separate Dennis approval to merge.
+
+## Phase A and gated Phase B scope
 
 1. Propose one closed college policy season, using the ADR-002 season manifest. Record exact dates, formats, circuits, divisions, membership decisions and evidence, coverage gaps and treatment of roster-only candidates. Pin the approved manifest revision in coverage reports.
 2. Measure public coverage from approved structured exports. Report rostered and assigned judge IDs and person linkage coverage, including missing mappings and conflicts. Preserve separate denominators and distinguish unknown coverage from zero participation.
@@ -18,4 +22,4 @@ Measure coverage for a leadership-approved season and collegiate event manifest.
 
 ## Acceptance and release
 
-Dennis and Jared approve the scope, sample cap, schedule, authorization and serving rules before pilot execution. Deliver a manifest, counts and denominators, a production behavior record, versioning replay, and a written go/no-go recommendation for broader acquisition. Keep protected bodies out of GitHub. No scraping, broad harvest, deployment or public republication in this draft scope. Any implementation that requires schema changes needs an approved work order.
+Phase B stays Draft / Gated pending TASK-003, Tabroom authorization and separate leadership approval of the scope, sample cap, schedule and serving rules. Deliver a manifest, counts and denominators, a production behavior record, versioning replay, and a written go/no-go recommendation for broader acquisition. Keep protected bodies out of GitHub. No scraping, broad harvest, deployment or public republication in this draft scope. Any implementation that requires schema changes needs an approved work order.
