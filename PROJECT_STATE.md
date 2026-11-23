@@ -33,11 +33,11 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 ## Known Blockers / Risks
 
 - TASK-003 needs an authorized Tabroom session to verify protected routes and role-specific access.
-- The Event Orchestrator may miss a follow-up wake when a result arrives during another run. OpenAI Support case 20524159 has no confirmed fix. The GitHub handoff supports human triage while automatic receipt remains open.
+- The DebateOS Event Orchestrator (`Automation_996ef13630648191a4e3b8c843b62979`) was paused when checked on November 23. Its configured trigger is creation of a top-level comment on PR #1. The latest recorded run, `7b14f5fe-11dc-832e-bb38-5881f3f3d02b`, handled only the command fast path. On November 20 (Central Standard Time), [command 7042624192](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7042624192) was posted at 08:53:37, [Actions run 44757840497](https://github.com/dsavill-png/DebateOS/actions/runs/44757840497) started at 08:53:40, and [result 7042640941](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7042640941) was posted at 08:54:22 during the orchestrator's 08:54:17–08:54:29 run. No later run or corresponding `ORCH PROCESSED` marker was observed. The cause and duplicate-delivery behavior remain unverified. No new probe was posted against the paused automation. OpenAI Support case 20524159 has no confirmed fix.
 
 ## Next Approved Actions
 
-- Verify automatic Commander pickup during an active orchestrator run and exactly one review or escalation across duplicate deliveries before resuming public Tabroom work.
+- Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
 - For the already-approved TASK-003 research, verify authenticated access when an authorized session is available. New product work remains paused.
