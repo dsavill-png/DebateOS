@@ -1,6 +1,6 @@
 # 012 · Implement the canonical physical schema — Phase 1 public evidence
 
-**Status** Blocked  
+**Status** In progress  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Review** Dennis approved execution and the refinements below on 2026-11-23. Consult Jared on downstream UI-facing contracts.  
@@ -15,11 +15,9 @@ Implement the first PostgreSQL/ORM slice of the approved canonical evidence ware
 - Use Drizzle ORM because DebateOS is PostgreSQL-first, has extensive relationships and provenance, and needs SQL-transparent analytical queries. Surface any concrete tooling conflict for review.
 - Reproduce migrations from an empty disposable PostgreSQL database and test recovery. For production, prefer forward migrations, backup and restore, and controlled remediation. Document which changes are reversible.
 
-## Blocking identity decision
+## Approved identity decision
 
-The [adapter normalizer](../src/tabroom/normalize.ts) emits round IDs scoped to the tournament and builds panel IDs from those round IDs. It also emits tournament-scoped student IDs. [ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) requires event-scoped round IDs, round-scoped panel IDs and school-scoped student references. Equal source IDs in different valid parent scopes can therefore yield equal adapter IDs. The normalizer retains event and school context on parent rows and source pointers on panels, so the evidence can still distinguish these cases.
-
-Recommend keeping existing adapter identifiers stable and adding explicit scoped identity components for persistence. Verify repeated source IDs across events and schools in a synthetic replay before wiring foreign keys. Dennis should confirm the adapter contract choice, with Jared consulted if it affects downstream UI contracts. Schema and validation work are pending this decision.
+Dennis approved preserving caller-facing adapter IDs, using complete provider-scoped natural keys in PostgreSQL, and storing source identifiers separately from internal UUIDs. The PostgreSQL collision probe passed before the scoped foreign keys were added. The [implementation handoff](../docs/handoffs/2026-11-23-public-warehouse.md) records the exact keys, verified work and remaining acceptance checks.
 
 ## Approved scope
 
