@@ -43,6 +43,23 @@ Do **not** populate or infer:
 
 Those remain gated until their source semantics and authorization are separately verified.
 
+## Blocker resolution authorization · 2026-11-24
+
+The first TASK-022 dispatch stopped correctly because `persist-season-manifest.ts` writes the pinned season-membership captures and `season-event-classification` evidence with `audience: internal`, while ADR-004 requires every input that determines a public-mart row to be eligible through `warehouse_public_evidence`.
+
+Dennis/Chat authorizes the following **narrow correction** so TASK-022 can proceed:
+
+- **Do not weaken or bypass ADR-004 or `warehouse_public_evidence`.**
+- Treat the already approved season-membership lineage as public-eligible only when its source is explicitly `authorization: 'anonymous public'`, its bytes match the pinned SHA-256 digest, the manifest pin matches, the event pointer/classification verification succeeds, the stored authorization class is `public`, and `grant_scope` is null.
+- Update the manifest writer so newly persisted qualifying season-membership captures and `season-event-classification` evidence use `audience: public`.
+- Add the smallest deterministic migration/repair needed for **already persisted qualifying rows** from the approved pinned season revision. The repair must be bounded to the season-membership policy/evidence path and approved capture IDs; it must not broadly relabel arbitrary internal evidence.
+- Preserve immutable source identity, digests, pointers, evidence lineage, revision identity, and retention semantics. Do not fabricate replacement evidence merely to obtain a public label.
+- Unrelated internal evidence, protected/authenticated evidence, account-scoped evidence, restricted grants, raw protected values, and any evidence that fails the public-eligibility checks must remain excluded.
+- Add a regression test proving an internal/protected row cannot influence scope membership, fact presence, counts, coverage, freshness, or the public materialized view.
+- After this correction, continue the original TASK-022 implementation and full verification. If the bounded correction cannot be implemented without destructive evidence rewriting or weakening the public/protected boundary, stop and report Blocked again.
+
+This authorization changes the **policy metadata for verified anonymous-public season-membership evidence**, not the analytical scope, metric definitions, or protected-data policy.
+
 ## Required source reading
 
 Read and preserve:
