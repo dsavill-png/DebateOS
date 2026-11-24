@@ -35,7 +35,7 @@ const raw = (root: Json, row: Observation): Json => row.source_path.split('/').s
 const sourceId = (value: unknown) => typeof value === 'number' && Number.isSafeInteger(value) && value > 0
   ? String(value) : typeof value === 'string' && /^[1-9]\d*$/.test(value) ? value : null;
 
-function observedDate(start: string | null) {
+export function observedDate(start: string | null) {
   const match = /^(\d{4}-\d{2}-\d{2})[ T](?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/.exec(start ?? '');
   if (!match || match[1].startsWith('0000')) return null;
   const date = new Date(match[1] + 'T00:00:00Z');

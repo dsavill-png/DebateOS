@@ -18,7 +18,7 @@ function objectRow(value: unknown): Json | undefined {
   return value && typeof value === 'object' && !Array.isArray(value) ? value as Json : undefined;
 }
 
-function composedName(row: Json, firstKey: string, lastKey: string) {
+export function composedName(row: Json, firstKey: string, lastKey: string) {
   const direct = row.name;
   if (typeof direct === 'string' && direct.trim()) return direct.trim();
   const firstValue = row[firstKey];

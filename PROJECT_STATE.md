@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-022](tasks/022-public-judge-analytics-mart.md) is Approved and Released. It implements the public-ready ADR-004 physical mart: Person × panel judge-assignment facts, public panel-entry/SNU facts, deterministic build/promotion, a public materialized summary view, and row-level SNU detail. Protected vote/side/result/paradigm/affiliation facts remain gated and unresolved.
+- [TASK-022](tasks/022-public-judge-analytics-mart.md) is Approved and Released. The local mart implementation passed fresh and upgrade SQL checks and the protected-input regression in PostgreSQL single-user mode. Dependency-backed verification, dump/restore and the pinned archive replay are pending. See the [implementation handoff](docs/handoffs/2026-11-24-public-judge-analytics-mart.md).
 
 - [TASK-021](tasks/021-judge-analytics-dimensional-model.md) is Completed and merged through PR #21 at `6147ac6c6cea28c69eeefa9d0f552abef100b813`. [ADR-004](docs/architecture/ADR-004-judge-analytics.md) is Accepted. Person × panel is the authoritative `debates judged` grain; two flighted debates in one named round count as two judged debates. Individual decisions and panel results remain separate facts. Protected vote/side/result/paradigm promotion remains gated on validation.
 
@@ -85,7 +85,7 @@ In parallel, keep authenticated Tabroom validation private/local and bounded. Pe
 
 ## Recent Detailed Handoffs
 
-- [TASK-022 partial season membership repair](docs/handoffs/2026-11-24-public-judge-analytics-mart.md). The local repair passed PostgreSQL single-user checks. Mart implementation and full verification are pending.
+- [TASK-022 public judge analytics mart and season membership repair](docs/handoffs/2026-11-24-public-judge-analytics-mart.md). Includes the build and refresh commands, serving contract, and verification status.
 
 - [TASK-021 judge analytics design](docs/handoffs/2026-11-24-judge-analytics.md).
 
