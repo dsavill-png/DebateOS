@@ -1,7 +1,8 @@
 # ADR-003 · Durable person, role, affiliation, and participation history
 
-**Status:** Proposed  
+**Status:** Accepted  
 **Date:** 2026-11-24  
+**Approved:** Dennis Commander, 2026-11-24  
 **Work order:** [TASK-016](../../tasks/016-person-role-affiliation-model.md)  
 **Supersedes:** Nothing. This refines the identity portions of [ADR-002](ADR-002-canonical-warehouse-model.md).
 
