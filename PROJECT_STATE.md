@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-020](tasks/020-minimum-judge-card-ui-contract.md) has a local static prototype at `/judge-proof` and a [product contract](docs/product/minimum-judge-card.md). Focused tests passed. Full-suite, TypeScript, and production-build verification await a dependency-enabled checkout. Dennis and Jared review is pending.
+- [TASK-020](tasks/020-minimum-judge-card-ui-contract.md) is Completed and merged through PR #19 at `f13302dc5ea144118556adbae85753fa16b5de0d`. The static `/judge-proof` prototype and [minimum judge-card contract](docs/product/minimum-judge-card.md) use the verified TASK-019 artifacts. Final head `a9637709ac4f25a842762b105444cd19391f81f8` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. Dennis/Jared product review of the information hierarchy is the next gate before broader UI work.
 
 - [TASK-019](tasks/019-public-judge-profile-usability-proof.md) is Completed and merged through PR #17 at `4b2e3d72da0b6a7350f6ccba80a781855506edff`. The three coach-facing public profiles and 15-field coverage matrix are verified. Pinned public capture bytes matched the manifest hashes and explicitly resolve the sample names as Michael Scott (`175248`), LaToya Green (`19665`), and Arya Persaud (`775310`). Final head `94a94b87c57e51c4d3888fd382dbed4df407dd01` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. See the [Jared handoff](docs/handoffs/2026-11-24-public-judge-profile.md).
 
@@ -71,11 +71,11 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Verify TASK-020 in a dependency-enabled checkout and review the prototype and minimum judge-card UI contract with Dennis and Jared.
+- Review the completed TASK-020 prototype and minimum judge-card UI contract with Dennis and Jared; decide which Level 1/2/3 elements to keep before authorizing broader UI or live-data wiring.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Review the TASK-020 prototype and its minimum judge-card UI contract with Dennis and Jared before authorizing any dashboard or live data work.
+TASK-020 is technically verified. Review the judge-card information hierarchy with Dennis and Jared before authorizing any dashboard or live data work.
 
 In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 
