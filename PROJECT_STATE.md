@@ -2,9 +2,12 @@
 
 ## Executive Snapshot
 
-As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintained on trusted `main`.
+As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` remains trusted; draft work is review-only until merged.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
+- Dennis and Jared are shifting product validation toward coach-usable outputs before dashboards. The immediate judge-intelligence proof should answer human questions such as “Who is this judge?” with evidence-backed identity and history.
+- Authenticated/private Tabroom integration remains local/private for now. Do not contact Tabroom/NSDA about DebateOS, do not publish protected integration work, and do not treat TASK-003 as authorization for broad protected ingestion.
+- [TASK-016](tasks/016-person-role-affiliation-model.md) is Approved / In Progress on a draft branch. It refines the durable Person model so roles, institutions, entries and partners can change over time without creating duplicate people.
 - TASK-012 is complete on `main`. The first public-evidence PostgreSQL warehouse implements the [TASK-010 design](docs/architecture/ADR-002-canonical-warehouse-model.md) and preserves capture lineage and row-level eligibility.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
@@ -27,6 +30,8 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Current Work
 
+- [TASK-016](tasks/016-person-role-affiliation-model.md) is Approved / In Progress. [ADR-003](docs/architecture/ADR-003-person-role-affiliation-history.md) is Proposed. This architecture-only task defines durable Person identity, historical roles, institution affiliations, student-to-person evidence, entry-person membership and partner-change semantics. No schema migration is authorized by TASK-016.
+
 - [TASK-014](tasks/014-authenticated-judge-record-api-validation.md) is Draft / Gated. After TASK-003 clears, compare a bounded sample from Dennis's Tabroom judge record with supported API responses and propose the verified warehouse contract.
 
 - TASK-011 Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval.
@@ -39,6 +44,9 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 - GitHub is canonical for code, tasks, decisions, and project state. Dropbox is the durable research and artifact library.
 - Both commanders use this file for session startup and shutdown. The [repository instructions](AGENTS.md#task-execution-protocol) define the process.
+- Durable Person is role-neutral. Debater, judge and coach are historical/contextual roles; institution affiliation and debate partnership are historical relationships, not permanent Person attributes. A school transfer or partner change must not create a new Person.
+- Public/core engineering may remain in the public repository, but authenticated/private integration and sensitive SNU operational details require a separate privacy decision before publication.
+- Neon is a future hosted-PostgreSQL candidate based on Jared's experience, not a selected or currently required hosting provider.
 
 ## Architecture / Guardrails
 
@@ -49,7 +57,7 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 
 ## Known Blockers / Risks
 
-- TASK-003 needs Tabroom confirmation of supported unattended third-party backend credentials, session lifetime and renewal, scopes and authorization boundaries, and rate limits. Dennis reports that the current login uses username/password only, without MFA. This is operational context supplied by Dennis. Coach-only, generic and tournament-admin entitlements and nonempty current-ballot access remain unverified.
+- TASK-003 still lacks a verified production-grade unattended authentication/session path, role boundaries, rate limits and permitted persistence/serving semantics. Dennis has chosen not to contact Tabroom/NSDA about DebateOS for now. Authenticated experiments therefore remain bounded, local/private, manually approved, and non-persistent. Coach-only, generic and tournament-admin entitlements and nonempty current-ballot access remain unverified.
 - The DebateOS Event Orchestrator (`Automation_996ef13630648191a4e3b8c843b62979`) was paused when checked on November 23. Its configured trigger is creation of a top-level comment on PR #1. The latest recorded run, `7b14f5fe-11dc-832e-bb38-5881f3f3d02b`, handled only the command fast path. On November 20 (Central Standard Time), [command 7042624192](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7042624192) was posted at 08:53:37, [Actions run 44757840497](https://github.com/dsavill-png/DebateOS/actions/runs/44757840497) started at 08:53:40, and [result 7042640941](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7042640941) was posted at 08:54:22 during the orchestrator's 08:54:17–08:54:29 run. No later run or corresponding `ORCH PROCESSED` marker was observed. The cause and duplicate-delivery behavior remain unverified. No new probe was posted against the paused automation. OpenAI Support case 20524159 has no confirmed fix.
 
 ## Next Approved Actions
@@ -57,12 +65,13 @@ As of 2026-11-23. Shared state for Dennis Commander and Jared Commander, maintai
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- For TASK-003, obtain Tabroom confirmation of the supported backend integration and review the permitted validation scope before releasing TASK-014. Role-isolated and nonempty ballot verification remain follow-up work.
+- For TASK-016, review the proposed durable-person architecture before any physical schema migration. After approval, create a separate schema work order for evidence-backed person-role, person-institution, student-person and entry-person relationships.
+- Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Obtain Tabroom confirmation for supported backend use under TASK-003, then release the bounded TASK-014 judge-record validation within the approved scope. Persistent protected ingestion requires separate Dennis approval.
+Complete and approve TASK-016 first so durable people, role changes, transfers and partner changes are modeled correctly. Then build the public judge-profile usability proof: three evidence-backed human-readable profiles plus a field-coverage matrix. Do not build a dashboard before this proof is useful to coaches.
 
-Review the TASK-013 v2 contract and samples with Jared before wiring the public judge activity card. Use `panelAssignmentCount` for observed experience.
+In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 
 ## Recent Detailed Handoffs
 
