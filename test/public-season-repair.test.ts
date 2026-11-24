@@ -65,7 +65,7 @@ test('the season repair promotes only approved historical classification lineage
              INSERT INTO season_membership_evidence SELECT membership.id, observation.id FROM membership, observation`,
             [tournament.id, event.id, version.id, event.decision, event.rationale,
               { division: event.division, sourceType: event.type, circuit: 'NDT-CEDA' },
-              event.evidence.source, event.evidence.pointer, JSON.stringify(event.id), { name: event.division }]);
+              event.evidence.source, event.evidence.pointer, JSON.stringify(event.id), { name: event.division, type: event.type }]);
           expected++;
         }
       }
@@ -79,6 +79,11 @@ test('the season repair promotes only approved historical classification lineage
       await client.query("UPDATE warehouse_captures SET response_digest = 'wrong' WHERE id = $1", [capture.id]);
       await assert.rejects(client.query(repair), /Pinned season capture missing or ineligible/);
       await client.query('ROLLBACK TO SAVEPOINT corrupt_digest');
+      await client.query('SAVEPOINT corrupt_type');
+      await client.query(
+        "UPDATE warehouse_evidence SET observed_value = jsonb_set(observed_value, '{type}', '"wrong"') WHERE output_role = 'season-event-classification' AND id = (SELECT evidence_id FROM season_membership_evidence LIMIT 1)");
+      await assert.rejects(client.query(repair), /Pinned season membership lineage mismatch/);
+      await client.query('ROLLBACK TO SAVEPOINT corrupt_type');
       await client.query('SAVEPOINT would_expose_unrelated');
       await client.query("UPDATE warehouse_evidence SET audience = 'public' WHERE id = $1", [unrelated.id]);
       await assert.rejects(client.query(repair), /would expose existing public-labelled evidence/);
