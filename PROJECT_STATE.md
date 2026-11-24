@@ -7,7 +7,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
 - Dennis and Jared are shifting product validation toward coach-usable outputs before dashboards. The immediate judge-intelligence proof should answer human questions such as “Who is this judge?” with evidence-backed identity and history.
 - Authenticated/private Tabroom integration remains local/private for now. Do not contact Tabroom/NSDA about DebateOS, do not publish protected integration work, and do not treat TASK-003 as authorization for broad protected ingestion.
-- [TASK-016](tasks/016-person-role-affiliation-model.md) is Approved / In Progress on a draft branch. It refines the durable Person model so roles, institutions, entries and partners can change over time without creating duplicate people.
+- [TASK-016](tasks/016-person-role-affiliation-model.md) is Completed and approved. It refines the durable Person model so roles, institutions, entries and partners can change over time without creating duplicate people.
 - TASK-012 is complete on `main`. The first public-evidence PostgreSQL warehouse implements the [TASK-010 design](docs/architecture/ADR-002-canonical-warehouse-model.md) and preserves capture lineage and row-level eligibility.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-016](tasks/016-person-role-affiliation-model.md) is Approved / In Progress. [ADR-003](docs/architecture/ADR-003-person-role-affiliation-history.md) is Proposed. This architecture-only task defines durable Person identity, historical roles, institution affiliations, student-to-person evidence, entry-person membership and partner-change semantics. No schema migration is authorized by TASK-016.
+- [TASK-016](tasks/016-person-role-affiliation-model.md) is Completed. [ADR-003](docs/architecture/ADR-003-person-role-affiliation-history.md) is Accepted. This architecture-only task defines durable Person identity, historical roles, institution affiliations, student-to-person evidence, entry-person membership and partner-change semantics. No schema migration is authorized by TASK-016.
 
 - [TASK-014](tasks/014-authenticated-judge-record-api-validation.md) is Draft / Gated. After TASK-003 clears, compare a bounded sample from Dennis's Tabroom judge record with supported API responses and propose the verified warehouse contract.
 
