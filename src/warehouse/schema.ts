@@ -1,5 +1,5 @@
-import { sql } from 'drizzle-orm';
-import { check, foreignKey, integer, jsonb, pgTable, pgView, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
+import { sql, type SQLWrapper } from 'drizzle-orm';
+import { check, date, foreignKey, integer, jsonb, pgTable, pgView, primaryKey, text, timestamp, unique, uuid } from 'drizzle-orm/pg-core';
 
 const pk = () => uuid('id').defaultRandom().primaryKey();
 const policy = () => ({
@@ -220,3 +220,126 @@ export const seasonMembershipEvidence = pgTable('season_membership_evidence', {
   membership: uuid('membership_id').notNull().references(() => seasonMemberships.id),
   evidence: uuid('evidence_id').notNull().references(() => evidence.id),
 }, t => [unique('seasonMembershipEvidence_identity_key').on(t.membership, t.evidence)]);
+
+const relationshipEvidence = () => uuid('evidence_id').notNull().references(() => evidence.id);
+const relationshipVerification = () =>
+  text('verification').$type<'unverified' | 'verified' | 'conflicting' | 'rejected'>().notNull();
+const verificationCheck = (name: string, verification: ReturnType<typeof sql>) =>
+  check(name, sql`${verification} in ('unverified', 'verified', 'conflicting', 'rejected')`);
+
+const temporalFields = () => ({
+  temporalPrecision: text('temporal_precision')
+    .$type<'exact-interval' | 'start-only' | 'end-only' | 'event-only' | 'unknown'>().notNull(),
+  effectiveStart: date('effective_start'),
+  effectiveEnd: date('effective_end'),
+  observedOn: date('observed_on'),
+});
+
+type TemporalColumns = {
+  [K in keyof ReturnType<typeof temporalFields>]: SQLWrapper;
+};
+
+const temporalCheck = (name: string, t: TemporalColumns) => check(name, sql`
+  case ${t.temporalPrecision}
+    when 'exact-interval' then ${t.effectiveStart} is not null and ${t.effectiveEnd} is not null
+      and ${t.effectiveStart} <= ${t.effectiveEnd}
+    when 'start-only' then ${t.effectiveStart} is not null and ${t.effectiveEnd} is null
+    when 'end-only' then ${t.effectiveStart} is null and ${t.effectiveEnd} is not null
+    when 'event-only' then ${t.effectiveStart} is null and ${t.effectiveEnd} is null and ${t.observedOn} is not null
+    when 'unknown' then ${t.effectiveStart} is null and ${t.effectiveEnd} is null and ${t.observedOn} is null
+    else false
+  end`);
+
+export const personRoleObservations = pgTable('person_role_observations', {
+  evidence: relationshipEvidence().primaryKey(),
+  person: uuid('person_id').notNull().references(() => persons.id),
+  role: text('role').notNull(),
+  verification: relationshipVerification(),
+  ...temporalFields(),
+}, t => [
+  check('person_role_allowed', sql`${t.role} in ('debater', 'judge', 'coach')`),
+  verificationCheck('person_role_verification', sql`${t.verification}`),
+  temporalCheck('person_role_dates', t),
+]);
+
+export const personInstitutionAffiliations = pgTable('person_institution_affiliations', {
+  evidence: relationshipEvidence().primaryKey(),
+  person: uuid('person_id').notNull().references(() => persons.id),
+  chapter: uuid('chapter_id').notNull().references(() => chapters.id),
+  role: text('role'),
+  verification: relationshipVerification(),
+  ...temporalFields(),
+}, t => [
+  check('person_affiliation_role_allowed', sql`${t.role} in ('debater', 'judge', 'coach')`),
+  verificationCheck('person_affiliation_verification', sql`${t.verification}`),
+  temporalCheck('person_affiliation_dates', t),
+]);
+
+export const studentPersonEvidence = pgTable('student_person_evidence', {
+  evidence: relationshipEvidence().primaryKey(),
+  student: uuid('student_id').notNull().references(() => students.id),
+  person: uuid('person_id').references(() => persons.id),
+  basis: text('basis').$type<'explicit-source' | 'validated-crosswalk'>(),
+  verification: relationshipVerification(),
+}, t => [
+  unique('student_person_evidence_candidate_key').on(t.evidence, t.student, t.person),
+  verificationCheck('student_person_verification', sql`${t.verification}`),
+  check('student_person_explicit_basis', sql`
+    (${t.person} is null and ${t.basis} is null and ${t.verification} = 'unverified')
+    or (${t.person} is not null and ${t.basis} is not null
+      and ${t.basis} in ('explicit-source', 'validated-crosswalk'))`),
+]);
+
+export const entryPersonMemberships = pgTable('entry_person_memberships', {
+  evidence: relationshipEvidence(),
+  entry: uuid('entry_id').notNull().references(() => entries.id),
+  person: uuid('person_id').notNull().references(() => persons.id),
+  student: uuid('student_id').references(() => students.id),
+  identityEvidence: uuid('identity_evidence_id'),
+  verification: relationshipVerification(),
+}, t => [
+  primaryKey({ name: 'entry_person_memberships_pk', columns: [t.evidence, t.entry, t.person] }),
+  verificationCheck('entry_person_verification', sql`${t.verification}`),
+  foreignKey({
+    name: 'entry_person_identity_candidate_fk',
+    columns: [t.identityEvidence, t.student, t.person],
+    foreignColumns: [studentPersonEvidence.evidence, studentPersonEvidence.student, studentPersonEvidence.person],
+  }),
+  check('entry_person_student_lineage', sql`(${t.student} is null) = (${t.identityEvidence} is null)`),
+]);
+
+export const publicPersonRoleObservations = pgView('public_person_role_observations', personRoleObservationsColumns()).existing();
+
+function personRoleObservationsColumns() {
+  return {
+    evidence: uuid('evidence_id').notNull(),
+    person: uuid('person_id').notNull(),
+    role: text('role').notNull(),
+    verification: relationshipVerification(),
+    ...temporalFields(),
+  };
+}
+
+export const publicPersonInstitutionAffiliations = pgView('public_person_institution_affiliations', {
+  ...personRoleObservationsColumns(),
+  chapter: uuid('chapter_id').notNull(),
+  role: text('role'),
+}).existing();
+
+export const publicEntryPersonMemberships = pgView('public_entry_person_memberships', {
+  evidence: uuid('evidence_id').notNull(),
+  entry: uuid('entry_id').notNull(),
+  person: uuid('person_id').notNull(),
+  student: uuid('student_id'),
+  identityEvidence: uuid('identity_evidence_id'),
+  verification: relationshipVerification(),
+}).existing();
+
+export const publicStudentPersonAssertions = pgView('public_student_person_assertions', {
+  evidence: uuid('evidence_id').notNull(),
+  student: uuid('student_id').notNull(),
+  person: uuid('person_id'),
+  basis: text('basis').$type<'explicit-source' | 'validated-crosswalk'>(),
+  verification: relationshipVerification(),
+  fetchedAt: timestamp('fetched_at', { withTimezone: true, mode: 'string' }).notNull(),
+}).existing();
