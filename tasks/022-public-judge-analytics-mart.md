@@ -60,6 +60,31 @@ Dennis/Chat authorizes the following **narrow correction** so TASK-022 can proce
 
 This authorization changes the **policy metadata for verified anonymous-public season-membership evidence**, not the analytical scope, metric definitions, or protected-data policy.
 
+## Existing-row repair clarification · 2026-11-24
+
+The second TASK-022 dispatch confirmed that the original TASK-011 capture archive is not mounted in the GitHub Actions workspace. That does **not** require exposing Dropbox or weakening the public-evidence rule.
+
+For **new writes**, continue to require the original source bytes and verify each source SHA-256 before persistence exactly as `persistSeasonManifest` does today.
+
+For the **already persisted approved 2025–26 season-membership rows only**, a migration/repair may rely on the existing stored capture identity and digest because those rows were created by the ingestion path that verified the original bytes before insert, and the pinned archive was independently replayed and verified during TASK-011/TASK-019.
+
+The repair is authorized only when all of the following are true:
+
+- the scope is exactly `tabroom-college-policy-2025-26`, revision 1;
+- the capture ID appears in `docs/coverage/college-policy-2025-26-r1.json`;
+- the stored capture digest exactly equals that manifest entry's SHA-256;
+- the manifest source authorization is exactly `anonymous public`;
+- stored `authorization_class = 'public'`;
+- stored `grant_scope IS NULL`;
+- the retained purpose is `season membership evidence`;
+- retention remains `public-evidence`;
+- event-classification evidence is role `season-event-classification` and is linked through `season_membership_evidence` to the approved revision;
+- no unrelated evidence row is updated merely because it shares a capture.
+
+The migration must fail closed if any expected capture, digest, scope, revision, policy field, or membership/evidence relationship does not match. It may update only the qualifying capture/evidence `audience` metadata needed to satisfy `warehouse_public_evidence`.
+
+The Dropbox archive remains the durable original-byte source and does not need to be copied into the public GitHub repository for this existing-row repair.
+
 ## Required source reading
 
 Read and preserve:
