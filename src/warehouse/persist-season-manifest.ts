@@ -34,7 +34,7 @@ export type RetainedManifest = Omit<Manifest, 'tournaments'> & {
 
 const provider = 'tabroom';
 const policy = { authorization: 'public', purpose: 'season membership evidence',
-  audience: 'internal', retention: 'public-evidence' };
+  audience: 'public', retention: 'public-evidence' };
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
 
 export async function persistSeasonManifest(
@@ -75,7 +75,13 @@ export async function persistSeasonManifest(
       }).onConflictDoNothing();
       const [stored] = await tx.select().from(schema.captures).where(eq(schema.captures.id, source.id));
       if (stored.digest !== source.sha256 || stored.route !== source.url ||
-          stored.authorization !== 'public' || stored.grant !== null) throw new Error('Conflicting capture lineage');
+          stored.provider !== provider || stored.method !== method ||
+          Object.keys(stored.scope as object).length !== 1 ||
+          (stored.scope as Record<string, unknown>)[tournament ? 'tournament' : 'season'] !==
+            (tournament ?? manifest.scopeId) ||
+          stored.authorization !== 'public' || stored.audience !== 'public' ||
+          stored.purpose !== policy.purpose || stored.retention !== policy.retention ||
+          stored.grant !== null) throw new Error('Conflicting capture lineage');
       let data;
       if (source.status === 200 && source.mediaType.includes('application/json')) {
         try { data = JSON.parse(Buffer.from(bytes).toString('utf8')); } catch { /* Invalid source capture. */ }
@@ -105,7 +111,7 @@ export async function persistSeasonManifest(
         const root = source === invite.id ? invitation : source === bulk?.id ? exported : undefined;
         const row = pointer.slice(1).split('/').reduce((value, part) =>
           value && Object.hasOwn(value, part) ? value[part] : undefined, root);
-        if (String(root?.id) !== id || String(row?.id) !== event.id || row?.name !== event.division) {
+        if (!pointer.startsWith('/') || String(root?.id) !== id || String(row?.id) !== event.id || row?.name !== event.division) {
           throw new Error('Event classification evidence mismatch ' + id + '/' + event.id);
         }
         const identity = { provider, tournament: id, sourceId: event.id };
@@ -126,6 +132,16 @@ export async function persistSeasonManifest(
           eq(schema.evidence.snapshot, source), eq(schema.evidence.parser, 1),
           eq(schema.evidence.pointer, pointer), eq(schema.evidence.role, role),
         ));
+        const observed = observation.value as { name?: string; type?: string } | null;
+        if (observation.subject !== stored.id || observation.authorization !== policy.authorization ||
+            observation.audience !== policy.audience || observation.purpose !== policy.purpose ||
+            observation.retention !== policy.retention || observation.grant !== null ||
+            observation.verification !== 'observed' || observation.state !== 'observed' ||
+            JSON.stringify(observation.sourceId) !== JSON.stringify(row.id) ||
+            observed?.name !== row.name ||
+            observed?.type !== row.type) {
+          throw new Error('Conflicting event classification lineage');
+        }
         await tx.insert(schema.seasonMembershipEvidence).values({ membership: membership.id, evidence: observation.id });
       }
     }

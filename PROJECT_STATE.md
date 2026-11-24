@@ -85,6 +85,8 @@ In parallel, keep authenticated Tabroom validation private/local and bounded. Pe
 
 ## Recent Detailed Handoffs
 
+- [TASK-022 partial season membership repair](docs/handoffs/2026-11-24-public-judge-analytics-mart.md). The local repair passed PostgreSQL single-user checks. Mart implementation and full verification are pending.
+
 - [TASK-021 judge analytics design](docs/handoffs/2026-11-24-judge-analytics.md).
 
 - [TASK-020 judge-card prototype](docs/handoffs/2026-11-24-minimum-judge-card.md).
