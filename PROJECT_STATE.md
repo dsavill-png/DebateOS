@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-019](tasks/019-public-judge-profile-usability-proof.md) is Partial in the local checkout. The three public judge profiles and field-coverage matrix are ready for review. All display names remain unresolved pending inspection of original roster captures or a permitted structured identity observation. Profile tests pass. Dependency-backed verification and pinned archive replay remain pending. See the [Jared handoff](docs/handoffs/2026-11-24-public-judge-profile.md).
+- [TASK-019](tasks/019-public-judge-profile-usability-proof.md) is Completed and merged through PR #17 at `4b2e3d72da0b6a7350f6ccba80a781855506edff`. The three coach-facing public profiles and 15-field coverage matrix are verified. Pinned public capture bytes matched the manifest hashes and explicitly resolve the sample names as Michael Scott (`175248`), LaToya Green (`19665`), and Arya Persaud (`775310`). Final head `94a94b87c57e51c4d3888fd382dbed4df407dd01` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. See the [Jared handoff](docs/handoffs/2026-11-24-public-judge-profile.md).
 
 - [TASK-017](tasks/017-durable-person-relationship-schema.md) is Completed and merged through PR #14 at `a706e779101a3b5ae3eee73d4d505558bff62d27`. GitHub-hosted verification passed the full Node test suite, TypeScript, Next.js production build, fresh migration, base-to-head upgrade preserving an existing Person, and PostgreSQL dump/restore. See the [implementation handoff](docs/handoffs/2026-11-24-durable-person-relationships.md).
 
@@ -69,11 +69,11 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Replay the TASK-019 name join with the pinned public archive, then review the three profiles and field-coverage matrix with Dennis and Jared.
+- Review the completed TASK-019 coach proof with Jared and decide the minimum judge-card UI contract before dashboard implementation.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-TASK-016 and TASK-017 are complete. Validate the TASK-019 proof with coaches before building a dashboard.
+TASK-016, TASK-017, and TASK-019 are complete. Review the three judge profiles and field-coverage matrix with Jared, then define the minimum judge-card UI contract before building a dashboard.
 
 In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 

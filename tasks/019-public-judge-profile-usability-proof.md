@@ -1,6 +1,6 @@
 # 019 · Public judge profile usability proof
 
-**Status** Approved  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Dispatch** Released  
@@ -168,3 +168,20 @@ Report:
 - RECOMMENDED NEXT STEP
 
 If public structured evidence cannot support the identity/name claim, surface that as the product gap instead of changing sources or weakening the evidence rule.
+
+
+## Completion
+
+Dennis approved the public judge-profile usability proof on 2026-11-24.
+
+PR #17 merged at `4b2e3d72da0b6a7350f6ccba80a781855506edff`.
+
+Leadership review reopened the pinned Phase A public capture archive from Dropbox. The relevant bulk files matched the manifest SHA-256 values exactly and supplied explicit named tournament-judge rows plus same-capture ballot `judge_person` links for all three samples:
+
+- Tabroom person `175248` — Michael Scott;
+- Tabroom person `19665` — LaToya Green;
+- Tabroom person `775310` — Arya Persaud.
+
+The final immutable PR head `94a94b87c57e51c4d3888fd382dbed4df407dd01` passed the GitHub-hosted verification harness: full Node tests, TypeScript, Next.js production build, fresh migration, upgrade, and PostgreSQL dump/restore.
+
+No authenticated/private Tabroom data, HTML scraping, inferred affiliation, or dashboard work was introduced.
