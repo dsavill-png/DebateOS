@@ -14,16 +14,47 @@ function rowAt(body: unknown, pointer: string): Json | undefined {
   return row && typeof row === 'object' && !Array.isArray(row) ? row as Json : undefined;
 }
 
+function objectRow(value: unknown): Json | undefined {
+  return value && typeof value === 'object' && !Array.isArray(value) ? value as Json : undefined;
+}
+
+function composedName(row: Json, firstKey: string, lastKey: string) {
+  if (typeof row.name === 'string' && row.name.trim()) return row.name.trim();
+  const first = typeof row[firstKey] === 'string' ? row[firstKey].trim() : '';
+  const last = typeof row[lastKey] === 'string' ? row[lastKey].trim() : '';
+  const name = [first, last].filter(Boolean).join(' ').trim();
+  return name || null;
+}
+
+function namedRosterRows(body: unknown, judgeId: string) {
+  const root = objectRow(body);
+  const categories = Array.isArray(root?.categories) ? root.categories : [];
+  const rows: { name: string; pointer: string }[] = [];
+  for (const [categoryIndex, rawCategory] of categories.entries()) {
+    const category = objectRow(rawCategory);
+    const judges = Array.isArray(category?.judges) ? category.judges : [];
+    for (const [judgeIndex, rawJudge] of judges.entries()) {
+      const judge = objectRow(rawJudge);
+      if (!judge || String(judge.id) !== judgeId) continue;
+      const name = composedName(judge, 'first', 'last');
+      if (name) rows.push({ name, pointer: `/categories/${categoryIndex}/judges/${judgeIndex}` });
+    }
+  }
+  return rows;
+}
+
 function resolveName(
   activity: JudgeActivity, manifest: RetainedManifest, readCapture: ReadCapture,
 ) {
+  let captureAvailable = false;
+  let explicitIdentityChain = false;
   const evidence = activity.judgeLinks.flatMap(link => {
-    if (!link.seasonRosterEvidence.length) return [];
     const source = manifest.tournaments.find(tournament => tournament.id === link.tournamentId)?.bulk;
     if (!source || source.authorization !== 'anonymous public' || source.status !== 200 ||
       source.url !== 'https://www.tabroom.com/api/download_data.mhtml?tourn_id=' + link.tournamentId) return [];
     const bytes = readCapture(link.tournamentId);
     if (!bytes) return [];
+    captureAvailable = true;
     if (sha256(bytes) !== source.sha256) throw new Error('Public capture digest mismatch for ' + link.tournamentId);
     const body: unknown = JSON.parse(new TextDecoder().decode(bytes));
     if (String(rowAt(body, '')?.id) !== link.tournamentId) return [];
@@ -34,15 +65,22 @@ function resolveName(
       return String(ballot?.judge) === link.judgeId && String(ballot?.judge_person) === activity.personId;
     });
     if (!ballotEvidence.length) return [];
+    explicitIdentityChain = true;
 
-    return link.seasonRosterEvidence.flatMap(ref => {
-      if (ref.snapshotId !== source.id || !/^\/categories\/\d+\/judges\/\d+$/.test(ref.pointer)) return [];
-      const roster = rowAt(body, ref.pointer);
-      if (String(roster?.id) !== link.judgeId || typeof roster?.name !== 'string' || !roster.name.trim()) return [];
+    const ballotNames = new Set(ballotEvidence.flatMap(ref => {
+      const ballot = rowAt(body, ref.pointer);
+      if (!ballot) return [];
+      const name = composedName(ballot, 'judge_first', 'judge_last');
+      return name ? [name] : [];
+    }));
+
+    return namedRosterRows(body, link.judgeId).flatMap(roster => {
+      if (ballotNames.size && !ballotNames.has(roster.name)) return [];
       return [{
-        name: roster.name.trim(), tournamentId: link.tournamentId, judgeId: link.judgeId,
+        name: roster.name, tournamentId: link.tournamentId, judgeId: link.judgeId,
         sourceUrl: source.url, capturedAt: source.fetchedAt, sha256: source.sha256,
-        nameEvidence: { ...ref, pointer: ref.pointer + '/name' }, ballotEvidence,
+        rosterEvidence: { snapshotId: source.id, pointer: roster.pointer },
+        ballotEvidence,
       }];
     });
   });
@@ -53,13 +91,13 @@ function resolveName(
     status: 'unresolved' as const,
     label: 'Name unresolved from public evidence',
     reason: names.length > 1 ? 'conflicting-public-names' :
-      activity.judgeLinks.some(link => link.seasonRosterEvidence.length) ?
-        'name-not-verified-at-roster-reference' : 'no-observed-roster-join',
+      !captureAvailable ? 'capture-bytes-not-provided' :
+        explicitIdentityChain ? 'no-named-roster-row-for-scoped-judge' : 'no-explicit-public-identity-chain',
   };
 }
 
 type RecentPanel = {
-  tournamentId: string; tournamentName: string; eventId: string; eventName: string; division: string;
+  tournamentId: string; tournamentName: string | null; eventId: string; eventName: string | null; division: string;
   roundId: string; panelId: string; assignmentDate: string | null; schools: string[];
   schoolCoverageUnresolved: boolean; evidence: EvidenceRef[];
 };
