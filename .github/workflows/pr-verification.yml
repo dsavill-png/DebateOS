@@ -1,0 +1,246 @@
+name: Verify DebateOS PR
+run-name: Verify DebateOS PR from comment ${{ github.event.comment.id }}
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+concurrency:
+  group: verify-pr-comment-${{ github.event.comment.id }}
+
+jobs:
+  verify:
+    if: >-
+      github.repository == 'dsavill-png/DebateOS' &&
+      github.event.issue.number == 1 &&
+      github.event.issue.pull_request &&
+      github.actor == 'dsavill-png' &&
+      github.event.sender.login == 'dsavill-png' &&
+      github.event.comment.user.login == 'dsavill-png'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Validate command and target PR
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_RUN_ATTEMPT" == 1 ]] || exit 0
+
+          source_id=$(jq -er '.comment.id | numbers | tostring' "$GITHUB_EVENT_PATH")
+          record=$(gh api "repos/$GITHUB_REPOSITORY/issues/comments/$source_id")
+          body=$(jq -er --arg id "$source_id" --arg repo "$GITHUB_REPOSITORY" --slurpfile event "$GITHUB_EVENT_PATH" '
+            select((.id | tostring) == $id and
+              .issue_url == ("https://api.github.com/repos/" + $repo + "/issues/1") and
+              .user.login == "dsavill-png" and .user.type == "User" and
+              (.created_at | type) == "string" and .created_at == .updated_at and
+              .body == $event[0].comment.body) |
+            .body | gsub("^\\s+|\\s+$"; "")
+          ' <<<"$record") || exit 0
+
+          [[ "$body" =~ ^VERIFY\ PR-([0-9]+)$ ]] || exit 0
+          pr_number=${BASH_REMATCH[1]}
+
+          pr=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$pr_number")
+          jq -e --arg repo "$GITHUB_REPOSITORY" '
+            .state == "open" and
+            .base.ref == "main" and
+            .head.repo.full_name == $repo and
+            (.user.login == "github-actions[bot]" or .user.login == "dsavill-png") and
+            ((.head.ref | startswith("codex/task-")) or (.head.ref | startswith("task-")))
+          ' <<<"$pr" >/dev/null
+
+          head_sha=$(jq -er '.head.sha | select(test("^[0-9a-f]{40}$"))' <<<"$pr")
+          base_sha=$(jq -er '.base.sha | select(test("^[0-9a-f]{40}$"))' <<<"$pr")
+
+          echo "accepted=true" >> "$GITHUB_OUTPUT"
+          echo "pr_number=$pr_number" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+          echo "source_id=$source_id" >> "$GITHUB_OUTPUT"
+
+      - name: Check out immutable target head
+        if: steps.gate.outputs.accepted == 'true'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.gate.outputs.head_sha }}
+          persist-credentials: false
+
+      - name: Set up Node 24
+        if: steps.gate.outputs.accepted == 'true'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install locked dependencies
+        if: steps.gate.outputs.accepted == 'true'
+        run: npm ci
+
+      - name: Prepare PostgreSQL databases
+        if: steps.gate.outputs.accepted == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cid=$(docker ps --filter ancestor=postgres:17 --format '{{.ID}}' | head -1)
+          test -n "$cid"
+          for db in debateos_test debateos_fresh debateos_upgrade debateos_restore; do
+            docker exec "$cid" psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS $db;"
+            docker exec "$cid" psql -U postgres -d postgres -v ON_ERROR_STOP=1 -c "CREATE DATABASE $db;"
+          done
+
+      - name: Run full Node test suite
+        if: steps.gate.outputs.accepted == 'true'
+        env:
+          WAREHOUSE_TEST_URL: postgresql://postgres:postgres@127.0.0.1:5432/debateos_test
+        run: npm test
+
+      - name: TypeScript check
+        if: steps.gate.outputs.accepted == 'true'
+        run: npx tsc --noEmit
+
+      - name: Next.js production build
+        if: steps.gate.outputs.accepted == 'true'
+        run: npm run build
+
+      - name: Verify fresh migration
+        if: steps.gate.outputs.accepted == 'true'
+        env:
+          WAREHOUSE_DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/debateos_fresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run db:migrate
+          node --input-type=module <<'NODE'
+          import pg from 'pg';
+          const pool = new pg.Pool({ connectionString: process.env.WAREHOUSE_DATABASE_URL });
+          try {
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
+              const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
+              if (!rows[0]?.name) throw new Error('missing table ' + table);
+            }
+          } finally {
+            await pool.end();
+          }
+          NODE
+
+      - name: Check out target base for upgrade test
+        if: steps.gate.outputs.accepted == 'true'
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.gate.outputs.base_sha }}
+          path: _base
+          persist-credentials: false
+
+      - name: Verify upgrade preserves existing Person
+        if: steps.gate.outputs.accepted == 'true'
+        env:
+          UPGRADE_URL: postgresql://postgres:postgres@127.0.0.1:5432/debateos_upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            cd _base
+            WAREHOUSE_DATABASE_URL="$UPGRADE_URL" node src/warehouse/migrate.ts
+          )
+          node --input-type=module <<'NODE'
+          import pg from 'pg';
+          const pool = new pg.Pool({ connectionString: process.env.UPGRADE_URL });
+          try {
+            await pool.query("insert into persons(provider, person_source_id) values ('verification','existing-person')");
+          } finally {
+            await pool.end();
+          }
+          NODE
+
+          WAREHOUSE_DATABASE_URL="$UPGRADE_URL" node src/warehouse/migrate.ts
+
+          node --input-type=module <<'NODE'
+          import pg from 'pg';
+          const pool = new pg.Pool({ connectionString: process.env.UPGRADE_URL });
+          try {
+            const person = await pool.query("select count(*)::int as n from persons where provider='verification' and person_source_id='existing-person'");
+            if (person.rows[0].n !== 1) throw new Error('preexisting Person was not preserved');
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
+              const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
+              if (!rows[0]?.name) throw new Error('missing upgraded table ' + table);
+            }
+          } finally {
+            await pool.end();
+          }
+          NODE
+
+      - name: Verify PostgreSQL dump and restore
+        if: steps.gate.outputs.accepted == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cid=$(docker ps --filter ancestor=postgres:17 --format '{{.ID}}' | head -1)
+          test -n "$cid"
+          docker exec "$cid" pg_dump -U postgres --format=custom debateos_upgrade > "$RUNNER_TEMP/debateos.dump"
+          test -s "$RUNNER_TEMP/debateos.dump"
+          cat "$RUNNER_TEMP/debateos.dump" | docker exec -i "$cid" pg_restore -U postgres -d debateos_restore --no-owner --no-privileges
+          RESTORE_URL=postgresql://postgres:postgres@127.0.0.1:5432/debateos_restore node --input-type=module <<'NODE'
+          import pg from 'pg';
+          const pool = new pg.Pool({ connectionString: process.env.RESTORE_URL });
+          try {
+            const person = await pool.query("select count(*)::int as n from persons where provider='verification' and person_source_id='existing-person'");
+            if (person.rows[0].n !== 1) throw new Error('restored Person missing');
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
+              const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
+              if (!rows[0]?.name) throw new Error('restored table missing ' + table);
+            }
+          } finally {
+            await pool.end();
+          }
+          NODE
+
+      - name: Report verification result
+        if: always() && steps.gate.outputs.accepted == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.gate.outputs.pr_number }}
+          HEAD_SHA: ${{ steps.gate.outputs.head_sha }}
+          SOURCE_ID: ${{ steps.gate.outputs.source_id }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          marker="<!-- debateos-pr-verification:$SOURCE_ID -->"
+          existing=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/1/comments?per_page=100" --jq '.[] | select(.user.login=="github-actions[bot]") | .body' | grep -Fxc "$marker" || true)
+          if [[ "$existing" != 0 ]]; then exit 0; fi
+
+          run_link="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          if [[ "$JOB_STATUS" == "success" ]]; then
+            result="success"
+            next="PR #$PR_NUMBER passed the GitHub-hosted verification harness."
+          else
+            result="failure"
+            next="PR #$PR_NUMBER failed or did not complete the verification harness; inspect the Actions run before merge."
+          fi
+
+          body=$(printf 'VERIFY PR-%s result: %s. Head SHA: `%s`. Actions: %s\n\n@dsavill-png — %s\n\n%s' "$PR_NUMBER" "$result" "$HEAD_SHA" "$run_link" "$next" "$marker")
+          gh api --method POST "repos/$GITHUB_REPOSITORY/issues/1/comments" -f "body=$body" >/dev/null
