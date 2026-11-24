@@ -1,6 +1,6 @@
 # 016 · Model durable people, roles, affiliations, and participation history
 
-**Status** Approved / In Progress  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Chat / engineering review  
 **Review** Dennis. Consult Jared on downstream UI and product implications.  
@@ -148,3 +148,8 @@ After Dennis approves the architecture:
 2. migrate/backfill only evidence-backed public relationships first;
 3. then proceed with the public judge-profile usability proof using the durable person model;
 4. keep authenticated Tabroom integration on its separate private/local track.
+
+
+## Review decision
+
+Dennis approved this architecture on 2026-11-24 and authorized physical-schema implementation as the next step.
