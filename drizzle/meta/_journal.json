@@ -15,6 +15,13 @@
       "when": 1795454522548,
       "tag": "0001_evidence_acceptance",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795536000000,
+      "tag": "0002_durable_person_relationships",
+      "breakpoints": true
     }
   ]
 }
