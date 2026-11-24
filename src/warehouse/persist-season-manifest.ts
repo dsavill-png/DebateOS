@@ -80,7 +80,8 @@ export async function persistSeasonManifest(
           (stored.scope as Record<string, unknown>)[tournament ? 'tournament' : 'season'] !==
             (tournament ?? manifest.scopeId) ||
           stored.authorization !== 'public' || stored.audience !== 'public' ||
-          stored.retention !== policy.retention || stored.grant !== null) throw new Error('Conflicting capture lineage');
+          stored.purpose !== policy.purpose || stored.retention !== policy.retention ||
+          stored.grant !== null) throw new Error('Conflicting capture lineage');
       let data;
       if (source.status === 200 && source.mediaType.includes('application/json')) {
         try { data = JSON.parse(Buffer.from(bytes).toString('utf8')); } catch { /* Invalid source capture. */ }
