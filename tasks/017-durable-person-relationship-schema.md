@@ -1,6 +1,6 @@
 # 017 · Implement durable person relationship schema
 
-**Status** Approved  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Dispatch** Released  
@@ -196,3 +196,10 @@ Report:
 - RECOMMENDED NEXT STEP
 
 If an existing schema constraint makes ADR-003 impossible without a breaking change not authorized here, stop and report the conflict instead of improvising.
+
+
+## Completion decision
+
+Dennis approved the verified implementation on 2026-11-24. PR #14 merged at `a706e779101a3b5ae3eee73d4d505558bff62d27`.
+
+GitHub-hosted verification against immutable PR head `47d51f09dbc624b0e9da5381741421f17d9df5f2` passed the full Node test suite, TypeScript check, Next.js production build, fresh migration, base-to-head upgrade preserving a preexisting Person, and PostgreSQL dump/restore. The workflow's final reporting step failed with HTTP 403 after the substantive verification had already passed; TASK-018 tracks that reporting-permission fix.
