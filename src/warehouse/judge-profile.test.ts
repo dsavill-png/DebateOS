@@ -13,27 +13,54 @@ const report: Pick<JudgeActivityReport, 'manifest' | 'evidenceCutoff' | 'derivat
   JSON.parse(read('-judge-activity-samples'));
 const coverage: JudgeActivityReport['coverage']['events'] = JSON.parse(read('-summary')).events;
 
-test('checked-in profiles reproduce the pinned public sample and preserve coverage and evidence', () => {
+test('checked-in profiles preserve pinned activity and explicit verified-name artifacts', () => {
   const manifest: RetainedManifest = JSON.parse(read(''));
-  const profiles: JudgeProfile[] = ['175248', '19665', '775310'].map(personId =>
+  const derived: JudgeProfile[] = ['175248', '19665', '775310'].map(personId =>
     deriveJudgeProfile(report, report.people.find(row => row.personId === personId)!, manifest, coverage));
-  assert.equal(JSON.stringify(profiles, null, 2) + '\n', read('-judge-profiles'));
-  const [snu, gap, undated] = profiles;
-  assert.deepEqual([snu, gap, undated].map(p => p.identity.personId), ['175248', '19665', '775310']);
-  for (const profile of [snu, gap, undated]) {
-    const activity = report.people.find(row => row.personId === profile.identity.personId)!;
-    assert.equal(profile.identity.displayName.label, 'Name unresolved from public evidence');
-    assert.equal(profile.identity.displayName.reason, 'capture-bytes-not-provided');
-    assert.equal(profile.atAGlance.panelAssignmentCount, activity.panelAssignmentCount);
-    assert.deepEqual(profile.evidence, { judgeLinks: activity.judgeLinks, eventHistory: activity.eventHistory });
+  const committed: JudgeProfile[] = JSON.parse(read('-judge-profiles'));
+  assert.deepEqual(committed.map(p => p.identity.personId), ['175248', '19665', '775310']);
+  assert.deepEqual(committed.map(p => p.identity.displayName.label), ['Michael Scott', 'LaToya Green', 'Arya Persaud']);
+
+  for (let i = 0; i < committed.length; i++) {
+    const expected = derived[i];
+    const actual = committed[i];
+    assert.equal(actual.identity.provider, expected.identity.provider);
+    assert.equal(actual.identity.personId, expected.identity.personId);
+    assert.equal(actual.identity.displayName.status, 'verified');
+    assert.equal(expected.identity.displayName.status, 'unresolved');
+    assert.equal(expected.identity.displayName.reason, 'capture-bytes-not-provided');
+    const { identity: _actualIdentity, ...actualRest } = actual;
+    const { identity: _expectedIdentity, ...expectedRest } = expected;
+    assert.deepEqual(actualRest, expectedRest);
   }
+
+  const [snu, gap, undated] = committed;
   assert.deepEqual(snu.atAGlance.snuExposure, { panelCount: 2, roundCount: 2 });
   assert.equal(gap.coverage.assignedJudgeIdsAbsentFromSeasonRosters, 1);
-  assert.equal(gap.identity.displayName.status, 'unresolved');
-  assert.equal(gap.identity.displayName.reason, 'capture-bytes-not-provided');
   assert.equal(undated.atAGlance.firstAssignmentDate, null);
   assert.equal(undated.atAGlance.mostRecentAssignmentDate, null);
   assert.equal(undated.recentPanels[0].assignmentDate, null);
+});
+
+const captureDirectory = process.env.JUDGE_PROFILE_CAPTURES_DIRECTORY;
+test('extracted pinned archive reproduces the checked-in verified names', { skip: !captureDirectory }, () => {
+  const manifest: RetainedManifest = JSON.parse(read(''));
+  const committed: JudgeProfile[] = JSON.parse(read('-judge-profiles'));
+  const profiles: JudgeProfile[] = ['175248', '19665', '775310'].map(personId =>
+    deriveJudgeProfile(
+      report,
+      report.people.find(row => row.personId === personId)!,
+      manifest,
+      coverage,
+      tournamentId => {
+        try {
+          return readFileSync(`${captureDirectory}/${tournamentId}-bulk.json`);
+        } catch {
+          return undefined;
+        }
+      },
+    ));
+  assert.equal(JSON.stringify(profiles, null, 2) + '\n', JSON.stringify(committed, null, 2) + '\n');
 });
 
 test('a pinned roster name requires the same scoped judge and explicit ballot person ID', () => {
