@@ -1,6 +1,6 @@
 # 021 · Judge analytics dimensional model and rollup contract
 
-**Status** Approved  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Codex  
 **Dispatch** Released  
@@ -383,3 +383,14 @@ Report:
 - RECOMMENDED NEXT STEP
 
 If a source semantic is not verified, leave the field unresolved and surface the dependency. Do not weaken the evidence rule to make the metric computable.
+
+
+## Completion
+
+Dennis approved ADR-004 on 2026-11-24 and explicitly confirmed that two flighted debates in the same named round count as two debates judged because the authoritative assignment grain is Person × panel.
+
+PR #21 passed the owner-gated GitHub verification harness on immutable head `1feb7788206341da0c1ff5aa76bc6f46fa0d0e8e`: full Node tests, TypeScript, Next.js production build, fresh migration, base-to-head upgrade, and PostgreSQL dump/restore.
+
+PR #21 merged at `6147ac6c6cea28c69eeefa9d0f552abef100b813`.
+
+The architecture is accepted. Protected vote, side, result, affiliation, and paradigm promotion remain gated until their source semantics and authorization are separately verified.
