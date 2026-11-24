@@ -1,6 +1,15 @@
-import type { JudgeProfile } from '../../warehouse/judge-profile.ts';
+type JudgeCardSummaryInput = {
+  atAGlance: {
+    firstAssignmentDate: string | null;
+    mostRecentAssignmentDate: string | null;
+    snuExposure: { panelCount: number; roundCount: number };
+  };
+  coverage: {
+    assignedJudgeIdsAbsentFromSeasonRosters: number;
+  };
+};
 
-export function judgeCardSummary(profile: Pick<JudgeProfile, 'atAGlance' | 'coverage'>) {
+export function judgeCardSummary(profile: JudgeCardSummaryInput) {
   const { firstAssignmentDate, mostRecentAssignmentDate, snuExposure } = profile.atAGlance;
   const { panelCount, roundCount } = snuExposure;
 
