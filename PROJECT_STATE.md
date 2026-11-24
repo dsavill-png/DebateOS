@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-021](tasks/021-judge-analytics-dimensional-model.md) is Approved and Released. Dennis has shifted immediate priority to the data backend: dimensional judge analytics, atomic fact grains, canonical metric definitions, and PostgreSQL rollups/materialized views. Jared owns downstream presentation decisions; TASK-020 remains a usability/debugging aid rather than the product-design priority.
+- [TASK-021](tasks/021-judge-analytics-dimensional-model.md) has a proposed [judge analytics ADR](docs/architecture/ADR-004-judge-analytics.md) ready for Dennis and Chat review. The design uses Person × panel assignments, separate individual decisions and panel results, and a public-only materialized view. Vote, side and result promotion remain gated on validation.
 
 - [TASK-020](tasks/020-minimum-judge-card-ui-contract.md) is Completed and merged through PR #19 at `f13302dc5ea144118556adbae85753fa16b5de0d`. The static `/judge-proof` prototype and [minimum judge-card contract](docs/product/minimum-judge-card.md) use the verified TASK-019 artifacts. Final head `a9637709ac4f25a842762b105444cd19391f81f8` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. It is retained for backend usability checks; Jared owns downstream presentation decisions.
 
@@ -73,15 +73,17 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Execute TASK-021 to define the judge-analytics dimensional model, atomic facts, canonical metrics, SNU detail contract, and materialized-view/rollup serving layer. Keep protected decision fields unresolved until their source semantics are verified.
+- Review the TASK-021 design before authorizing a physical mart. Keep protected decision fields unresolved until their source semantics are verified.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Immediate priority is TASK-021: judge analytics backend architecture. Define authoritative atomic facts and reproducible rollups/materialized views before broader UI work. Jared owns downstream presentation.
+Immediate priority is review of the TASK-021 judge analytics backend design before broader UI work. Jared owns downstream presentation.
 
 In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 
 ## Recent Detailed Handoffs
+
+- [TASK-021 judge analytics design](docs/handoffs/2026-11-24-judge-analytics.md).
 
 - [TASK-020 judge-card prototype](docs/handoffs/2026-11-24-minimum-judge-card.md).
 
