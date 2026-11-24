@@ -10,4 +10,4 @@ The profile generator continues to require the verified [Phase A archive](2026-1
 node src/warehouse/run-judge-profiles.ts CAPTURES_DIRECTORY
 ```
 
-The original Codex sandbox passed the focused profile tests but could not complete dependency-backed verification. GitHub-hosted verification subsequently exposed a TypeScript nullability bug in the recent-panel type; that defect was corrected during leadership review. Re-run the owner-gated verifier against the final PR head before merge.
+The original Codex sandbox passed the focused profile tests but could not complete dependency-backed verification. GitHub-hosted verification exposed a TypeScript nullability bug in the recent-panel type; leadership review corrected it. Final immutable head `94a94b87c57e51c4d3888fd382dbed4df407dd01` then passed the full Node test suite, TypeScript check, Next.js production build, fresh migration, base-to-head upgrade, and PostgreSQL dump/restore in Actions run `45436087781`. PR #17 merged at `4b2e3d72da0b6a7350f6ccba80a781855506edff`.
