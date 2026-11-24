@@ -300,6 +300,7 @@ BEGIN
           AND w.snapshot_id = pin->>6 AND w.source_pointer = pin->>7
           AND w.subject_id = e.id AND w.raw_source_id #>> '{}' = pin->>1
           AND w.observed_value->>'name' = pin->>3
+          AND w.observed_value->>'type' = pin->>4
           AND w.output_role = 'season-event-classification' AND w.parser_version = 1
           AND w.verification = 'observed' AND w.observation_state = 'observed'
           AND w.authorization_class = 'public' AND w.grant_scope IS NULL
