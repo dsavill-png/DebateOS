@@ -4,13 +4,13 @@
     {
       "field": "Display name",
       "coachRelevance": "Recognize the judge",
-      "source": "Bulk category judge roster and ballot",
+      "source": "Pinned bulk category judge roster + same-capture ballot identity link",
       "availability": "public",
-      "joinKey": "Tournament + judge ID → ballot judge_person",
-      "verification": "Unresolved in all samples",
-      "freshness": "Roster snapshot; cutoff below",
-      "uiAllowedNow": "Verified name or unresolved label",
-      "caveat": "Two samples need original roster bytes; one lacks an observed roster join."
+      "joinKey": "Tournament + judge ID + ballot judge_person",
+      "verification": "Verified in all three samples",
+      "freshness": "Pinned bulk snapshots through the evidence cutoff",
+      "uiAllowedNow": "Yes when verified; otherwise show unresolved label",
+      "caveat": "Requires a named tournament-scoped judge row and an explicit same-capture ballot link to the Person; conflicts or missing bytes stay unresolved."
     },
     {
       "field": "Tabroom person ID",
