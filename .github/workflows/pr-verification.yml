@@ -138,7 +138,7 @@ jobs:
           import pg from 'pg';
           const pool = new pg.Pool({ connectionString: process.env.WAREHOUSE_DATABASE_URL });
           try {
-            for (const table of ['person_role_observations','person_institution_affiliations','student_person_assertions','entry_person_memberships']) {
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
               const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
               if (!rows[0]?.name) throw new Error('missing table ' + table);
             }
@@ -184,7 +184,7 @@ jobs:
           try {
             const person = await pool.query("select count(*)::int as n from persons where provider='verification' and person_source_id='existing-person'");
             if (person.rows[0].n !== 1) throw new Error('preexisting Person was not preserved');
-            for (const table of ['person_role_observations','person_institution_affiliations','student_person_assertions','entry_person_memberships']) {
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
               const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
               if (!rows[0]?.name) throw new Error('missing upgraded table ' + table);
             }
@@ -209,7 +209,7 @@ jobs:
           try {
             const person = await pool.query("select count(*)::int as n from persons where provider='verification' and person_source_id='existing-person'");
             if (person.rows[0].n !== 1) throw new Error('restored Person missing');
-            for (const table of ['person_role_observations','person_institution_affiliations','student_person_assertions','entry_person_memberships']) {
+            for (const table of ['person_role_observations','person_institution_affiliations','student_person_evidence','entry_person_memberships']) {
               const { rows } = await pool.query('select to_regclass($1) as name', ['public.' + table]);
               if (!rows[0]?.name) throw new Error('restored table missing ' + table);
             }
