@@ -1,0 +1,21 @@
+# Public judge profile field coverage
+
+The pinned season evidence cutoff is `2026-11-23T18:06:06.000Z`. Competition dates come from evidenced rounds. [Machine-readable matrix](public-judge-profile-field-coverage.json)
+
+| Field | Coach relevance | Source | Availability | Join key | Verification | Freshness / observed basis | UI allowed now? | Caveat |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Display name | Recognize the judge | Bulk category judge roster and ballot | public | Tournament + judge ID → ballot judge_person | Unresolved in all samples | Roster snapshot; cutoff below | Verified name or unresolved label | Two samples need original roster bytes; one lacks an observed roster join. |
+| Tabroom person ID | Identify the same person across tournaments | TASK-013 explicit ballot links | public | Provider + person ID | Verified source identity | Pinned assignment snapshots | Yes | Judge IDs are tournament-scoped. |
+| Institution/affiliation | Understand affiliation at the time of judging | ADR-003 historical affiliation evidence | unavailable | Person + institution + effective period | Unresolved | No verified observation | No | Panel schools cannot establish judge affiliation. |
+| Observed panels judged | See observed judging history | TASK-013 panelAssignmentCount | public | Person + tournament + event + round + panel | Verified observed count | Pinned assignment snapshots | Yes | Publication and discovery gaps limit counts. |
+| Tournament count | See breadth of observed activity | TASK-013 tournamentCount | public | Person + tournament | Verified observed count | Pinned assignment snapshots | Yes | Only tournaments with qualifying assignments. |
+| Division history | See divisions the judge covered | TASK-013 divisionDistribution and membership evidence | public | Person + tournament + event | Verified observed divisions | Pinned season membership | Yes | Uses pinned division labels. |
+| Observed date span | See when the judge was observed | Bulk round start_time via TASK-013 | public | Tournament + event + round | Verified where dated | First and last usable round dates | Yes | Missing dates stay unknown. |
+| SNU exposure | Find observed SNU panels and rounds | TASK-013 explicitSnu | public | Panel ballot entry → same-event entry → school | Verified observed counts | Pinned assignment snapshots | Yes | Zero means no observed SNU exposure. |
+| Recent panel schools | Recognize programs on recent panels | TASK-013 schoolObservations | public | Panel ballot entry → same-event entry → school | Verified where linked | Recent observed round dates; undated last | Yes | Partial or ambiguous joins remain visible. |
+| Paradigm | Read stated judging preferences | Tabroom paradigm REST | protected | Person ID | Access boundary documented | No public observation | No | Requires separate authorization. |
+| Individual vote | Review an individual decision | Tabroom person record or protected ballot | protected | Person + scoped assignment + decision | Unverified semantics and access | No verified public observation | No | Public assignment does not establish a vote. |
+| Panel result | Review the overall decision | Public bulk result sets and ballots | public | Tournament + event + round + panel | Outcome unresolved | Pinned export where published | No | Placement and raw scores do not establish a verified panel winner. |
+| Aff/Neg side | Interpret side context | Raw public bulk ballot side | public | Scoped panel + entry | Semantics unverified | Pinned export where published | No | Requires verified side mapping. |
+| Vote tendency | Summarize longitudinal decisions | Derived from individual votes and verified sides | unavailable | Person + scoped decision + verified side | Unverified | No verified inputs | No | Depends on vote and side validation. |
+| Team/debater history | Trace teams and participation over time | Public bulk/field entry and student references | public | Tournament + event + entry + student; explicit Person crosswalk | Scoped observations only | Export or field snapshot | No | Durable identity and complete history are unverified. |

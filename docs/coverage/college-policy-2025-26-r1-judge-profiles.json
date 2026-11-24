@@ -1,0 +1,1152 @@
+[
+  {
+    "kind": "derived-public-judge-profile",
+    "source": {
+      "manifest": {
+        "scopeId": "tabroom-college-policy-2025-26",
+        "revision": 1,
+        "sha256": "5273059fdb3250d1352e9e36beee70b116800e0cc81b4825cc57f5d683e189ac"
+      },
+      "evidenceCutoff": "2026-11-23T18:06:06.000Z",
+      "activityVersion": 2
+    },
+    "identity": {
+      "provider": "tabroom",
+      "personId": "175248",
+      "displayName": {
+        "status": "unresolved",
+        "label": "Name unresolved from public evidence",
+        "reason": "name-not-verified-at-roster-reference"
+      }
+    },
+    "atAGlance": {
+      "panelAssignmentCount": 4,
+      "tournamentCount": 2,
+      "divisions": [
+        "Open Policy",
+        "JV",
+        "Open"
+      ],
+      "firstAssignmentDate": "2025-11-01",
+      "mostRecentAssignmentDate": "2026-01-03",
+      "assignmentsWithoutDate": 0,
+      "snuExposure": {
+        "panelCount": 2,
+        "roundCount": 2
+      }
+    },
+    "coverage": {
+      "caveat": "Counts describe activity observed in the pinned public exports. Missing observations can reflect gaps in discovery or publication.",
+      "assignedJudgeIdsAbsentFromSeasonRosters": 0,
+      "panelsWithUnresolvedSchoolCoverage": 0,
+      "events": [
+        {
+          "tournamentId": "36419",
+          "eventId": "341756",
+          "assignmentCoverageUnknown": true
+        },
+        {
+          "tournamentId": "38004",
+          "eventId": "359935",
+          "assignmentCoverageUnknown": false
+        },
+        {
+          "tournamentId": "38004",
+          "eventId": "359937",
+          "assignmentCoverageUnknown": true
+        }
+      ]
+    },
+    "recentPanels": [
+      {
+        "tournamentId": "38004",
+        "tournamentName": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+        "eventId": "359935",
+        "eventName": "JV",
+        "division": "JV",
+        "roundId": "1434282",
+        "panelId": "8614082",
+        "assignmentDate": "2026-01-03",
+        "schools": [
+          "Oklahoma",
+          "University of Wyoming"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/0"
+          },
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/1"
+          }
+        ]
+      },
+      {
+        "tournamentId": "38004",
+        "tournamentName": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+        "eventId": "359935",
+        "eventName": "JV",
+        "division": "JV",
+        "roundId": "1434283",
+        "panelId": "8614591",
+        "assignmentDate": "2026-01-03",
+        "schools": [
+          "Southern Nazarene University",
+          "University of Houston"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/0"
+          },
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/1"
+          }
+        ]
+      },
+      {
+        "tournamentId": "38004",
+        "tournamentName": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+        "eventId": "359937",
+        "eventName": "Open",
+        "division": "Open",
+        "roundId": "1434290",
+        "panelId": "8613913",
+        "assignmentDate": "2026-01-03",
+        "schools": [
+          "University of Wyoming",
+          "Southern Nazarene University"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/0"
+          },
+          {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/1"
+          }
+        ]
+      }
+    ],
+    "evidence": {
+      "judgeLinks": [
+        {
+          "tournamentId": "36419",
+          "judgeId": "2613076",
+          "personEvidence": [
+            {
+              "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+              "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/0"
+            },
+            {
+              "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+              "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/1"
+            }
+          ],
+          "seasonRosterEvidence": [
+            {
+              "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+              "pointer": "/categories/0/judges/65"
+            }
+          ]
+        },
+        {
+          "tournamentId": "38004",
+          "judgeId": "2685722",
+          "personEvidence": [
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/0"
+            },
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/1"
+            },
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/0"
+            },
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/1"
+            },
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/0"
+            },
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/1"
+            }
+          ],
+          "seasonRosterEvidence": [
+            {
+              "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+              "pointer": "/categories/0/judges/15"
+            }
+          ]
+        }
+      ],
+      "eventHistory": [
+        {
+          "tournamentId": "36419",
+          "tournamentName": "Gonzaga University  Jesuit Debates",
+          "tournamentStart": "2025-11-01T14:00:00.000Z",
+          "eventId": "341756",
+          "eventName": "Open Policy",
+          "division": "Open Policy",
+          "membershipEvidence": {
+            "source": "1a19d17d647f8c62876e0ef182de5452a9ded5d6c4e6a59f77f62dbd2468ed71",
+            "pointer": "/Events/0"
+          },
+          "eventEvidence": {
+            "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+            "pointer": "/categories/0/events/1"
+          },
+          "assignments": [
+            {
+              "roundId": "1372265",
+              "panelId": "8407479",
+              "judgeId": "2613076",
+              "roundStartRaw": "2025-11-01 15:00:00",
+              "assignmentDate": "2025-11-01",
+              "rosterEvidence": [
+                {
+                  "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                  "pointer": "/categories/0/judges/65"
+                }
+              ],
+              "roundEvidence": {
+                "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                "pointer": "/categories/0/events/1/rounds/0"
+              },
+              "panelEvidence": {
+                "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                "pointer": "/categories/0/events/1/rounds/0/sections/12"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                  "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/0"
+                },
+                {
+                  "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                  "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:6275",
+                  "tournamentSchoolId": "814519",
+                  "chapterId": "6275",
+                  "name": "Emory University",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                    "pointer": "/schools/29"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                    "pointer": "/schools/29/entries/0"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                      "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:6383",
+                  "tournamentSchoolId": "802705",
+                  "chapterId": "6383",
+                  "name": "University of Iowa",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                    "pointer": "/schools/15"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                    "pointer": "/schools/15/entries/1"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "84cf2bc5c669df98315e6156c7f8b166ad4b514bdd9702500670e92833361ccc",
+                      "pointer": "/categories/0/events/1/rounds/0/sections/12/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            }
+          ]
+        },
+        {
+          "tournamentId": "38004",
+          "tournamentName": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+          "tournamentStart": "2026-01-03T07:00:00.000Z",
+          "eventId": "359935",
+          "eventName": "JV",
+          "division": "JV",
+          "membershipEvidence": {
+            "source": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+            "pointer": "/Events/0"
+          },
+          "eventEvidence": {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/0"
+          },
+          "assignments": [
+            {
+              "roundId": "1434282",
+              "panelId": "8614082",
+              "judgeId": "2685722",
+              "roundStartRaw": "2026-01-03 17:30:00",
+              "assignmentDate": "2026-01-03",
+              "rosterEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/judges/15"
+                }
+              ],
+              "roundEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/0/rounds/1"
+              },
+              "panelEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/0/rounds/1/sections/4"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/0"
+                },
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:6322",
+                  "tournamentSchoolId": "833972",
+                  "chapterId": "6322",
+                  "name": "Oklahoma",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/7"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/7/entries/3"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:6336",
+                  "tournamentSchoolId": "841910",
+                  "chapterId": "6336",
+                  "name": "University of Wyoming",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/11"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/11/entries/0"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/0/rounds/1/sections/4/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            },
+            {
+              "roundId": "1434283",
+              "panelId": "8614591",
+              "judgeId": "2685722",
+              "roundStartRaw": "2026-01-03 21:00:00",
+              "assignmentDate": "2026-01-03",
+              "rosterEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/judges/15"
+                }
+              ],
+              "roundEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/0/rounds/2"
+              },
+              "panelEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/0/rounds/2/sections/2"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/0"
+                },
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:78199",
+                  "tournamentSchoolId": "825450",
+                  "chapterId": "78199",
+                  "name": "Southern Nazarene University",
+                  "explicitSnu": true,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/5"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/5/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:6240",
+                  "tournamentSchoolId": "842121",
+                  "chapterId": "6240",
+                  "name": "University of Houston",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/13"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/13/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/0/rounds/2/sections/2/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            }
+          ]
+        },
+        {
+          "tournamentId": "38004",
+          "tournamentName": "3rd Annual Sunflower Swing Part 1 hosted by KU",
+          "tournamentStart": "2026-01-03T07:00:00.000Z",
+          "eventId": "359937",
+          "eventName": "Open",
+          "division": "Open",
+          "membershipEvidence": {
+            "source": "cd44b20fdfc2f9983e8864ef9e7fd928ff8aa7acfc0f26e10e034d1b553bf94b",
+            "pointer": "/Events/2"
+          },
+          "eventEvidence": {
+            "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+            "pointer": "/categories/0/events/2"
+          },
+          "assignments": [
+            {
+              "roundId": "1434290",
+              "panelId": "8613913",
+              "judgeId": "2685722",
+              "roundStartRaw": "2026-01-03 15:00:00",
+              "assignmentDate": "2026-01-03",
+              "rosterEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/judges/15"
+                }
+              ],
+              "roundEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/2/rounds/0"
+              },
+              "panelEvidence": {
+                "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                "pointer": "/categories/0/events/2/rounds/0/sections/2"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/0"
+                },
+                {
+                  "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                  "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:6336",
+                  "tournamentSchoolId": "841910",
+                  "chapterId": "6336",
+                  "name": "University of Wyoming",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/11"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/11/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:78199",
+                  "tournamentSchoolId": "825450",
+                  "chapterId": "78199",
+                  "name": "Southern Nazarene University",
+                  "explicitSnu": true,
+                  "schoolEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/5"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                    "pointer": "/schools/5/entries/0"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "15b7f956a1fb96ab0f00c40021aee1abbabdfe65d116e3f30b907989a1d21b08",
+                      "pointer": "/categories/0/events/2/rounds/0/sections/2/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "derived-public-judge-profile",
+    "source": {
+      "manifest": {
+        "scopeId": "tabroom-college-policy-2025-26",
+        "revision": 1,
+        "sha256": "5273059fdb3250d1352e9e36beee70b116800e0cc81b4825cc57f5d683e189ac"
+      },
+      "evidenceCutoff": "2026-11-23T18:06:06.000Z",
+      "activityVersion": 2
+    },
+    "identity": {
+      "provider": "tabroom",
+      "personId": "19665",
+      "displayName": {
+        "status": "unresolved",
+        "label": "Name unresolved from public evidence",
+        "reason": "no-observed-roster-join"
+      }
+    },
+    "atAGlance": {
+      "panelAssignmentCount": 3,
+      "tournamentCount": 1,
+      "divisions": [
+        "Open Policy"
+      ],
+      "firstAssignmentDate": "2025-11-07",
+      "mostRecentAssignmentDate": "2025-11-08",
+      "assignmentsWithoutDate": 0,
+      "snuExposure": {
+        "panelCount": 0,
+        "roundCount": 0
+      }
+    },
+    "coverage": {
+      "caveat": "Counts describe activity observed in the pinned public exports. Missing observations can reflect gaps in discovery or publication.",
+      "assignedJudgeIdsAbsentFromSeasonRosters": 1,
+      "panelsWithUnresolvedSchoolCoverage": 0,
+      "events": [
+        {
+          "tournamentId": "37578",
+          "eventId": "355636",
+          "assignmentCoverageUnknown": true
+        }
+      ]
+    },
+    "recentPanels": [
+      {
+        "tournamentId": "37578",
+        "tournamentName": "Robert Barbera Invitational",
+        "eventId": "355636",
+        "eventName": "Open Policy",
+        "division": "Open Policy",
+        "roundId": "1419454",
+        "panelId": "8430897",
+        "assignmentDate": "2025-11-08",
+        "schools": [
+          "Southwestern College",
+          "University of Utah"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/0"
+          },
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/1"
+          }
+        ]
+      },
+      {
+        "tournamentId": "37578",
+        "tournamentName": "Robert Barbera Invitational",
+        "eventId": "355636",
+        "eventName": "Open Policy",
+        "division": "Open Policy",
+        "roundId": "1419455",
+        "panelId": "8431444",
+        "assignmentDate": "2025-11-08",
+        "schools": [
+          "University of Utah",
+          "CSU Long Beach"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/0"
+          },
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/1"
+          }
+        ]
+      },
+      {
+        "tournamentId": "37578",
+        "tournamentName": "Robert Barbera Invitational",
+        "eventId": "355636",
+        "eventName": "Open Policy",
+        "division": "Open Policy",
+        "roundId": "1419452",
+        "panelId": "8425457",
+        "assignmentDate": "2025-11-07",
+        "schools": [
+          "University of Utah",
+          "Southwestern College"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/0"
+          },
+          {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/1"
+          }
+        ]
+      }
+    ],
+    "evidence": {
+      "judgeLinks": [
+        {
+          "tournamentId": "37578",
+          "judgeId": "2648063",
+          "personEvidence": [
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/0"
+            },
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/1"
+            },
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/0"
+            },
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/1"
+            },
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/0"
+            },
+            {
+              "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+              "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/1"
+            }
+          ],
+          "seasonRosterEvidence": []
+        }
+      ],
+      "eventHistory": [
+        {
+          "tournamentId": "37578",
+          "tournamentName": "Robert Barbera Invitational",
+          "tournamentStart": "2025-11-07T22:30:00.000Z",
+          "eventId": "355636",
+          "eventName": "Open Policy",
+          "division": "Open Policy",
+          "membershipEvidence": {
+            "source": "4022156f5d047bce6ce9651e2aabc29c4e394acdb222c9b2997302ebcc42385e",
+            "pointer": "/Events/1"
+          },
+          "eventEvidence": {
+            "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+            "pointer": "/categories/0/events/1"
+          },
+          "assignments": [
+            {
+              "roundId": "1419452",
+              "panelId": "8425457",
+              "judgeId": "2648063",
+              "roundStartRaw": "2025-11-07 23:00:00",
+              "assignmentDate": "2025-11-07",
+              "rosterEvidence": [],
+              "roundEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/0"
+              },
+              "panelEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/0/sections/0"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/0"
+                },
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:18953",
+                  "tournamentSchoolId": "813775",
+                  "chapterId": "18953",
+                  "name": "University of Utah",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1/entries/0"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:6457",
+                  "tournamentSchoolId": "820906",
+                  "chapterId": "6457",
+                  "name": "Southwestern College",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/2"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/2/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/0/sections/0/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            },
+            {
+              "roundId": "1419454",
+              "panelId": "8430897",
+              "judgeId": "2648063",
+              "roundStartRaw": "2025-11-08 17:00:00",
+              "assignmentDate": "2025-11-08",
+              "rosterEvidence": [],
+              "roundEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/2"
+              },
+              "panelEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/2/sections/3"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/0"
+                },
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:6457",
+                  "tournamentSchoolId": "820906",
+                  "chapterId": "6457",
+                  "name": "Southwestern College",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/2"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/2/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:18953",
+                  "tournamentSchoolId": "813775",
+                  "chapterId": "18953",
+                  "name": "University of Utah",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1/entries/6"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/2/sections/3/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            },
+            {
+              "roundId": "1419455",
+              "panelId": "8431444",
+              "judgeId": "2648063",
+              "roundStartRaw": "2025-11-08 19:30:00",
+              "assignmentDate": "2025-11-08",
+              "rosterEvidence": [],
+              "roundEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/3"
+              },
+              "panelEvidence": {
+                "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                "pointer": "/categories/0/events/1/rounds/3/sections/3"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/0"
+                },
+                {
+                  "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                  "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:18953",
+                  "tournamentSchoolId": "813775",
+                  "chapterId": "18953",
+                  "name": "University of Utah",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/1/entries/4"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:6714",
+                  "tournamentSchoolId": "813053",
+                  "chapterId": "6714",
+                  "name": "CSU Long Beach",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/0"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                    "pointer": "/schools/0/entries/1"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "271238345a0fc67c27487edc15d5c0add5166b559def4086da90ad0f414a4d6c",
+                      "pointer": "/categories/0/events/1/rounds/3/sections/3/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "derived-public-judge-profile",
+    "source": {
+      "manifest": {
+        "scopeId": "tabroom-college-policy-2025-26",
+        "revision": 1,
+        "sha256": "5273059fdb3250d1352e9e36beee70b116800e0cc81b4825cc57f5d683e189ac"
+      },
+      "evidenceCutoff": "2026-11-23T18:06:06.000Z",
+      "activityVersion": 2
+    },
+    "identity": {
+      "provider": "tabroom",
+      "personId": "775310",
+      "displayName": {
+        "status": "unresolved",
+        "label": "Name unresolved from public evidence",
+        "reason": "name-not-verified-at-roster-reference"
+      }
+    },
+    "atAGlance": {
+      "panelAssignmentCount": 1,
+      "tournamentCount": 1,
+      "divisions": [
+        "Novice"
+      ],
+      "firstAssignmentDate": null,
+      "mostRecentAssignmentDate": null,
+      "assignmentsWithoutDate": 1,
+      "snuExposure": {
+        "panelCount": 0,
+        "roundCount": 0
+      }
+    },
+    "coverage": {
+      "caveat": "Counts describe activity observed in the pinned public exports. Missing observations can reflect gaps in discovery or publication.",
+      "assignedJudgeIdsAbsentFromSeasonRosters": 0,
+      "panelsWithUnresolvedSchoolCoverage": 0,
+      "events": [
+        {
+          "tournamentId": "38894",
+          "eventId": "370676",
+          "assignmentCoverageUnknown": true
+        }
+      ]
+    },
+    "recentPanels": [
+      {
+        "tournamentId": "38894",
+        "tournamentName": "JVNovice Nationals at Fairmont State University",
+        "eventId": "370676",
+        "eventName": "Novice",
+        "division": "Novice",
+        "roundId": "1470088",
+        "panelId": "8823896",
+        "assignmentDate": null,
+        "schools": [
+          "James Madison University",
+          "Suffolk University"
+        ],
+        "schoolCoverageUnresolved": false,
+        "evidence": [
+          {
+            "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+            "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/0"
+          },
+          {
+            "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+            "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/1"
+          }
+        ]
+      }
+    ],
+    "evidence": {
+      "judgeLinks": [
+        {
+          "tournamentId": "38894",
+          "judgeId": "2775133",
+          "personEvidence": [
+            {
+              "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+              "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/0"
+            },
+            {
+              "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+              "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/1"
+            }
+          ],
+          "seasonRosterEvidence": [
+            {
+              "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+              "pointer": "/categories/0/judges/40"
+            }
+          ]
+        }
+      ],
+      "eventHistory": [
+        {
+          "tournamentId": "38894",
+          "tournamentName": "JVNovice Nationals at Fairmont State University",
+          "tournamentStart": "2026-02-27T13:00:00.000Z",
+          "eventId": "370676",
+          "eventName": "Novice",
+          "division": "Novice",
+          "membershipEvidence": {
+            "source": "27dea737e76c5d7ceea2b3fb5a44dd61322b2547bf6edc8079ae5651e3ded563",
+            "pointer": "/Events/1"
+          },
+          "eventEvidence": {
+            "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+            "pointer": "/categories/0/events/1"
+          },
+          "assignments": [
+            {
+              "roundId": "1470088",
+              "panelId": "8823896",
+              "judgeId": "2775133",
+              "roundStartRaw": null,
+              "assignmentDate": null,
+              "rosterEvidence": [
+                {
+                  "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                  "pointer": "/categories/0/judges/40"
+                }
+              ],
+              "roundEvidence": {
+                "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                "pointer": "/categories/0/events/1/rounds/1"
+              },
+              "panelEvidence": {
+                "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                "pointer": "/categories/0/events/1/rounds/1/sections/6"
+              },
+              "assignmentEvidence": [
+                {
+                  "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                  "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/0"
+                },
+                {
+                  "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                  "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/1"
+                }
+              ],
+              "schoolObservations": [
+                {
+                  "schoolKey": "tabroom:chapter:6257",
+                  "tournamentSchoolId": "846576",
+                  "chapterId": "6257",
+                  "name": "James Madison University",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                    "pointer": "/schools/4"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                    "pointer": "/schools/4/entries/0"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                      "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/0"
+                    }
+                  ]
+                },
+                {
+                  "schoolKey": "tabroom:chapter:110767",
+                  "tournamentSchoolId": "862231",
+                  "chapterId": "110767",
+                  "name": "Suffolk University",
+                  "explicitSnu": false,
+                  "schoolEvidence": {
+                    "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                    "pointer": "/schools/12"
+                  },
+                  "entryEvidence": {
+                    "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                    "pointer": "/schools/12/entries/2"
+                  },
+                  "panelEntryEvidence": [
+                    {
+                      "snapshotId": "de867dc56f0204b66fb531413a86ea62d8cb76d8e472d432a529acbd27fd1c2c",
+                      "pointer": "/categories/0/events/1/rounds/1/sections/6/ballots/1"
+                    }
+                  ]
+                }
+              ],
+              "unresolvedEntryEvidence": [],
+              "panelEntryCoverage": "two-observed-entries"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

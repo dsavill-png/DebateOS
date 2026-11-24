@@ -1,0 +1,170 @@
+{
+  "evidenceCutoff": "2026-11-23T18:06:06.000Z",
+  "fields": [
+    {
+      "field": "Display name",
+      "coachRelevance": "Recognize the judge",
+      "source": "Bulk category judge roster and ballot",
+      "availability": "public",
+      "joinKey": "Tournament + judge ID → ballot judge_person",
+      "verification": "Unresolved in all samples",
+      "freshness": "Roster snapshot; cutoff below",
+      "uiAllowedNow": "Verified name or unresolved label",
+      "caveat": "Two samples need original roster bytes; one lacks an observed roster join."
+    },
+    {
+      "field": "Tabroom person ID",
+      "coachRelevance": "Identify the same person across tournaments",
+      "source": "TASK-013 explicit ballot links",
+      "availability": "public",
+      "joinKey": "Provider + person ID",
+      "verification": "Verified source identity",
+      "freshness": "Pinned assignment snapshots",
+      "uiAllowedNow": "Yes",
+      "caveat": "Judge IDs are tournament-scoped."
+    },
+    {
+      "field": "Institution/affiliation",
+      "coachRelevance": "Understand affiliation at the time of judging",
+      "source": "ADR-003 historical affiliation evidence",
+      "availability": "unavailable",
+      "joinKey": "Person + institution + effective period",
+      "verification": "Unresolved",
+      "freshness": "No verified observation",
+      "uiAllowedNow": "No",
+      "caveat": "Panel schools cannot establish judge affiliation."
+    },
+    {
+      "field": "Observed panels judged",
+      "coachRelevance": "See observed judging history",
+      "source": "TASK-013 panelAssignmentCount",
+      "availability": "public",
+      "joinKey": "Person + tournament + event + round + panel",
+      "verification": "Verified observed count",
+      "freshness": "Pinned assignment snapshots",
+      "uiAllowedNow": "Yes",
+      "caveat": "Publication and discovery gaps limit counts."
+    },
+    {
+      "field": "Tournament count",
+      "coachRelevance": "See breadth of observed activity",
+      "source": "TASK-013 tournamentCount",
+      "availability": "public",
+      "joinKey": "Person + tournament",
+      "verification": "Verified observed count",
+      "freshness": "Pinned assignment snapshots",
+      "uiAllowedNow": "Yes",
+      "caveat": "Only tournaments with qualifying assignments."
+    },
+    {
+      "field": "Division history",
+      "coachRelevance": "See divisions the judge covered",
+      "source": "TASK-013 divisionDistribution and membership evidence",
+      "availability": "public",
+      "joinKey": "Person + tournament + event",
+      "verification": "Verified observed divisions",
+      "freshness": "Pinned season membership",
+      "uiAllowedNow": "Yes",
+      "caveat": "Uses pinned division labels."
+    },
+    {
+      "field": "Observed date span",
+      "coachRelevance": "See when the judge was observed",
+      "source": "Bulk round start_time via TASK-013",
+      "availability": "public",
+      "joinKey": "Tournament + event + round",
+      "verification": "Verified where dated",
+      "freshness": "First and last usable round dates",
+      "uiAllowedNow": "Yes",
+      "caveat": "Missing dates stay unknown."
+    },
+    {
+      "field": "SNU exposure",
+      "coachRelevance": "Find observed SNU panels and rounds",
+      "source": "TASK-013 explicitSnu",
+      "availability": "public",
+      "joinKey": "Panel ballot entry → same-event entry → school",
+      "verification": "Verified observed counts",
+      "freshness": "Pinned assignment snapshots",
+      "uiAllowedNow": "Yes",
+      "caveat": "Zero means no observed SNU exposure."
+    },
+    {
+      "field": "Recent panel schools",
+      "coachRelevance": "Recognize programs on recent panels",
+      "source": "TASK-013 schoolObservations",
+      "availability": "public",
+      "joinKey": "Panel ballot entry → same-event entry → school",
+      "verification": "Verified where linked",
+      "freshness": "Recent observed round dates; undated last",
+      "uiAllowedNow": "Yes",
+      "caveat": "Partial or ambiguous joins remain visible."
+    },
+    {
+      "field": "Paradigm",
+      "coachRelevance": "Read stated judging preferences",
+      "source": "Tabroom paradigm REST",
+      "availability": "protected",
+      "joinKey": "Person ID",
+      "verification": "Access boundary documented",
+      "freshness": "No public observation",
+      "uiAllowedNow": "No",
+      "caveat": "Requires separate authorization."
+    },
+    {
+      "field": "Individual vote",
+      "coachRelevance": "Review an individual decision",
+      "source": "Tabroom person record or protected ballot",
+      "availability": "protected",
+      "joinKey": "Person + scoped assignment + decision",
+      "verification": "Unverified semantics and access",
+      "freshness": "No verified public observation",
+      "uiAllowedNow": "No",
+      "caveat": "Public assignment does not establish a vote."
+    },
+    {
+      "field": "Panel result",
+      "coachRelevance": "Review the overall decision",
+      "source": "Public bulk result sets and ballots",
+      "availability": "public",
+      "joinKey": "Tournament + event + round + panel",
+      "verification": "Outcome unresolved",
+      "freshness": "Pinned export where published",
+      "uiAllowedNow": "No",
+      "caveat": "Placement and raw scores do not establish a verified panel winner."
+    },
+    {
+      "field": "Aff/Neg side",
+      "coachRelevance": "Interpret side context",
+      "source": "Raw public bulk ballot side",
+      "availability": "public",
+      "joinKey": "Scoped panel + entry",
+      "verification": "Semantics unverified",
+      "freshness": "Pinned export where published",
+      "uiAllowedNow": "No",
+      "caveat": "Requires verified side mapping."
+    },
+    {
+      "field": "Vote tendency",
+      "coachRelevance": "Summarize longitudinal decisions",
+      "source": "Derived from individual votes and verified sides",
+      "availability": "unavailable",
+      "joinKey": "Person + scoped decision + verified side",
+      "verification": "Unverified",
+      "freshness": "No verified inputs",
+      "uiAllowedNow": "No",
+      "caveat": "Depends on vote and side validation."
+    },
+    {
+      "field": "Team/debater history",
+      "coachRelevance": "Trace teams and participation over time",
+      "source": "Public bulk/field entry and student references",
+      "availability": "public",
+      "joinKey": "Tournament + event + entry + student; explicit Person crosswalk",
+      "verification": "Scoped observations only",
+      "freshness": "Export or field snapshot",
+      "uiAllowedNow": "No",
+      "caveat": "Durable identity and complete history are unverified."
+    }
+  ]
+}
