@@ -1,6 +1,6 @@
 # 018 · Add owner-gated PR verification harness
 
-**Status** Approved  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Chat  
 **Review** Dennis / Chat  
@@ -71,3 +71,8 @@ Do not modify or merge the target PR.
 - Node 24, TypeScript, Next.js build, fresh migration, upgrade, and dump/restore are exercised.
 - Result is reported to PR #1.
 - Workflow introduces no secrets to target code.
+
+
+## Completion note
+
+The first live verification run for PR #14 proved the execution path: Node 24, PostgreSQL 17, full tests, TypeScript, Next.js build, fresh migration, upgrade, and dump/restore all passed. Only the final comment-reporting step failed with GitHub HTTP 403. The workflow was updated to grant pull-request write permission so results can be posted back to PR #1. No target PR code receives project secrets.

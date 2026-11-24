@@ -30,7 +30,7 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
-- [TASK-017](tasks/017-durable-person-relationship-schema.md) has a local schema implementation. The synthetic fixture passed on fresh and upgraded PostgreSQL 18.7 databases. Full warehouse tests, TypeScript, the production build and dump/restore still need verification in an environment with dependencies and PostgreSQL server access. See the [implementation handoff](docs/handoffs/2026-11-24-durable-person-relationships.md).
+- [TASK-017](tasks/017-durable-person-relationship-schema.md) is Completed and merged through PR #14 at `a706e779101a3b5ae3eee73d4d505558bff62d27`. GitHub-hosted verification passed the full Node test suite, TypeScript, Next.js production build, fresh migration, base-to-head upgrade preserving an existing Person, and PostgreSQL dump/restore. See the [implementation handoff](docs/handoffs/2026-11-24-durable-person-relationships.md).
 
 - [TASK-016](tasks/016-person-role-affiliation-model.md) is Completed. [ADR-003](docs/architecture/ADR-003-person-role-affiliation-history.md) is Accepted. This architecture-only task defines durable Person identity, historical roles, institution affiliations, student-to-person evidence, entry-person membership and partner-change semantics. No schema migration is authorized by TASK-016.
 
@@ -67,11 +67,11 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Complete TASK-017 verification and submit the results for leadership review.
+- Build the public judge-profile usability proof: three evidence-backed human-readable profiles plus a field-coverage matrix. Resolve names only from explicit public evidence; otherwise surface the identity gap.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Complete and approve TASK-016 first so durable people, role changes, transfers and partner changes are modeled correctly. Then build the public judge-profile usability proof: three evidence-backed human-readable profiles plus a field-coverage matrix. Do not build a dashboard before this proof is useful to coaches.
+TASK-016 and TASK-017 are complete. Next build the public judge-profile usability proof: three evidence-backed human-readable profiles plus a field-coverage matrix. Do not build a dashboard before this proof is useful to coaches.
 
 In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 
