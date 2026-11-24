@@ -19,9 +19,12 @@ function objectRow(value: unknown): Json | undefined {
 }
 
 function composedName(row: Json, firstKey: string, lastKey: string) {
-  if (typeof row.name === 'string' && row.name.trim()) return row.name.trim();
-  const first = typeof row[firstKey] === 'string' ? row[firstKey].trim() : '';
-  const last = typeof row[lastKey] === 'string' ? row[lastKey].trim() : '';
+  const direct = row.name;
+  if (typeof direct === 'string' && direct.trim()) return direct.trim();
+  const firstValue = row[firstKey];
+  const lastValue = row[lastKey];
+  const first = typeof firstValue === 'string' ? firstValue.trim() : '';
+  const last = typeof lastValue === 'string' ? lastValue.trim() : '';
   const name = [first, last].filter(Boolean).join(' ').trim();
   return name || null;
 }
