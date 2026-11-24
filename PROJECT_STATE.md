@@ -30,6 +30,8 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
+- [TASK-022](tasks/022-public-judge-analytics-mart.md) is Approved and Released. It implements the public-ready ADR-004 physical mart: Person × panel judge-assignment facts, public panel-entry/SNU facts, deterministic build/promotion, a public materialized summary view, and row-level SNU detail. Protected vote/side/result/paradigm/affiliation facts remain gated and unresolved.
+
 - [TASK-021](tasks/021-judge-analytics-dimensional-model.md) is Completed and merged through PR #21 at `6147ac6c6cea28c69eeefa9d0f552abef100b813`. [ADR-004](docs/architecture/ADR-004-judge-analytics.md) is Accepted. Person × panel is the authoritative `debates judged` grain; two flighted debates in one named round count as two judged debates. Individual decisions and panel results remain separate facts. Protected vote/side/result/paradigm promotion remains gated on validation.
 
 - [TASK-020](tasks/020-minimum-judge-card-ui-contract.md) is Completed and merged through PR #19 at `f13302dc5ea144118556adbae85753fa16b5de0d`. The static `/judge-proof` prototype and [minimum judge-card contract](docs/product/minimum-judge-card.md) use the verified TASK-019 artifacts. Final head `a9637709ac4f25a842762b105444cd19391f81f8` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. It is retained for backend usability checks; Jared owns downstream presentation decisions.
@@ -73,11 +75,11 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Implement the public-ready portion of ADR-004 as the first physical judge-analytics mart: assignment facts, panel-entry/SNU exposure facts, deterministic public rollup/materialized view, and row-level SNU detail. Keep vote/side/result/paradigm fields unresolved until separately validated.
+- Execute TASK-022. Keep vote/side/result/paradigm/affiliation fields unresolved until separately validated; do not let protected evidence influence the public mart.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Immediate priority is physical implementation of the public-ready ADR-004 judge analytics facts and materialized-view serving layer. Jared owns downstream presentation.
+Immediate priority is TASK-022 physical implementation of the public-ready ADR-004 judge analytics facts and materialized-view serving layer. Jared owns downstream presentation.
 
 In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
 
