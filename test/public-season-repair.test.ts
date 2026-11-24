@@ -81,7 +81,8 @@ test('the season repair promotes only approved historical classification lineage
       await client.query('ROLLBACK TO SAVEPOINT corrupt_digest');
       await client.query('SAVEPOINT corrupt_type');
       await client.query(
-        "UPDATE warehouse_evidence SET observed_value = jsonb_set(observed_value, '{type}', '"wrong"') WHERE output_role = 'season-event-classification' AND id = (SELECT evidence_id FROM season_membership_evidence LIMIT 1)");
+        "UPDATE warehouse_evidence SET observed_value = jsonb_set(observed_value, '{type}', to_jsonb($1::text)) WHERE output_role = 'season-event-classification' AND id = (SELECT evidence_id FROM season_membership_evidence LIMIT 1)",
+        ['wrong']);
       await assert.rejects(client.query(repair), /Pinned season membership lineage mismatch/);
       await client.query('ROLLBACK TO SAVEPOINT corrupt_type');
       await client.query('SAVEPOINT would_expose_unrelated');
