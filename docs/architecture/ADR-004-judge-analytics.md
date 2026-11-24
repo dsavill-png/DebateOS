@@ -1,6 +1,6 @@
 # ADR-004 · Judge analytics dimensions, facts, and serving
 
-Status: Proposed for Dennis and Chat review under [TASK-021](../../tasks/021-judge-analytics-dimensional-model.md).
+Status: Accepted. Dennis approved the architecture on 2026-11-24 under [TASK-021](../../tasks/021-judge-analytics-dimensional-model.md).
 
 ## Evidence and dimensions
 
@@ -46,7 +46,7 @@ Within a build, let A be the eligible verified assignments for one Person, V the
 
 | Output | Formula |
 | --- | --- |
-| Observed rounds judged / assignment count | `count(A)`, TASK-013 `panelAssignmentCount`. Ballot rows can repeat for one judge/panel and judge IDs can alias one Person. A distinct round-ID count answers a different question. |
+| Observed debates judged / assignment count | `count(A)`, TASK-013 `panelAssignmentCount`. The authoritative experience grain is Person × panel. Two flighted debates in the same named round count as two debates judged. Ballot rows can repeat for one judge/panel and judge IDs can alias one Person. A distinct round-ID count answers a different question. |
 | Observed tournament count | Distinct tournament keys across A. |
 | Aff and Neg counts | Count V separately for each verified vote side. |
 | Known-vote denominator | `count(V) = aff_count + neg_count`. |
