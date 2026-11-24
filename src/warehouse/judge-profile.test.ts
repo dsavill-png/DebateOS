@@ -23,13 +23,14 @@ test('checked-in profiles reproduce the pinned public sample and preserve covera
   for (const profile of [snu, gap, undated]) {
     const activity = report.people.find(row => row.personId === profile.identity.personId)!;
     assert.equal(profile.identity.displayName.label, 'Name unresolved from public evidence');
+    assert.equal(profile.identity.displayName.reason, 'capture-bytes-not-provided');
     assert.equal(profile.atAGlance.panelAssignmentCount, activity.panelAssignmentCount);
     assert.deepEqual(profile.evidence, { judgeLinks: activity.judgeLinks, eventHistory: activity.eventHistory });
   }
   assert.deepEqual(snu.atAGlance.snuExposure, { panelCount: 2, roundCount: 2 });
   assert.equal(gap.coverage.assignedJudgeIdsAbsentFromSeasonRosters, 1);
   assert.equal(gap.identity.displayName.status, 'unresolved');
-  assert.equal(gap.identity.displayName.reason, 'no-observed-roster-join');
+  assert.equal(gap.identity.displayName.reason, 'capture-bytes-not-provided');
   assert.equal(undated.atAGlance.firstAssignmentDate, null);
   assert.equal(undated.atAGlance.mostRecentAssignmentDate, null);
   assert.equal(undated.recentPanels[0].assignmentDate, null);
@@ -50,7 +51,7 @@ test('a pinned roster name requires the same scoped judge and explicit ballot pe
     const body = {
       id: link.tournamentId,
       categories: [{
-        judges: [{ id: judgeId, name: 'Synthetic Judge' }],
+        judges: [{ id: judgeId, first: 'Synthetic', last: 'Judge' }],
         events: [{ rounds: [{ sections: [{ ballots: [{ judge: link.judgeId, judge_person: personId }] }] }] }],
       }],
     };
@@ -64,7 +65,7 @@ test('a pinned roster name requires the same scoped judge and explicit ballot pe
     status: 'verified', label: 'Synthetic Judge', evidence: [{
       name: 'Synthetic Judge', tournamentId: link.tournamentId, judgeId: link.judgeId,
       sourceUrl: source.url, capturedAt: source.fetchedAt, sha256: source.sha256,
-      nameEvidence: { ...rosterEvidence, pointer: rosterEvidence.pointer + '/name' },
+      rosterEvidence,
       ballotEvidence: [ballotEvidence],
     }],
   });
