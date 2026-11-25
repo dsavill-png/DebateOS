@@ -1,10 +1,12 @@
 export type SearchIntent = 'card' | 'argument' | 'document';
-export type SearchFacet = 'war-unlikely' | 'war-likely' | 'war-impacts' | 'escalation';
+const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
+export const searchFacets = [...warFacets, 'alliance-erosion', 'alliance-resilience', 'escalation-unlikely', 'escalation-likely'] as const;
+export type SearchFacet = typeof searchFacets[number];
 export type Coverage = 'card-candidates' | 'unparsed' | 'stale';
 type Match = 'compatible' | 'unknown' | 'opposing' | 'different-function' | 'metadata';
 
 export interface Claim {
-  subject: 'us-china-war';
+  subject: 'us-china-war' | 'japan-alliance' | 'taiwan-escalation';
   facet: SearchFacet;
 }
 
@@ -21,6 +23,7 @@ export interface SearchDocument {
   folderPath: string;
   revision: string | null;
   coverage: Coverage;
+  openUrl?: string;
   subject?: Claim['subject'];
 }
 
@@ -36,6 +39,7 @@ export interface SearchCard {
   claim?: Claim;
   classification: 'unreviewed' | 'reviewed' | 'synthetic';
   condition?: string;
+  classificationBasis?: 'tag-and-excerpt' | 'tag' | 'benchmark';
   duplicateGroup?: string;
 }
 
@@ -58,6 +62,7 @@ export interface SourceLocation {
   documentId: string;
   title: string;
   folderPath: string;
+  openUrl?: string;
 }
 
 export type SearchResult =
@@ -69,7 +74,7 @@ export type SearchResult =
     match: Match;
     condition?: string;
     sources: (SourceLocation & { cardId: string })[];
-    preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange'> & { excerpt: string };
+    preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange' | 'classificationBasis'> & { excerpt: string };
   };
 
 export interface SearchResponse {
@@ -86,31 +91,47 @@ export interface SearchGrants {
   argumentIds: ReadonlySet<string>;
 }
 
-const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
-const facetPatterns: Record<SearchFacet, RegExp> = {
+const facetPatterns: Record<typeof warFacets[number], RegExp> = {
   'war-unlikely': /\b(no|unlikely|avoidable|deterred|wont|won t|will not|does not|de escalation)\b/,
   'war-likely': /\b(likely|inevitable|imminent|will happen|will go to war)\b/,
   'war-impacts': /\b(impacts?|consequences?|extinction|catastrophic)\b/,
   'escalation': /\b(escalation|escalates|miscalculation)\b/,
 };
 
-function normalize(text: string) {
+export function normalizeSearchText(text: string) {
   return text.toLowerCase()
     .replace(/\bu\s*\.\s*s\.?(?=\W|$)|\bunited states\b/g, 'us')
     .replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 function interpret(query: string, request: SearchRequest): SearchResponse['interpretation'] {
-  const subject = /\bus\b/.test(query) && /\bchina\b/.test(query)
-    && /\b(war|conflict|escalation)\b/.test(query) ? 'us-china-war' : null;
-  if (!subject || request.intent === 'document') {
-    return { subject, facet: null, clarificationChoices: [] };
-  }
-
+  let subject: Claim['subject'] | null = null;
+  let choices: readonly SearchFacet[] = [];
+  let matchedFacets: readonly SearchFacet[] = [];
   const claimText = query.replace(/\bnot (likely|inevitable|imminent)\b/g, 'unlikely');
-  const matchedFacets = warFacets.filter(facet => facetPatterns[facet].test(claimText));
-  const facet = request.facetOverride ?? (matchedFacets.length === 1 ? matchedFacets[0] : null);
-  return { subject, facet, clarificationChoices: facet ? [] : warFacets };
+  if (/\bus\b/.test(query) && /\bchina\b/.test(query) && /\b(war|conflict|escalation)\b/.test(query)) {
+    subject = 'us-china-war';
+    choices = warFacets;
+    matchedFacets = warFacets.filter(facet => facetPatterns[facet].test(claimText));
+  } else if (/\bjapan\b/.test(query) && /\balliance\b/.test(query)) {
+    subject = 'japan-alliance';
+    choices = ['alliance-erosion', 'alliance-resilience'];
+    matchedFacets = [
+      ...(/\b(erosion|fractur\w*|collapse|credibility|weakens?)\b/.test(query) ? ['alliance-erosion' as const] : []),
+      ...(/\b(resilien\w*|strong|holds|strengthens?)\b/.test(query) ? ['alliance-resilience' as const] : []),
+    ];
+  } else if (/\btaiwan\b/.test(query) && /\bescalat\w*\b/.test(query)) {
+    subject = 'taiwan-escalation';
+    choices = ['escalation-unlikely', 'escalation-likely'];
+    matchedFacets = [
+      ...(facetPatterns['war-unlikely'].test(claimText) ? ['escalation-unlikely' as const] : []),
+      ...(facetPatterns['war-likely'].test(claimText) ? ['escalation-likely' as const] : []),
+    ];
+  }
+  if (!subject || request.intent === 'document') return { subject, facet: null, clarificationChoices: [] };
+  const override = request.facetOverride;
+  const facet = override && choices.includes(override) ? override : matchedFacets.length === 1 ? matchedFacets[0] : null;
+  return { subject, facet, clarificationChoices: facet ? [] : choices };
 }
 
 const stopWords = new Set(['a', 'an', 'and', 'about', 'for', 'in', 'is', 'of', 'on', 'the', 'to']);
@@ -124,23 +145,29 @@ const matchPriority: Record<Match, number> = {
 
 function textRelevance(query: string, terms: readonly string[], fields: readonly string[]) {
   if (!query) return 0;
-  const normalized = fields.map(normalize);
+  const normalized = fields.map(normalizeSearchText);
   if (normalized.includes(query)) return 3;
   if (normalized.some(field => ` ${field} `.includes(` ${query} `))) return 2;
   const words = new Set(normalized.join(' ').split(' '));
-  return terms.length > 0 && terms.every(term => words.has(term)) ? 1 : 0;
+  const overlap = terms.filter(term => words.has(term)).length;
+  if (terms.length > 0 && overlap === terms.length) return 1;
+  return terms.length >= 3 && overlap >= Math.max(2, Math.ceil(terms.length * 0.65)) ? overlap / terms.length / 2 : 0;
 }
 
 function classify(facet: SearchFacet | null, claim?: Claim): Match {
   if (!facet || !claim) return 'unknown';
   if (facet === claim.facet) return 'compatible';
-  if ((facet === 'war-unlikely' && claim.facet === 'war-likely')
-    || (facet === 'war-likely' && claim.facet === 'war-unlikely')) return 'opposing';
+  const opposing = [
+    ['war-unlikely', 'war-likely'],
+    ['alliance-erosion', 'alliance-resilience'],
+    ['escalation-unlikely', 'escalation-likely'],
+  ];
+  if (opposing.some(pair => pair.includes(facet) && pair.includes(claim.facet))) return 'opposing';
   return 'different-function';
 }
 
 function location(document: SearchDocument): SourceLocation {
-  return { documentId: document.id, title: document.title, folderPath: document.folderPath };
+  return { documentId: document.id, title: document.title, folderPath: document.folderPath, ...(document.openUrl ? { openUrl: document.openUrl } : {}) };
 }
 
 interface RankedResult {
@@ -156,7 +183,7 @@ export function searchArguments(
   corpus: SearchCorpus,
   grants: SearchGrants,
 ): SearchResponse {
-  const query = normalize(request.query);
+  const query = normalizeSearchText(request.query);
   const interpretation = interpret(query, request);
   if (!query || grants.documentIds.size === 0) return { interpretation, results: [] };
 
@@ -223,7 +250,7 @@ export function searchArguments(
           preview: {
             tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
             extraction: card.extraction, classification: card.classification,
-            sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange,
+            sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange, classificationBasis: card.classificationBasis,
           },
         },
       });
