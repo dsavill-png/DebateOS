@@ -36,3 +36,17 @@ No admin-only access was verified. The account's combined coach and judge roles 
 Ask Tabroom to confirm an approved production integration, including delegated or service credentials, permitted scopes, expiration and renewal. Until then, keep authenticated backend ingestion disabled. If approved, put authentication behind an injected session provider that owns an in-memory HTTP client and exposes allowlisted read operations plus typed expiry and authorization errors. Keep secrets out of process arguments, logs, persisted configuration, fixtures and application records. Require user reauthorization or vendor-supported renewal on expiry. For the next verification pass, use a coach-only comparison or known unrelated tournament, plus a legitimately assigned current ballot, and capture only status, schema metadata and allowlisted join identifiers. This discovery did not implement schema or adapter changes.
 
 **Partially verified; additional credential/session test required**
+
+## TASK-023 · Verified API login contract
+
+Verified November 25, 2026 against the live [IndexCards OpenAPI v1.2.0](https://api.tabroom.com/v1). The server base is `/v1` and the operation is `POST /auth/login` (`authLogin`), making the request path `POST /v1/auth/login`. The operation declares no pre-existing authentication requirement.
+
+| Contract item | Documented behavior |
+| --- | --- |
+| Request | Required `application/json` object (`LoginRequest`) with two required fields: `username` (string) and `password` (string). Neither field declares a format or length constraint. |
+| Success | HTTP `200`, `application/json` (`LoginResponse`). The body requires an object named `Person` with required `id` (integer) and `email` (string). Both objects disallow additional properties. |
+| Errors | HTTP `401 Unauthorized` and `500 Internal Server Error`, both using `application/problem+json` (`ProblemSchema`). |
+| Session | Login creates a session. Cookie-authenticated requests send the session token in the `TabroomToken` cookie. `GET /v1/user/session` uses that scheme. `POST /v1/auth/logout` invalidates the current session and documents `204 No Content` on success. |
+| Cookie issuance and expiry | The login response declares no `Set-Cookie` header or cookie attributes. The session-list schema includes UTC creation and last-access timestamps. The login and session schemas specify no lifetime, idle timeout, or renewal behavior. |
+
+This resolves TASK-023’s login-schema verification blocker. Runtime cookie issuance and expiry remain unverified. This check used only the public OpenAPI document and made no login request.
