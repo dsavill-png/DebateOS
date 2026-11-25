@@ -2,7 +2,7 @@
 
 ## Executive Snapshot
 
-As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` remains trusted; draft work is review-only until merged.
+As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` remains trusted; draft work is review-only until merged.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
 - Dennis and Jared are shifting product validation toward coach-usable outputs before dashboards. The immediate judge-intelligence proof should answer human questions such as “Who is this judge?” with evidence-backed identity and history.
@@ -75,13 +75,10 @@ As of 2026-11-24. Shared state for Dennis Commander and Jared Commander. `main` 
 - Coordinate a smoke-only test window with Support (case 20524159) to run the existing automation with a controlled overlap and redeliver the original result event. Verify one review or escalation against the original result ID and linked Actions run ID. Ask Support whether the native trigger can retain pending result events and retry them after the active run releases. The repository's report marker already suppresses duplicate GitHub reports and provides a human handoff. If native delivery cannot be made reliable, consider a bounded read-only reconciliation of unhandled PR #1 results for review or escalation under the existing trust gates.
 
 - Use the shared startup and shutdown protocol in [AGENTS.md](AGENTS.md#task-execution-protocol).
-- Execute TASK-022. Keep vote/side/result/paradigm/affiliation fields unresolved until separately validated; do not let protected evidence influence the public mart.
 - Keep TASK-014/TASK-015 authenticated work local/private. Do not release broad protected ingestion or vendor outreach. A bounded gold-record validation may proceed only through a separately approved safe local session path.
 ## Next Product Recommendation
 
-Immediate priority is TASK-022 physical implementation of the public-ready ADR-004 judge analytics facts and materialized-view serving layer. Jared owns downstream presentation.
-
-In parallel, keep authenticated Tabroom validation private/local and bounded. Persistent protected ingestion remains unapproved. Review the TASK-013 v2 contract with Jared and use `panelAssignmentCount` for observed experience.
+TASK-022 is now merged and verified. Immediate product work is review of the new public judge mart with Jared while keeping authenticated Tabroom validation private/local and bounded. The next backend decision is whether to separately approve a TASK-014 gold-record validation against the public Person × panel skeleton; persistent protected ingestion remains unapproved.
 
 ## Recent Detailed Handoffs
 
