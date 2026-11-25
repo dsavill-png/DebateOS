@@ -2,6 +2,8 @@ import { and, eq, sql } from 'drizzle-orm';
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import type { AnyPgColumn, AnyPgTable } from 'drizzle-orm/pg-core';
 import { sha256, type Json, type Observation, type Snapshot, type TabroomAdapter } from '../tabroom/adapter.ts';
+import { observedDate } from './judge-activity.ts';
+import { composedName } from './judge-profile.ts';
 import * as schema from './schema.ts';
 
 type Batch = Awaited<ReturnType<TabroomAdapter['import']>>;
@@ -247,6 +249,10 @@ export async function replayPublicTabroom(
       const round = await identify(schema.rounds, { tournament, event, sourceId: p.source_id });
       canonicalRounds.set(key(p.snapshot_id, p.source_path), round);
       await evidence(p, 'round', round);
+      const start = record(raw(p)).start_time;
+      const date = observedDate(typeof start === 'string' ? start : null);
+      if (date) await observe(p.snapshot_id, p.source_path + '/start_time', 'round-competition-date',
+        round, date, null, 'observed', 'verified');
       await observe(p.snapshot_id, p.source_path + '/published', 'round-publication', round, record(raw(p)).published, null);
     }
     // A standing may only bind to a unique candidate from its own validated bulk snapshot.
@@ -319,6 +325,17 @@ export async function replayPublicTabroom(
         await evidence(p, 'judge', id, fields(row, entityFields.judge), value);
       }
     }
+    for (const { snapshot, root } of inputs.values()) {
+      if (!snapshot.path.includes('download_data.mhtml')) continue;
+      for (const category of collection(record(root).categories, '/categories')) {
+        for (const judge of collection(category.row.judges, category.pointer + '/judges')) {
+          const id = sourceId(judge.row.id);
+          const judgeKey = id && judgeIds.get('tabroom:tournament:' + snapshot.scope.tournament + ':judge:' + id);
+          const name = composedName(judge.row, 'first', 'last');
+          if (judgeKey && name) await observe(snapshot.id, judge.pointer, 'judge-roster-name', judgeKey, name, judge.row.id);
+        }
+      }
+    }
     for (const item of batch.persons) {
       for (const p of item.provenance) {
         const value = record(raw(p)).judge_person;
@@ -351,6 +368,8 @@ export async function replayPublicTabroom(
         const entry = entryIds.get(key(round.eventId, ballot.entryId));
         const judge = ballot.judgeId ? judgeIds.get(ballot.judgeId) : null;
         await evidence(bp, 'ballot', id, { row: fields(row, ['id', 'entry', 'panel', 'judge', 'judge_person', 'side', 'score', 'bye', 'submitted', 'confirmed']), entry, judge });
+        const ballotName = composedName(row, 'judge_first', 'judge_last');
+        if (judge && ballotName) await observe(bp.snapshot_id, bp.source_path, 'ballot-judge-name', judge, ballotName, row.judge);
         await evidence(bp, 'panel-entry', id, { entry }, row.entry);
         await link(bp.snapshot_id, bp.source_path, 'ballot', { panel: id, entry, judge });
         await link(bp.snapshot_id, bp.source_path, 'panel-entry', { panel: id, entry });

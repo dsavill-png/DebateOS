@@ -29,6 +29,13 @@
       "when": 1795536000001,
       "tag": "0003_public_season_membership",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795536000002,
+      "tag": "0004_public_judge_analytics",
+      "breakpoints": true
     }
   ]
 }
