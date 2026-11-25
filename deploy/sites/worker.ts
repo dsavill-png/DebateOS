@@ -7,7 +7,10 @@ export default {
     if (path === '/' && request.method === 'GET') {
       return Response.redirect(new URL('/arguments', request.url));
     }
-    if (path === '/api/arguments/search' || path === '/api/internal/evidence-snapshot') {
+    if (path === '/api/internal/evidence-snapshot') {
+      return new Response(null, { status: 404, headers: { 'Cache-Control': 'private, no-store' } });
+    }
+    if (path === '/api/arguments/search') {
       try {
         return await handleSearchApi(request, env);
       } catch {
