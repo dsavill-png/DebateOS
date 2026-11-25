@@ -1,12 +1,12 @@
-# TASK-022 · Season membership repair
+# TASK-022 · Public judge analytics mart
 
-Partial. The manifest writer sets the public audience after checking the supplied manifest pin, anonymous authorization, source bytes and digest, and event pointer. It checks stored capture and observation eligibility before linking new membership evidence.
+Completed. The manifest writer sets the public audience after checking the supplied manifest pin, anonymous authorization, source bytes and digest, and event pointer. It checks stored capture and observation eligibility before linking new membership evidence.
 
 Migration 0003 repairs the historical 2025–26 revision 1. Its allowlist comes from the checked-in manifest. It checks the revision pin, capture identity, digest, route, request scope and policy, and the exact membership and evidence links before updating audience metadata. If a capture change would expose unrelated evidence, the migration rejects the repair. A fresh warehouse has no historical revision to repair.
 
 PostgreSQL 18.7 single-user checks applied the migrations on an empty database and replayed the repair with a synthetic historical database populated from the pinned manifest metadata. The repaired revision had 160 eligible classifications. An unrelated internal observation stayed ineligible, and separate checks rejected a digest mismatch and a capture change that would expose unrelated evidence. The original source archive was unavailable.
 
-Full Node verification stopped at missing Drizzle dependencies. The package registry could not be resolved, and the sandbox denied binding the disposable PostgreSQL server socket. TypeScript, Next.js production build, Drizzle-run migrations, and dump/restore verification remain pending. The atomic facts, build and promotion path, summary, SNU details, and mart-level protected-evidence regression also remain pending.
+Initial Codex-local dependency-backed verification was incomplete because the sandbox could not resolve the package registry or bind its disposable PostgreSQL socket. Leadership therefore required the repository's GitHub-hosted verification harness before merge.
 
 Leadership review tightened the partial repair before merge: new-write capture conflict checks now require the exact season-membership purpose, and the historical repair requires the evidence observation's event type to match the pinned classification as well as its name and IDs. A regression case corrupts the observed event type and requires the migration to fail closed.
 
@@ -38,5 +38,7 @@ Use a local `WAREHOUSE_DATABASE_URL`. Run the build after an eligible ingestion 
 
 - PostgreSQL 18.7 single-user mode passed the fresh SQL migration and the upgrade from migrations 0000–0003. The established TASK-017 relationship fixture passed and its public Person role observations remained accessible after upgrade.
 - The mart SQL fixture passed on both paths. It covers ballot and alias lineage, two flighted panels in one round, cross-tournament counts, two SNU entries counting once, zero observed SNU debates, missing dates and schools, internal membership, protected assignments and corrections, deterministic rerun and rebuild, failed promotion, and read-time revocation.
-- The full Node command reported 19 passing tests, two archive-dependent skips, and four database-related test modules that failed to load because Drizzle was unavailable. The focused TASK-013/TASK-019 run reported six passes and two archive-dependent skips.
-- Package installation failed at registry DNS. TypeScript and the Next.js build remain unverified. The sandbox denied PostgreSQL socket binding, so the Drizzle database runner and dump/restore remain unverified. The original archive was unavailable for an end-to-end season replay. GitHub DNS prevented refreshing the base from remote `main`.
+- GitHub-hosted verification run 45643854289 passed at immutable head `f76917e830b70db5c128128fed965e7fff49bdbb`: locked dependencies, full Node test suite, TypeScript, Next.js production build, fresh migration, base-to-head upgrade preserving an existing Person, and PostgreSQL dump/restore all succeeded.
+- PR #26 merged to `main` as `6e743b843f3bc9d2657976a17bbe397912a7ae2a`.
+- The original pinned archive was not mounted in the hosted runner, so no new end-to-end archive replay was performed during closeout. The archive bytes/digests were previously verified in TASK-011/TASK-019; TASK-022 remains pinned to the manifest and stored digest/lineage checks.
+
