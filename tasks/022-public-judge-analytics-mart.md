@@ -1,10 +1,10 @@
 # 022 · Public judge analytics fact mart and materialized summary
 
-**Status** Approved  
+**Status** Completed  
 **Owner** Dennis Commander  
 **Worker** Codex  
-**Dispatch** Released  
-**Review** Chat with Dennis. Jared owns downstream presentation.  
+**Dispatch** Completed  
+**Review** Verified and merged through PR #26 on 2026-11-25. Jared owns downstream presentation.  
 **Priority** High
 
 ## Objective
@@ -351,3 +351,10 @@ Report:
 - ARCHITECTURE CONFLICTS
 - FILES / COMMITS
 - RECOMMENDED NEXT STEP
+
+
+## Completion record · 2026-11-25
+
+TASK-022 passed leadership review and the GitHub-hosted verification harness at head `f76917e830b70db5c128128fed965e7fff49bdbb`. The harness passed the full Node test suite, TypeScript check, Next.js production build, fresh migration, upgrade preserving existing Person data, and PostgreSQL dump/restore. PR #26 merged to `main` as `6e743b843f3bc9d2657976a17bbe397912a7ae2a`.
+
+The original pinned archive was not mounted in the hosted runner, so no new archive replay was performed in this closeout. That is not a merge blocker for TASK-022: the approved source bytes and digests were previously verified in TASK-011/TASK-019, while the TASK-022 repair and mart remain pinned to the checked-in manifest, stored capture identity/digest, and public-evidence eligibility rules. Protected vote/side/result/paradigm/affiliation fields remain gated.
