@@ -14,6 +14,8 @@ As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Completed Since Last Update
 
+- [TASK-022](tasks/022-public-judge-analytics-mart.md) is Completed and merged through PR #26 at `6e743b843f3bc9d2657976a17bbe397912a7ae2a`. Verified head `f76917e830b70db5c128128fed965e7fff49bdbb` passed the GitHub-hosted full Node suite, TypeScript, Next.js production build, fresh migration, base-to-head upgrade preserving existing Person data, and PostgreSQL dump/restore. The public mart now serves Person × panel assignment facts, reproducible public summaries, SNU detail, evidence lineage, and read-time public-eligibility revocation. Protected vote/side/result/paradigm/affiliation fields remain gated. See the [implementation handoff](docs/handoffs/2026-11-24-public-judge-analytics-mart.md).
+
 - [TASK-013](tasks/013-public-judge-activity-intelligence.md) is Completed on `main`. [PR #11](https://github.com/dsavill-png/DebateOS/pull/11) merged at [`db362ded6cd309714003127f6f1b59668b00e012`](https://github.com/dsavill-png/DebateOS/commit/db362ded6cd309714003127f6f1b59668b00e012). The pinned v2 replay produced 401 summaries, 8,868 scoped judge-ID observations and 8,868 distinct person-panel assignments. The [Jared handoff](docs/handoffs/2026-11-23-public-judge-activity.md) records the contract, coverage limits and verification.
 
 - [TASK-011 Phase A](tasks/011-college-judge-paradigm-corpus.md) is Completed on `main`. [PR #10](https://github.com/dsavill-png/DebateOS/pull/10) merged at [`47c4c89ee03933299010be35f1c575509b4cde9e`](https://github.com/dsavill-png/DebateOS/commit/47c4c89ee03933299010be35f1c575509b4cde9e). Across the included 2025–26 college policy divisions, 1,949 of 1,950 observed assigned judge IDs link explicitly to 401 distinct people. Four assigned IDs were absent from the observed category rosters. The [handoff](docs/handoffs/2026-11-23-college-policy-public-coverage.md) records the Dropbox archive, digests, replay and coverage limits.
@@ -29,8 +31,6 @@ As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` 
 - [TASK-007](tasks/007-shared-project-state.md) established the shared state and session protocol.
 
 ## Current Work
-
-- [TASK-022](tasks/022-public-judge-analytics-mart.md) is Approved and Released. The local mart implementation passed fresh and upgrade SQL checks and the protected-input regression in PostgreSQL single-user mode. Dependency-backed verification, dump/restore and the pinned archive replay are pending. See the [implementation handoff](docs/handoffs/2026-11-24-public-judge-analytics-mart.md).
 
 - [TASK-021](tasks/021-judge-analytics-dimensional-model.md) is Completed and merged through PR #21 at `6147ac6c6cea28c69eeefa9d0f552abef100b813`. [ADR-004](docs/architecture/ADR-004-judge-analytics.md) is Accepted. Person × panel is the authoritative `debates judged` grain; two flighted debates in one named round count as two judged debates. Individual decisions and panel results remain separate facts. Protected vote/side/result/paradigm promotion remains gated on validation.
 
