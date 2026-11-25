@@ -25,6 +25,7 @@ Read and preserve:
 - `tasks/003-tabroom-authentication.md`
 - `tasks/014-authenticated-judge-record-api-validation.md`
 - `docs/research/tabroom-authenticated-access.md`
+- `docs/research/tabroom-auth-login-contract.md`
 - `src/tabroom/adapter.ts`
 - `src/tabroom/openapi.ts`
 - `test/tabroom.test.ts`
@@ -57,7 +58,7 @@ Create a separate authenticated Tabroom transport/session provider. Do **not** w
 Requirements:
 
 - use the first-party Tabroom cookie-session authentication mechanism already documented by TASK-003;
-- verify the exact login request/response semantics from the live/pinned Tabroom API specification before implementation;
+- verify the exact login request/response semantics from the live Tabroom API specification when reachable, or from `docs/research/tabroom-auth-login-contract.md` when CI cannot resolve the live host;
 - hold session cookies in memory for the proof;
 - support clean session expiry/unauthorized errors;
 - never log cookie values;
@@ -66,7 +67,7 @@ Requirements:
 - preserve explicit request timeout and bounded retry behavior;
 - read-only operations only after login.
 
-If the documented login contract cannot be implemented without guessing request fields, stop and report **Blocked** rather than scraping HTML or inventing headers.
+If neither the live specification nor the pinned local login contract establishes the required fields without guessing, stop and report **Blocked** rather than scraping HTML or inventing headers. If implementation uses the pinned local contract because the live host is unreachable, the later local runtime proof must revalidate actual login behavior and stop on any contradiction.
 
 ### 3. Allowlisted authenticated reads
 
