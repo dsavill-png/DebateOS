@@ -1,9 +1,9 @@
 # 023 · Cloud-ready Tabroom authenticated session provider and gold-record validation
 
-**Status** Approved / Released  
+**Status** Approved  
 **Owner** Dennis Commander  
 **Worker** Codex  
-**Dispatch** Ready  
+**Dispatch** Released  
 **Review** Chat with Dennis. Jared owns downstream UI-facing integration.  
 **Priority** High
 
