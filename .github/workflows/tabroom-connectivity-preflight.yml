@@ -1,0 +1,88 @@
+name: TASK-023 Tabroom connectivity preflight
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  preflight:
+    if: >-
+      github.repository == 'dsavill-png/DebateOS' &&
+      github.ref == 'refs/heads/main' &&
+      github.actor == 'dsavill-png' &&
+      github.triggering_actor == 'dsavill-png' &&
+      github.run_attempt == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check DNS, TCP, TLS, and anonymous HTTPS
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import http.client
+          import os
+          import signal
+          import socket
+          import ssl
+          import subprocess
+
+          host = "api.tabroom.com"
+          stages = dict.fromkeys(("DNS", "TCP", "TLS", "HTTPS"), "BLOCKED")
+          stage = "DNS"
+          status = None
+
+          def deadline(_signum, _frame):
+              raise TimeoutError
+
+          signal.signal(signal.SIGALRM, deadline)
+          try:
+              result = subprocess.run(
+                  ["getent", "ahostsv4", host],
+                  check=True, capture_output=True, text=True, timeout=5,
+              )
+              address = result.stdout.split()[0]
+              stages[stage] = "PASS"
+
+              stage = "TCP"
+              with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as connection:
+                  signal.alarm(5)
+                  connection.settimeout(5)
+                  connection.connect((address, 443))
+                  stages[stage] = "PASS"
+
+                  stage = "TLS"
+                  signal.alarm(5)
+                  context = ssl.create_default_context()
+                  with context.wrap_socket(connection, server_hostname=host) as tls:
+                      stages[stage] = "PASS"
+
+                      stage = "HTTPS"
+                      signal.alarm(8)
+                      tls.sendall(
+                          b"GET /v1 HTTP/1.1\r\n"
+                          b"Host: api.tabroom.com\r\n"
+                          b"Connection: close\r\n\r\n"
+                      )
+                      with http.client.HTTPResponse(tls) as response:
+                          response.begin()
+                          status = response.status
+                          if not 200 <= status <= 599:
+                              raise http.client.HTTPException
+                          # Close without reading or retaining the body.
+                      stages[stage] = "PASS"
+          except (OSError, subprocess.SubprocessError, http.client.HTTPException, IndexError):
+              stages[stage] = "FAIL"
+          finally:
+              signal.alarm(0)
+              lines = ["| Stage | Result |", "| --- | --- |"]
+              lines.extend(f"| {name} | {outcome} |" for name, outcome in stages.items())
+              if status is not None:
+                  lines.extend(("", f"HTTP status: {status}"))
+              summary = "\n".join(lines) + "\n"
+              print(summary, end="")
+              with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as output:
+                  output.write(summary)
+
+          raise SystemExit(0 if all(outcome == "PASS" for outcome in stages.values()) else 1)
+          PY
