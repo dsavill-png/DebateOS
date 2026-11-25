@@ -46,3 +46,30 @@ test('argument results retain sources and malformed search input is rejected', (
   assert.equal(runSnapshotSearch(snapshot, { query: '', intent: 'card' }), null);
   assert.equal(runSnapshotSearch(snapshot, { query: 'x', intent: 'card', facetOverride: 'everything' }), null);
 });
+
+test('debate terminology separates impact defense from offense and a DA link from other positions', () => {
+  const economic = fixture('economic', 'Economic decline does not cause war', 'Diversionary conflict does not follow from a recession.');
+  const offense = fixture('offense', 'Economic decline guarantees extinction', 'A downturn raises the risk of war.');
+  const election = { ...fixture('link', 'The plan flips the election', 'Voters respond to foreign policy.'), documentId: 'midterms', sectionHeadings: ['Shell'] };
+  const uniqueness = { ...election, id: 'uq', tag: 'Democrats lead now', sectionHeadings: ['Uniqueness', 'AT UQ outweighs link'] };
+  const internal = { ...election, id: 'internal', tag: 'Dem win stops a program', sectionHeadings: ['Shell', '1NC DA normal UQ'] };
+  const answer = { ...election, id: 'answer', tag: 'Ad spending, not arms sales', sectionHeadings: ['2AC Midterms DA'] };
+  const variant = makeSearchSnapshot({
+    ...corpus,
+    documents: [...corpus.documents, { ...corpus.documents[0], id: 'midterms', title: 'Midterms DA.docx' }],
+    cards: [economic, offense, election, uniqueness, internal, answer],
+  }, '2026-11-25', {});
+  for (const [query, expected, facet] of [
+    ['Economic decline impact defense', 'economic', 'impact-defense'],
+    ['Recession impact takeout', 'economic', 'impact-defense'],
+    ['Link for midterms DA', 'link', 'link'],
+    ['Midterms DA uniqueness', 'uq', 'uniqueness'],
+    ['No link to midterms DA', 'answer', 'link-defense'],
+  ]) {
+    const response = runSnapshotSearch(variant, { query, intent: 'card' });
+    assert.equal(response?.interpretation.facet, facet);
+    assert.equal(response?.results[0]?.id, expected);
+    assert.equal(response?.results[0]?.match, 'compatible');
+  }
+  assert.equal(variant.corpus.cards.find(card => card.id === 'internal')?.claim?.facet, 'internal-link');
+});
