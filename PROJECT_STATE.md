@@ -32,6 +32,8 @@ As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` 
 
 ## Current Work
 
+- [TASK-024](tasks/024-argument-search-proof.md) is implemented for draft review under Jared’s approval. The search proof uses synthetic fixtures to compare claim-aware ranking with keyword overlap. It covers eligibility, previews and document fallback. Confirm the private test corpus and evaluate coach-labeled queries before source-backed search.
+
 - [TASK-021](tasks/021-judge-analytics-dimensional-model.md) is Completed and merged through PR #21 at `6147ac6c6cea28c69eeefa9d0f552abef100b813`. [ADR-004](docs/architecture/ADR-004-judge-analytics.md) is Accepted. Person × panel is the authoritative `debates judged` grain; two flighted debates in one named round count as two judged debates. Individual decisions and panel results remain separate facts. Protected vote/side/result/paradigm promotion remains gated on validation.
 
 - [TASK-020](tasks/020-minimum-judge-card-ui-contract.md) is Completed and merged through PR #19 at `f13302dc5ea144118556adbae85753fa16b5de0d`. The static `/judge-proof` prototype and [minimum judge-card contract](docs/product/minimum-judge-card.md) use the verified TASK-019 artifacts. Final head `a9637709ac4f25a842762b105444cd19391f81f8` passed full Node, TypeScript, Next.js, migration, upgrade, and dump/restore verification. It is retained for backend usability checks; Jared owns downstream presentation decisions.
