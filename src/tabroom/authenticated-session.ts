@@ -77,7 +77,9 @@ export async function openTabroomSession(secrets: SecretProvider, options: Optio
       await response.body?.cancel().catch(() => {});
       throw new TabroomSessionError('invalid-response');
     }
-    const person = await json(response);
+    const payload = await json(response);
+    const person = payload && typeof payload === 'object' && 'Person' in payload
+      ? payload.Person : undefined;
     const id = person && typeof person === 'object' && 'id' in person ? person.id : undefined;
     if (typeof id !== 'number' || !Number.isSafeInteger(id) || id < 1) {
       throw new TabroomSessionError('invalid-response');

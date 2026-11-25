@@ -8,7 +8,9 @@ import { validateGoldRecord } from '../src/tabroom/gold-record.ts';
 const credentials = { username: 'synthetic-user', password: 'synthetic-password' };
 const secrets = { async getCredentials() { return credentials; } };
 const cookie = 'TabroomToken=synthetic-session';
-const login = () => Response.json({ id: 42 }, { headers: { 'set-cookie': cookie + '; Secure; HttpOnly' } });
+const login = () => Response.json({ Person: { id: 42, email: 'judge@example.test' } }, {
+  headers: { 'set-cookie': cookie + '; Secure; HttpOnly' },
+});
 const base = 'https://api.tabroom.com/v1';
 
 test('uses first-party cookie login and reads only the signed-in person record', async () => {
@@ -41,7 +43,7 @@ test('distinguishes rejected credentials, malformed login, and session expiry', 
   for (const [reply, code] of [
     [new Response(credentials.password, { status: 401 }), 'unauthorized'],
     [Response.json({ id: 42, token: cookie }), 'invalid-response'],
-    [Response.json({ id: 'unknown' }, { headers: { 'set-cookie': cookie } }), 'invalid-response'],
+    [Response.json({ Person: { id: 'unknown', email: 'judge@example.test' } }, { headers: { 'set-cookie': cookie } }), 'invalid-response'],
     [new Response('{', { headers: { 'set-cookie': cookie, 'content-type': 'application/json' } }), 'invalid-response'],
   ] as const) {
     await assert.rejects(openTabroomSession(secrets, { fetch: async () => reply }), { code });
