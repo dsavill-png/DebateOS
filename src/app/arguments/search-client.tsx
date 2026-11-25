@@ -9,7 +9,7 @@ const searchModes: { id: SearchIntent; label: string; hint: string }[] = [
   { id: 'argument', label: 'Arguments', hint: 'Find a family of related evidence.' },
   { id: 'document', label: 'Documents', hint: 'Find a file by name or folder.' },
 ];
-const examples = ['No US-China War', 'Japan alliance erosion', 'Middle powers fail', 'Taiwan conflict escalation unlikely'];
+const examples = ['No US-China War', 'Japan alliance erosion', 'Economic decline impact defense', 'Link for Midterms DA'];
 const facetNames: Record<SearchFacet, string> = {
   'war-unlikely': 'War unlikely',
   'war-likely': 'War likely',
@@ -19,6 +19,13 @@ const facetNames: Record<SearchFacet, string> = {
   'alliance-resilience': 'Alliance resilience',
   'escalation-unlikely': 'Escalation unlikely',
   'escalation-likely': 'Escalation likely',
+  'impact-defense': 'Impact defense',
+  'impact-offense': 'Impact offense',
+  link: 'DA link',
+  'link-defense': 'Link defense',
+  uniqueness: 'Uniqueness',
+  'internal-link': 'Internal link',
+  impact: 'Impact',
 };
 const matchNames: Record<SearchResult['match'], string> = {
   compatible: 'Matches claim',
@@ -62,7 +69,7 @@ function Result({ result }: { result: SearchResult }) {
     <details>
       <summary>Evidence preview</summary>
       <p className={styles.excerpt}>{result.preview.excerpt}</p>
-      <p className={styles.recordStatus}>Original DOCX extraction · {result.preview.classification === 'reviewed' ? 'Coach reviewed' : result.preview.classificationBasis ? 'Automated claim label' : 'Unreviewed card candidate'}</p>
+      <p className={styles.recordStatus}>Original DOCX extraction · {result.preview.classification === 'reviewed' ? 'Coach reviewed' : result.preview.classificationBasis ? result.preview.classificationBasis === 'file-section' ? 'Role from file section' : 'Automated claim label' : 'Unreviewed card candidate'}</p>
       <p className={styles.recordStatus}>Paragraphs {result.preview.paragraphRange.join('–')} · Revision {result.preview.sourceRevision}</p>
       {result.sources.slice(1).map(source => <Source key={source.cardId} source={source} />)}
     </details>
