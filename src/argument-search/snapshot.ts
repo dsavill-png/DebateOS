@@ -16,6 +16,13 @@ const families: Record<SearchFacet, string> = {
   'alliance-resilience': 'Japan alliance resilience',
   'escalation-unlikely': 'Taiwan escalation unlikely',
   'escalation-likely': 'Taiwan escalation likely',
+  'impact-defense': 'Economic decline impact defense',
+  'impact-offense': 'Economic decline impacts',
+  link: 'Midterms DA links',
+  'link-defense': 'Midterms DA link defense',
+  uniqueness: 'Midterms DA uniqueness',
+  'internal-link': 'Midterms DA internal links',
+  impact: 'Midterms DA impacts',
 };
 
 export function makeSearchSnapshot(corpus: SearchCorpus, checkedOn: string, links: Record<string, string>): SearchSnapshot {
@@ -25,7 +32,10 @@ export function makeSearchSnapshot(corpus: SearchCorpus, checkedOn: string, link
       .some(prefix => suppliedLink?.startsWith(prefix)) ? suppliedLink : undefined;
     return { id, title, folderPath, revision, coverage, openUrl };
   });
-  const cards = corpus.cards.map(card => ({ ...card, ...suggestClaim(card) }));
+  const documentsById = new Map(documents.map(document => [document.id, document]));
+  const cards = corpus.cards.map(card => card.classification === 'reviewed' ? card : ({
+    ...card, ...suggestClaim(card, documentsById.get(card.documentId)?.title),
+  }));
   const argumentsByFacet = new Map<SearchFacet, SearchArgument>();
   for (const card of cards) {
     if (!card.claim) continue;
