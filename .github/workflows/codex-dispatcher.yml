@@ -81,7 +81,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          [[ "$GITHUB_RUN_ATTEMPT" == 1 ]] || exit 0
+          if [[ "$GITHUB_RUN_ATTEMPT" != 1 ]]; then echo "::notice::dispatcher gate: rerun attempt rejected"; exit 0; fi
           id=$(jq -er '.comment.id | numbers | tostring | select(test("^[0-9]+$"))' "$GITHUB_EVENT_PATH")
           record=$(gh api "repos/$GITHUB_REPOSITORY/issues/comments/$id")
           body=$(jq -er --arg id "$id" --arg repo "$GITHUB_REPOSITORY" --slurpfile event "$GITHUB_EVENT_PATH" '
@@ -91,13 +91,13 @@ jobs:
               (.created_at | type) == "string" and .created_at == .updated_at and
               .body == $event[0].comment.body) |
             .body | gsub("^\\s+|\\s+$"; "")
-          ' <<<"$record") || exit 0
-          [[ "$body" =~ ^CODEX\ TASK-([0-9]{3})$ ]] || exit 0
+          ' <<<"$record") || { echo "::notice::dispatcher gate: source comment provenance rejected"; exit 0; }
+          if [[ ! "$body" =~ ^CODEX\ TASK-([0-9]{3})$ ]]; then echo "::notice::dispatcher gate: command format rejected"; exit 0; fi
           task=${BASH_REMATCH[1]}
-          [[ "$task" != 000 && "$task" != 001 ]] || exit 0
+          if [[ "$task" == 000 || "$task" == 001 ]]; then echo "::notice::dispatcher gate: reserved task rejected"; exit 0; fi
           first_run=$(gh api --paginate "repos/$GITHUB_REPOSITORY/actions/workflows/codex-dispatcher.yml/runs?event=issue_comment&per_page=100" |
             jq -sr --arg title "Codex dispatcher comment $id" '[.[].workflow_runs[] | select(.display_title == $title) | .id] | min')
-          [[ "$first_run" == "$GITHUB_RUN_ID" ]] || exit 0
+          if [[ "$first_run" != "$GITHUB_RUN_ID" ]]; then echo "::notice::dispatcher gate: not first run for source comment (first=$first_run current=$GITHUB_RUN_ID)"; exit 0; fi
           if [[ "$task" == 998 ]]; then
             printf '%s\n' 'Read AGENTS.md and PLANS.md. This is a reserved blocked-result smoke test. Make no repository changes. Return a completion handoff whose first status line is exactly STATUS: Blocked and whose next non-empty line says Reserved blocked-result smoke test; no work performed.' > "$RUNNER_TEMP/task-prompt"
           elif [[ "$task" == 999 ]]; then
@@ -105,10 +105,10 @@ jobs:
           else
             shopt -s nullglob
             files=(tasks/"$task"-*.md)
-            [[ ${#files[@]} == 1 && -f "${files[0]}" && ! -L "${files[0]}" ]] || exit 0
-            grep -qxE '\*\*Status\*\* Approved[[:blank:]]*' "${files[0]}" || exit 0
-            grep -qxE '\*\*Worker\*\* Codex[[:blank:]]*' "${files[0]}" || exit 0
-            grep -qxE '\*\*Dispatch\*\* Released[[:blank:]]*' "${files[0]}" || exit 0
+            if [[ ${#files[@]} != 1 || ! -f "${files[0]}" || -L "${files[0]}" ]]; then echo "::notice::dispatcher gate: task file resolution rejected (count=${#files[@]})"; exit 0; fi
+            grep -qxE '\*\*Status\*\* Approved[[:blank:]]*' "${files[0]}" || { echo "::notice::dispatcher gate: status metadata rejected"; exit 0; }
+            grep -qxE '\*\*Worker\*\* Codex[[:blank:]]*' "${files[0]}" || { echo "::notice::dispatcher gate: worker metadata rejected"; exit 0; }
+            grep -qxE '\*\*Dispatch\*\* Released[[:blank:]]*' "${files[0]}" || { echo "::notice::dispatcher gate: dispatch metadata rejected"; exit 0; }
             printf 'Read AGENTS.md, PLANS.md and %s. Implement only the approved work order and run its tests. Do not change dispatcher controls or publish anything.\n' "${files[0]}" > "$RUNNER_TEMP/task-prompt"
           fi
           echo "task=$task" >> "$GITHUB_OUTPUT"
