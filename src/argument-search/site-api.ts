@@ -9,6 +9,7 @@ export interface SearchEnvironment {
   EVIDENCE_SNAPSHOTS?: SnapshotStorage;
   DEBATEOS_OWNER_EMAIL?: string;
   DEBATEOS_IMPORT_TOKEN?: string;
+  DEBATEOS_IMPORT_SHA256?: string;
   DEBATEOS_SNAPSHOT_SHA256?: string;
 }
 
@@ -50,7 +51,7 @@ export async function handleSearchApi(request: Request, env: SearchEnvironment):
     if (origin && origin !== url.origin) return json({ error: 'Access denied' }, 403);
   }
 
-  const hash = env.DEBATEOS_SNAPSHOT_SHA256;
+  const hash = internal ? env.DEBATEOS_IMPORT_SHA256 ?? env.DEBATEOS_SNAPSHOT_SHA256 : env.DEBATEOS_SNAPSHOT_SHA256;
   const storage = env.EVIDENCE_SNAPSHOTS;
   if (!hash || !/^[a-f0-9]{64}$/.test(hash) || !storage) return json({ error: 'Index unavailable' }, 503);
   const key = `search-snapshot/${hash}.json`;
@@ -64,7 +65,7 @@ export async function handleSearchApi(request: Request, env: SearchEnvironment):
     } catch {
       return json({ error: 'Invalid snapshot JSON' }, 422);
     }
-    await storage.put(key, bytes);
+    if (!await storage.get(key)) await storage.put(key, bytes);
     return json({ ready: true });
   }
   if (internal && request.method !== 'GET') return json({ error: 'Unsupported method' }, 405);
