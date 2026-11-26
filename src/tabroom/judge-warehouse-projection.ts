@@ -4,14 +4,42 @@ import {
   type Evidence, type HistoryObservation, type ParadigmRevision, type Side,
 } from './judge-evidence.ts';
 
-// IDs refer to warehouse_evidence rows (capture, parser, pointer and policy).
-// The caller pins the mapping and supplies verified, audience-eligible evidence
-// at the build cutoff, including capture policy and applicable grant checks.
-export type ProjectionScope = Readonly<{
+const syntheticMappingVersion = 'synthetic-1';
+
+type ProjectionScope = Readonly<{
+  cutoff: string;
+  mappingVersion: typeof syntheticMappingVersion;
+}>;
+
+// No verified Tabroom mapping is registered for serving. Fixture scopes are
+// issued here and cannot be supplied structurally or used as serving policy.
+const fixtureScopes = new WeakMap<ProjectionScope, ReadonlySet<string>>();
+
+export function createJudgeProjectionScope(options: Readonly<{
+  purpose: 'synthetic-test' | 'serving';
   cutoff: string;
   mappingVersion: string;
-  eligibleEvidenceIds: ReadonlySet<string>;
-}>;
+  fixtureEvidenceIds: Iterable<string>;
+}>): ProjectionScope {
+  if (options.purpose !== 'synthetic-test' || options.mappingVersion !== syntheticMappingVersion) {
+    throw new Error('Judge projection mapping is unavailable for this purpose');
+  }
+  if (!isCanonicalInstant(options.cutoff)) throw new Error('Invalid projection cutoff');
+  const scope = Object.freeze({ cutoff: options.cutoff, mappingVersion: syntheticMappingVersion } as const);
+  fixtureScopes.set(scope, new Set(options.fixtureEvidenceIds));
+  return scope;
+}
+
+function isCanonicalInstant(value: string) {
+  const timestamp = Date.parse(value);
+  return Number.isFinite(timestamp) && new Date(timestamp).toISOString() === value;
+}
+
+function fixtureEligibility(scope: ProjectionScope) {
+  const ids = fixtureScopes.get(scope);
+  if (!ids) throw new Error('Judge projection requires an issued synthetic scope');
+  return ids;
+}
 
 type References = readonly [string, ...string[]];
 
@@ -38,9 +66,10 @@ type SideObservation = Readonly<{
 }>;
 
 function eligible(scope: ProjectionScope, capture: Evidence, references: readonly string[]) {
-  return capture.observedAt <= scope.cutoff &&
-    scope.eligibleEvidenceIds.has(capture.id) &&
-    references.every(id => scope.eligibleEvidenceIds.has(id));
+  const ids = fixtureEligibility(scope);
+  return isCanonicalInstant(capture.observedAt) && capture.observedAt <= scope.cutoff &&
+    Boolean(capture.id) && ids.has(capture.id) && references.length > 0 &&
+    references.every(id => Boolean(id) && ids.has(id));
 }
 
 function resolveDecision(observations: readonly SideObservation[]) {
@@ -52,11 +81,12 @@ function resolveDecision(observations: readonly SideObservation[]) {
 }
 
 function fieldEvidence(row: Evidence, references: References | undefined, scope: ProjectionScope) {
-  return references && eligible(scope, row, references)
+  return references?.length && eligible(scope, row, references)
     ? [...new Set([row.id, ...references])].sort() : undefined;
 }
 
 export function projectJudgeHistory(candidates: readonly HistoryCandidate[], scope: ProjectionScope) {
+  fixtureEligibility(scope);
   const byPanel = new Map<string, {
     assignments: Map<string, { sources: Map<string, { judgeId: string; evidenceId: string; evidenceIds: Set<string> }>;
       votes: Map<string, SideObservation> }>;
@@ -67,7 +97,8 @@ export function projectJudgeHistory(candidates: readonly HistoryCandidate[], sco
   for (const { observation, judgeId, assignmentEvidenceIds, voteEvidenceIds, resultEvidenceIds } of candidates) {
     const { personId, panelId, evidence } = observation;
     const linkEvidenceIds = [...new Set([...assignmentEvidenceIds, ...observation.linkEvidenceIds])];
-    if (!eligible(scope, evidence, linkEvidenceIds)) continue;
+    if (!assignmentEvidenceIds.length || !observation.linkEvidenceIds.length ||
+        !eligible(scope, evidence, linkEvidenceIds)) continue;
     const previous = observations.get(evidence.id);
     const comparable = { ...observation, linkEvidenceIds: [] };
     if (previous && !isDeepStrictEqual(previous, comparable)) {
@@ -97,6 +128,7 @@ export function projectJudgeHistory(candidates: readonly HistoryCandidate[], sco
     }
   }
   return {
+    eligibility: 'synthetic-only' as const,
     mappingVersion: scope.mappingVersion,
     assignments: [...byPanel].sort().flatMap(([panelId, panel]) =>
       [...panel.assignments].sort().map(([personId, assignment]) => ({
@@ -123,6 +155,7 @@ function addDecisionEvidence(
 }
 
 export function projectParadigms(candidates: readonly ParadigmCandidate[], personId: string, scope: ProjectionScope) {
+  fixtureEligibility(scope);
   let revisions: readonly ParadigmRevision[] = [];
   const lineage = new Map<string, { textEvidenceIds: Set<string>; reviewDateEvidenceIds: Set<string> }>();
   // Merge eligible lineage before masking an optional review date, so repeated
@@ -148,6 +181,7 @@ export function projectParadigms(candidates: readonly ParadigmCandidate[], perso
     };
   }).sort((a, b) => a.evidence.id.localeCompare(b.evidence.id, 'en'));
   return {
+    eligibility: 'synthetic-only' as const,
     mappingVersion: scope.mappingVersion,
     revisions: eligibleRevisions,
     latest: paradigmAsOf(eligibleRevisions, personId, scope.cutoff),

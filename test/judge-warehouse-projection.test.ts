@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { mapJudgeHistory, mapParadigm } from '../src/tabroom/judge-evidence.ts';
-import { projectJudgeHistory, projectParadigms } from '../src/tabroom/judge-warehouse-projection.ts';
+import { createJudgeProjectionScope, projectJudgeHistory, projectParadigms } from '../src/tabroom/judge-warehouse-projection.ts';
 
 const observedAt = '2026-01-02T00:00:00.000Z';
 const people = [{ tabroomPersonId: 1, personId: 'p1' }, { tabroomPersonId: 2, personId: 'p2' }];
@@ -22,12 +22,12 @@ function candidate(id: string, judge: number, vote: unknown, result: unknown, pa
 }
 
 function scope(active: readonly string[], withheld: readonly string[] = []) {
-  return {
-    cutoff: observedAt, mappingVersion: 'synthetic-1',
-    eligibleEvidenceIds: new Set(active.flatMap(id =>
+  return createJudgeProjectionScope({
+    purpose: 'synthetic-test', cutoff: observedAt, mappingVersion: 'synthetic-1',
+    fixtureEvidenceIds: active.flatMap(id =>
       ['', '-link', '-identity', '-vote', '-result', '-date'].map(suffix => id + suffix))
-      .filter(id => !withheld.includes(id))),
-  };
+      .filter(id => !withheld.includes(id)),
+  });
 }
 
 test('counts each Person/panel and panel result once, preserving dissent and distinct flights', () => {
@@ -93,4 +93,31 @@ test('keeps only eligible paradigm revisions and field lineage at the cutoff', (
   assert.deepEqual(projected.revisions[0].textEvidenceIds, ['a', 'a-identity']);
   assert.equal(projected.latest.status, 'mapped');
   assert.equal(projectParadigms([row], 'p1', scope(['a'])).revisions[0].sourceReviewDate, '2026-01-01');
+});
+
+test('rejects serving, unknown mappings and caller-forged scopes even for empty inputs', () => {
+  const request = {
+    purpose: 'synthetic-test' as const, cutoff: observedAt,
+    mappingVersion: 'synthetic-1', fixtureEvidenceIds: ['a'],
+  };
+  assert.throws(() => createJudgeProjectionScope({ ...request, purpose: 'serving' }), /unavailable/);
+  assert.throws(() => createJudgeProjectionScope({ ...request, mappingVersion: 'unverified' }), /unavailable/);
+  assert.throws(() => createJudgeProjectionScope({ ...request, cutoff: '2026-01-02' }), /cutoff/);
+  const forged = { ...scope(['a']), eligibleEvidenceIds: new Set(['a']) };
+  assert.throws(() => projectJudgeHistory([], forged), /issued synthetic scope/);
+  assert.throws(() => projectParadigms([], 'p1', forged), /issued synthetic scope/);
+});
+
+test('snapshots fixture eligibility and suppresses a field with an empty runtime evidence list', () => {
+  const ids = new Set(['a', 'a-link', 'a-identity', 'a-result']);
+  const pinned = createJudgeProjectionScope({
+    purpose: 'synthetic-test', cutoff: observedAt, mappingVersion: 'synthetic-1', fixtureEvidenceIds: ids,
+  });
+  ids.add('a-vote');
+  const row = candidate('a', 1, 'aff', 'neg');
+  const empty = [] as unknown as readonly [string];
+  const projected = projectJudgeHistory([{ ...row, resultEvidenceIds: empty }], pinned);
+  assert.equal(projected.eligibility, 'synthetic-only');
+  assert.equal(projected.assignments[0].individualVote.status, 'missing');
+  assert.equal(projected.panelResults[0].status, 'missing');
 });
