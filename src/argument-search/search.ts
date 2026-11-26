@@ -1,10 +1,15 @@
+import { interpretDebateQuery, matchDebateRecord, type DebateFamily, type DebateQuery } from './debate.ts';
+
 export type SearchIntent = 'card' | 'argument' | 'document';
-export type SearchFacet = 'war-unlikely' | 'war-likely' | 'war-impacts' | 'escalation';
+export type SearchFilter = 'all' | SearchIntent;
+const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
+export const searchFacets = [...warFacets, 'alliance-erosion', 'alliance-resilience', 'escalation-unlikely', 'escalation-likely', 'impact-defense', 'impact-offense', 'link', 'link-defense', 'uniqueness', 'internal-link', 'impact'] as const;
+export type SearchFacet = typeof searchFacets[number];
 export type Coverage = 'card-candidates' | 'unparsed' | 'stale';
 type Match = 'compatible' | 'unknown' | 'opposing' | 'different-function' | 'metadata';
 
 export interface Claim {
-  subject: 'us-china-war';
+  subject: 'us-china-war' | 'japan-alliance' | 'taiwan-escalation' | 'economic-decline' | 'midterms-da';
   facet: SearchFacet;
 }
 
@@ -21,6 +26,7 @@ export interface SearchDocument {
   folderPath: string;
   revision: string | null;
   coverage: Coverage;
+  openUrl?: string;
   subject?: Claim['subject'];
 }
 
@@ -36,7 +42,10 @@ export interface SearchCard {
   claim?: Claim;
   classification: 'unreviewed' | 'reviewed' | 'synthetic';
   condition?: string;
+  classificationBasis?: 'tag-and-excerpt' | 'tag' | 'benchmark' | 'file-section';
   duplicateGroup?: string;
+  sectionHeadings?: readonly string[];
+  argumentRole?: 'solvency';
 }
 
 export interface SearchArgument {
@@ -46,6 +55,9 @@ export interface SearchArgument {
   documentIds: readonly string[];
   review: 'unreviewed' | 'reviewed' | 'synthetic';
   claim?: Claim;
+  family?: DebateFamily;
+  section?: readonly string[];
+  cardIds?: readonly string[];
 }
 
 export interface SearchCorpus {
@@ -58,26 +70,33 @@ export interface SourceLocation {
   documentId: string;
   title: string;
   folderPath: string;
+  openUrl?: string;
 }
 
 export type SearchResult =
   | { kind: 'document'; id: string; match: 'metadata'; coverage: Coverage; source: SourceLocation }
-  | { kind: 'argument'; id: string; match: Match; name: string; review: SearchArgument['review']; sources: SourceLocation[] }
+  | { kind: 'argument'; id: string; match: Match; name: string; review: SearchArgument['review']; sources: SourceLocation[];
+      section?: readonly string[]; supportingCards?: CardResult[] }
   | {
     kind: 'card';
     id: string;
     match: Match;
     condition?: string;
+    section?: readonly string[];
     sources: (SourceLocation & { cardId: string })[];
-    preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange'> & { excerpt: string };
+    preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange' | 'classificationBasis'> & { excerpt: string };
   };
+
+export type CardResult = Extract<SearchResult, { kind: 'card' }>;
 
 export interface SearchResponse {
   interpretation: {
     subject: Claim['subject'] | null;
     facet: SearchFacet | null;
     clarificationChoices: readonly SearchFacet[];
+    debate?: DebateQuery;
   };
+  preferredKind?: SearchIntent;
   results: SearchResult[];
 }
 
@@ -86,31 +105,60 @@ export interface SearchGrants {
   argumentIds: ReadonlySet<string>;
 }
 
-const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
-const facetPatterns: Record<SearchFacet, RegExp> = {
+const facetPatterns: Record<typeof warFacets[number], RegExp> = {
   'war-unlikely': /\b(no|unlikely|avoidable|deterred|wont|won t|will not|does not|de escalation)\b/,
   'war-likely': /\b(likely|inevitable|imminent|will happen|will go to war)\b/,
   'war-impacts': /\b(impacts?|consequences?|extinction|catastrophic)\b/,
   'escalation': /\b(escalation|escalates|miscalculation)\b/,
 };
 
-function normalize(text: string) {
+export function normalizeSearchText(text: string) {
   return text.toLowerCase()
     .replace(/\bu\s*\.\s*s\.?(?=\W|$)|\bunited states\b/g, 'us')
     .replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 function interpret(query: string, request: SearchRequest): SearchResponse['interpretation'] {
-  const subject = /\bus\b/.test(query) && /\bchina\b/.test(query)
-    && /\b(war|conflict|escalation)\b/.test(query) ? 'us-china-war' : null;
-  if (!subject || request.intent === 'document') {
-    return { subject, facet: null, clarificationChoices: [] };
-  }
-
+  let subject: Claim['subject'] | null = null;
+  let choices: readonly SearchFacet[] = [];
+  let matchedFacets: readonly SearchFacet[] = [];
   const claimText = query.replace(/\bnot (likely|inevitable|imminent)\b/g, 'unlikely');
-  const matchedFacets = warFacets.filter(facet => facetPatterns[facet].test(claimText));
-  const facet = request.facetOverride ?? (matchedFacets.length === 1 ? matchedFacets[0] : null);
-  return { subject, facet, clarificationChoices: facet ? [] : warFacets };
+  if (/\b(econ(?:omic)? decline|econ(?:omic)? collapse|(?:economic )?recession|economic downturn|growth slowdown)\b/.test(query)) {
+    subject = 'economic-decline';
+    choices = ['impact-defense', 'impact-offense'];
+    if (/\b(impact (?:defense|defence|takeouts?)|no (?:impact|war)|peaceful|does(?:n t| not) cause war)\b/.test(query)) matchedFacets = ['impact-defense'];
+    else if (/\b(impact(?:s| offense| turn)?|causes war|extinction)\b/.test(query)) matchedFacets = ['impact-offense'];
+  } else if (/\bmid ?terms?\b/.test(query) && /\b(da|disadvantage|link|uq|uniqueness|impact)\b/.test(query)) {
+    subject = 'midterms-da';
+    choices = ['link', 'link-defense', 'uniqueness', 'internal-link', 'impact'];
+    if (/\b(no link|link (?:defen[cs]e|turns?))\b/.test(query)) matchedFacets = ['link-defense'];
+    else if (/\binternal links?\b/.test(query)) matchedFacets = ['internal-link'];
+    else if (/\blinks?\b/.test(query)) matchedFacets = ['link'];
+    else if (/\b(uq|uniqueness)\b/.test(query)) matchedFacets = ['uniqueness'];
+    else if (/\bimpacts?\b/.test(query)) matchedFacets = ['impact'];
+  } else if (/\bus\b/.test(query) && /\bchina\b/.test(query) && /\b(war|conflict|escalation)\b/.test(query)) {
+    subject = 'us-china-war';
+    choices = warFacets;
+    matchedFacets = warFacets.filter(facet => facetPatterns[facet].test(claimText));
+  } else if (/\bjapan\b/.test(query) && /\balliance\b/.test(query)) {
+    subject = 'japan-alliance';
+    choices = ['alliance-erosion', 'alliance-resilience'];
+    matchedFacets = [
+      ...(/\b(erosion|fractur\w*|collapse|credibility|weakens?)\b/.test(query) ? ['alliance-erosion' as const] : []),
+      ...(/\b(resilien\w*|strong|holds|strengthens?)\b/.test(query) ? ['alliance-resilience' as const] : []),
+    ];
+  } else if (/\btaiwan\b/.test(query) && /\bescalat\w*\b/.test(query)) {
+    subject = 'taiwan-escalation';
+    choices = ['escalation-unlikely', 'escalation-likely'];
+    matchedFacets = [
+      ...(facetPatterns['war-unlikely'].test(claimText) ? ['escalation-unlikely' as const] : []),
+      ...(facetPatterns['war-likely'].test(claimText) ? ['escalation-likely' as const] : []),
+    ];
+  }
+  if (!subject || request.intent === 'document') return { subject, facet: null, clarificationChoices: [] };
+  const override = request.facetOverride;
+  const facet = override && choices.includes(override) ? override : matchedFacets.length === 1 ? matchedFacets[0] : null;
+  return { subject, facet, clarificationChoices: facet ? [] : choices };
 }
 
 const stopWords = new Set(['a', 'an', 'and', 'about', 'for', 'in', 'is', 'of', 'on', 'the', 'to']);
@@ -124,29 +172,58 @@ const matchPriority: Record<Match, number> = {
 
 function textRelevance(query: string, terms: readonly string[], fields: readonly string[]) {
   if (!query) return 0;
-  const normalized = fields.map(normalize);
+  const normalized = fields.map(normalizeSearchText);
   if (normalized.includes(query)) return 3;
   if (normalized.some(field => ` ${field} `.includes(` ${query} `))) return 2;
   const words = new Set(normalized.join(' ').split(' '));
-  return terms.length > 0 && terms.every(term => words.has(term)) ? 1 : 0;
+  const overlap = terms.filter(term => words.has(term)).length;
+  if (terms.length > 0 && overlap === terms.length) return 1;
+  return terms.length >= 3 && overlap >= Math.max(2, Math.ceil(terms.length * 0.65)) ? overlap / terms.length / 2 : 0;
 }
 
 function classify(facet: SearchFacet | null, claim?: Claim): Match {
   if (!facet || !claim) return 'unknown';
   if (facet === claim.facet) return 'compatible';
-  if ((facet === 'war-unlikely' && claim.facet === 'war-likely')
-    || (facet === 'war-likely' && claim.facet === 'war-unlikely')) return 'opposing';
+  const opposing = [
+    ['war-unlikely', 'war-likely'],
+    ['alliance-erosion', 'alliance-resilience'],
+    ['escalation-unlikely', 'escalation-likely'],
+    ['impact-defense', 'impact-offense'],
+    ['link', 'link-defense'],
+  ];
+  if (opposing.some(pair => pair.includes(facet) && pair.includes(claim.facet))) return 'opposing';
   return 'different-function';
 }
 
 function location(document: SearchDocument): SourceLocation {
-  return { documentId: document.id, title: document.title, folderPath: document.folderPath };
+  return { documentId: document.id, title: document.title, folderPath: document.folderPath, ...(document.openUrl ? { openUrl: document.openUrl } : {}) };
+}
+
+function canPreview(card: SearchCard, document: SearchDocument | undefined): document is SearchDocument {
+  const [start, end] = card.paragraphRange;
+  return !!document && document.coverage === 'card-candidates' && !!document.revision
+    && document.revision === card.sourceRevision && card.extraction !== 'connector-text'
+    && !!card.tag.trim() && !/^(?:\W*)(?:todo\b|avoid saying\b)/i.test(card.tag) && !!card.citation.trim() && !!card.evidence.trim()
+    && Number.isInteger(start) && Number.isInteger(end) && start >= 0 && end >= start;
+}
+
+function previewCard(card: SearchCard, document: SearchDocument, match: Match): CardResult {
+  return {
+    kind: 'card', id: card.id, match, condition: card.condition, section: card.sectionHeadings,
+    sources: [{ ...location(document), cardId: card.id }],
+    preview: {
+      tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
+      extraction: card.extraction, classification: card.classification,
+      sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange, classificationBasis: card.classificationBasis,
+    },
+  };
 }
 
 interface RankedResult {
   result: SearchResult;
   relevance: number;
   conditional?: boolean;
+  supportingContext?: boolean;
   duplicateKey?: string;
 }
 
@@ -156,11 +233,21 @@ export function searchArguments(
   corpus: SearchCorpus,
   grants: SearchGrants,
 ): SearchResponse {
-  const query = normalize(request.query);
+  const query = normalizeSearchText(request.query);
   const interpretation = interpret(query, request);
+  const debate = interpretDebateQuery(request.query);
+  const guided = request.intent !== 'document' && Boolean(debate.role || debate.family || debate.speech || debate.response);
+  if (guided) interpretation.debate = debate;
+  const useDebateRanking = guided && (!interpretation.facet || (debate.role === 'impact defense' && interpretation.facet === 'war-impacts'));
+  if (useDebateRanking && debate.role === 'impact defense' && interpretation.facet === 'war-impacts') interpretation.facet = null;
   if (!query || grants.documentIds.size === 0) return { interpretation, results: [] };
 
-  const terms = [...new Set(query.split(' ').filter(term => !stopWords.has(term)))];
+  const structuredTopic = interpretation.subject === 'economic-decline' || interpretation.subject === 'midterms-da';
+  const retrievalQuery = structuredTopic && request.intent !== 'document'
+    ? query.replace(/\b(?:for|disadvantage|da|defen[cs]e|offense|internal|impact|links?|uniqueness|uq)\b/g, ' ').replace(/ +/g, ' ').trim()
+    : query;
+  const terms = [...new Set(retrievalQuery.split(' ').filter(term => !stopWords.has(term)))];
+  const extraTerms = terms.filter(term => interpretation.subject === 'midterms-da' && !/^midterms?$/.test(term));
   const documents = new Map(corpus.documents
     .filter(document => grants.documentIds.has(document.id))
     .map(document => [document.id, document]));
@@ -168,11 +255,14 @@ export function searchArguments(
 
   if (request.intent !== 'argument') {
     for (const document of documents.values()) {
-      const relevance = textRelevance(query, terms, [document.title, document.folderPath]);
+      const relevance = textRelevance(retrievalQuery, terms, [document.title, document.folderPath]);
       const subjectMatches = interpretation.subject && document.subject === interpretation.subject;
-      if (relevance || (subjectMatches && request.intent === 'card')) {
+      const context = useDebateRanking && matchDebateRecord(debate, { tag: '' }, document.title, document.folderPath);
+      const hintText = normalizeSearchText(`${document.title} ${document.folderPath}`);
+      const hinted = debate.sourceHint && hintText.includes(debate.sourceHint);
+      if (relevance || context || hinted || (subjectMatches && request.intent === 'card')) {
         candidates.push({
-          relevance,
+          relevance: relevance + (hinted ? 5 : 0),
           result: { kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) },
         });
       }
@@ -180,6 +270,7 @@ export function searchArguments(
   }
 
   if (request.intent === 'argument') {
+    const cardsById = new Map(corpus.cards.map(card => [card.id, card]));
     for (const argument of corpus.arguments) {
       if (!grants.argumentIds.has(argument.id)) continue;
       const sources = [...new Set(argument.documentIds)].flatMap(id => {
@@ -187,13 +278,26 @@ export function searchArguments(
         return source ? [location(source)] : [];
       });
       if (sources.length === 0) continue;
-      const relevance = textRelevance(query, terms, [argument.name, ...argument.aliases]);
+      const names = [argument.name, ...argument.aliases];
+      const nameTerms = new Set(names.flatMap(name => interpretDebateQuery(name).topics));
+      const positionMatches = !!argument.family && argument.family === debate.family && debate.topics.length > 0
+        && debate.topics.every(term => nameTerms.has(term));
+      const relevance = textRelevance(retrievalQuery, terms, names) + (positionMatches ? 4 : 0);
       const subjectMatches = interpretation.subject && argument.claim?.subject === interpretation.subject;
-      if (relevance || subjectMatches) {
+      const context = useDebateRanking && sources.some(source => matchDebateRecord(debate, { tag: argument.name }, source.title, source.folderPath));
+      if (relevance || subjectMatches || context) {
+        const eligibleSourceIds = new Set(sources.map(source => source.documentId));
+        const supportingCards = (argument.cardIds ?? []).flatMap(id => {
+          const card = cardsById.get(id);
+          if (!card || !eligibleSourceIds.has(card.documentId)) return [];
+          const document = documents.get(card.documentId);
+          return canPreview(card, document) ? [previewCard(card, document, 'unknown')] : [];
+        }).slice(0, 5);
         candidates.push({
           relevance,
           result: { kind: 'argument', id: argument.id, name: argument.name, review: argument.review,
-            match: classify(interpretation.facet, subjectMatches ? argument.claim : undefined), sources },
+            match: positionMatches ? 'compatible' : classify(interpretation.facet, subjectMatches ? argument.claim : undefined),
+            sources, section: argument.section, supportingCards },
         });
       }
     }
@@ -202,30 +306,27 @@ export function searchArguments(
   if (request.intent === 'card') {
     for (const card of corpus.cards) {
       const document = documents.get(card.documentId);
-      if (!document || document.coverage !== 'card-candidates' || !document.revision
-        || document.revision !== card.sourceRevision || card.extraction === 'connector-text') continue;
-      const [start, end] = card.paragraphRange;
-      if (!card.tag.trim() || !card.citation.trim() || !card.evidence.trim()
-        || !Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start) continue;
+      if (!canPreview(card, document)) continue;
 
-      const relevance = textRelevance(query, terms, [card.tag]);
+      const cardContext = [card.tag, ...(card.sectionHeadings ?? [])];
+      const context = useDebateRanking ? matchDebateRecord(debate, card, document.title, document.folderPath) : null;
+      const relevance = (context?.score ?? 0) + textRelevance(retrievalQuery, terms, [card.tag])
+        + extraTerms.filter(term => cardContext.some(field => normalizeSearchText(field).split(' ').includes(term))).length * 4;
       const subjectMatches = interpretation.subject && card.claim?.subject === interpretation.subject;
       if (!relevance && !subjectMatches) continue;
-      const match = classify(interpretation.facet, subjectMatches ? card.claim : undefined);
+      if (useDebateRanking && (debate.role || debate.family || debate.response) && !context && !subjectMatches) continue;
+      if (structuredTopic && interpretation.facet && !subjectMatches) continue;
+      const match = context?.compatible && Boolean(debate.role || debate.response || !debate.family) ? 'compatible'
+        : context && (debate.role || debate.response) && debate.topics.length > 0 ? 'different-function'
+        : classify(interpretation.facet, subjectMatches ? card.claim : undefined);
+      if (useDebateRanking && debate.role && debate.topics.length === 0 && !context?.compatible && !subjectMatches) continue;
       candidates.push({
         relevance,
         conditional: Boolean(card.condition),
+        supportingContext: Boolean(card.sectionHeadings?.some(heading => normalizeSearchText(heading) === 'shell')),
         duplicateKey: card.duplicateGroup
           ? JSON.stringify([card.duplicateGroup, card.claim?.facet, card.condition, match]) : undefined,
-        result: {
-          kind: 'card', id: card.id, match, condition: card.condition,
-          sources: [{ ...location(document), cardId: card.id }],
-          preview: {
-            tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
-            extraction: card.extraction, classification: card.classification,
-            sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange,
-          },
-        },
+        result: previewCard(card, document, match),
       });
     }
   }
@@ -233,6 +334,7 @@ export function searchArguments(
   candidates.sort((a, b) => matchPriority[b.result.match] - matchPriority[a.result.match]
     || Number(Boolean(a.conditional)) - Number(Boolean(b.conditional))
     || b.relevance - a.relevance
+    || Number(Boolean(b.supportingContext)) - Number(Boolean(a.supportingContext))
     || a.result.id.localeCompare(b.result.id, 'en'));
   const groups = new Map<string, Extract<SearchResult, { kind: 'card' }>>();
   const results: SearchResult[] = [];
@@ -248,6 +350,14 @@ export function searchArguments(
     results.push(result);
   }
 
+  // When the request names a debate role, surface unused source documents as a secondary lookup.
+  if (request.intent === 'argument' && results.length === 0 && useDebateRanking) {
+    for (const document of documents.values()) {
+      if (matchDebateRecord(debate, { tag: '' }, document.title, document.folderPath)) {
+        results.push({ kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) });
+      }
+    }
+  }
   const limit = request.limit ?? 10;
   return { interpretation, results: results.slice(0, Number.isInteger(limit) ? Math.max(0, Math.min(limit, 50)) : 10) };
 }
