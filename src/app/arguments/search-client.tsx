@@ -133,12 +133,20 @@ export function EvidenceSearch() {
   }
 
   return <div className={styles.shell}>
+    <a className={styles.skip} href="#debate-search">Skip to search</a>
     <header className={styles.top}>
-      <div className={styles.topInner}><a href="/arguments" className={styles.wordmark}><span className={styles.mark} aria-hidden="true">D</span>DebateOS</a><span className={styles.topLabel}>Private coach preview</span></div>
+      <div className={styles.topInner}>
+        <a href="/arguments" className={styles.wordmark}>DebateOS</a>
+        <a href="https://www.snu.edu/debate" className={styles.program}>SNU Debate</a>
+      </div>
     </header>
-    <main className={styles.main}>
-      <h1>Evidence Search</h1>
-      <p className={styles.lede}>Find debate cards, arguments, and their original Dropbox documents.</p>
+    <main id="debate-search">
+      <div className={styles.banner}>
+        <div className={styles.bannerInner}>
+          <h1>Evidence Search</h1>
+          <p className={styles.lede}>Find debate positions, evidence cards, and original Dropbox files.</p>
+        </div>
+      </div>
       <div className={styles.layout}>
         <section className={styles.work} aria-label="Evidence search">
           <form onSubmit={submit} className={styles.form}>
