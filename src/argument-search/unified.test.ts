@@ -37,7 +37,8 @@ test('a single search prioritizes an argument, its verified supporting card, or 
 test('post-search filters preserve a linked file or restrict to the chosen kind', () => {
   const query = 'Conditions CP against Jamaica AFF';
   const files = runSnapshotSearch(snapshot, { query, filter: 'document' });
-  assert.ok(files?.results.some(result => result.id === 'jamaica'));
+  assert.ok(files);
+  assert.ok(files.results.some(result => result.id === 'jamaica'));
   assert.ok(files.results.every(result => result.kind === 'document'));
   const argumentsOnly = runSnapshotSearch(snapshot, { query, filter: 'argument' });
   assert.deepEqual(argumentsOnly?.results.map(result => result.id), ['conditions']);
