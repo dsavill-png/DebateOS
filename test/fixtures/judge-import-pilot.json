@@ -1,0 +1,100 @@
+{
+  "kind": "synthetic-judge-snapshot",
+  "snapshotId": "pilot-r1",
+  "pages": [
+    {
+      "observedAt": "2026-01-01T00:00:00.000Z",
+      "records": [
+        {
+          "personId": "fixture-1",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": "Synthetic history 1"
+        },
+        {
+          "personId": "fixture-1",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Synthetic paradigm 1"
+        },
+        {
+          "personId": "fixture-2",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": "Synthetic history 2"
+        },
+        {
+          "personId": "fixture-2",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Synthetic paradigm 2"
+        },
+        {
+          "personId": "fixture-3",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": "Synthetic history 3"
+        },
+        {
+          "personId": "fixture-3",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Synthetic paradigm 3"
+        },
+        {
+          "personId": "fixture-4",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": "Synthetic history 4"
+        },
+        {
+          "personId": "fixture-4",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Synthetic paradigm 4"
+        },
+        {
+          "personId": "fixture-5",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": "Synthetic history 5"
+        },
+        {
+          "personId": "fixture-5",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Synthetic paradigm 5"
+        }
+      ]
+    },
+    {
+      "observedAt": "2026-01-02T00:00:00.000Z",
+      "records": [
+        {
+          "personId": " fixture-1 ",
+          "stream": "history",
+          "sourceId": "record-1",
+          "content": " Synthetic history 1 "
+        },
+        {
+          "personId": "fixture-2",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Revised synthetic paradigm"
+        },
+        {
+          "personId": "fixture-2",
+          "stream": "paradigm",
+          "sourceId": "record-1",
+          "content": "Conflicting observation"
+        },
+        {
+          "personId": "fixture-3",
+          "stream": "invalid",
+          "sourceId": "record-1",
+          "content": "Invalid stream"
+        }
+      ]
+    }
+  ]
+}
