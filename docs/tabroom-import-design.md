@@ -45,3 +45,23 @@ Use 4,010 baseline-month requests and 3,208 subsequent monthly requests, before 
 | Operations | Rotation, incident response, reconciliation and recovery tests |
 
 The $0.51 example is a partial estimate. Complete the budget with the selected warehouse, egress topology, retention, and pilot-measured bytes and runtime before spend approval. Set budget alerts and independent request caps. See [AWS Pricing Calculator](https://calculator.aws/).
+
+### Single-AZ planning scenario
+
+Use a 730-hour month, one private PostgreSQL instance, a private Lambda worker with one NAT gateway and public IPv4 address, one secret and customer-managed key, 5 GB of object storage, and 1 GB each of NAT traffic and log ingestion. These rounded allowances are for comparing deployment options and require an AWS Calculator quote before approval.
+
+| Monthly AWS cost | Baseline | Steady state |
+| --- | ---: | ---: |
+| Worker and schedule, including retry and session allowance | $0.10 | $0.10 |
+| Secret and key, including reads and usage | $1.50 | $1.50 |
+| Capture, quarantine and restore allowance | $0.25 | $0.25 |
+| PostgreSQL, 20 GB storage and backup allowance | $15.00 | $15.00 |
+| NAT, public IPv4 and network transfer | $37.00 | $37.00 |
+| Logs, monitoring, audit and alerts | $2.00 | $2.00 |
+| AWS subtotal | $55.85 | $55.85 |
+| 25% usage/design contingency | $13.96 | $13.96 |
+| AWS planning total, before tax | $69.81 | $69.81 |
+
+The fixed warehouse and network costs dominate in this scenario. Track operator time separately at an initial allowance of two hours per month multiplied by the team's loaded hourly rate. Reprice if the approved deployment needs multi-AZ failover, additional private endpoints, more retention, or different egress controls. An existing approved warehouse and egress path could reduce incremental cost. Price protection and retention settings after the bounded pilot and before deploying a schedule.
+
+Rate references: [RDS](https://aws.amazon.com/rds/postgresql/pricing/), [VPC](https://aws.amazon.com/vpc/pricing/), [CloudWatch](https://aws.amazon.com/cloudwatch/pricing/), [S3](https://aws.amazon.com/s3/pricing/), [KMS](https://aws.amazon.com/kms/pricing/).
