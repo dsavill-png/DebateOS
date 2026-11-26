@@ -9,7 +9,7 @@ const searchModes: { id: SearchIntent; label: string; hint: string }[] = [
   { id: 'argument', label: 'Arguments', hint: 'Find a family of related evidence.' },
   { id: 'document', label: 'Documents', hint: 'Find a file by name or folder.' },
 ];
-const examples = ['No US-China War', 'Japan alliance erosion', 'Economic decline impact defense', 'Link for Midterms DA'];
+const examples = ['Impact defense for Indo-Pakistan war', 'Japan alliance erosion', 'Economic decline impact defense', 'Link for Midterms DA'];
 const facetNames: Record<SearchFacet, string> = {
   'war-unlikely': 'War unlikely',
   'war-likely': 'War likely',
@@ -156,13 +156,17 @@ export function EvidenceSearch() {
               {pending && <p>Searching…</p>}
               {error && <p role="alert">{error}</p>}
               {response && <p><strong>{response.results.length} {response.results.length === 1 ? 'result' : 'results'}</strong> for “{submitted}”
-                {response.interpretation.facet && <span className={styles.facet}>{facetNames[response.interpretation.facet]}</span>}</p>}
+                {(response.interpretation.facet || response.interpretation.debate?.role) && <span className={styles.facet}>{
+                  response.interpretation.facet ? facetNames[response.interpretation.facet] : response.interpretation.debate?.role
+                }</span>}</p>}
             </div>
             {response && response.interpretation.clarificationChoices.length > 0 && <div className={styles.clarify}>
               <strong>Which claim do you need?</strong>
               <div className={styles.examples}>{response.interpretation.clarificationChoices.map(facet =>
                 <button type="button" key={facet} onClick={() => void run(submitted, mode, facet)}>{facetNames[facet]}</button>)}</div>
             </div>}
+            {response?.interpretation.debate?.role && !response.results.some(result => result.kind === 'card' && result.match === 'compatible')
+              && mode === 'card' && <p className={styles.empty}>No card matched that role in the current collection.</p>}
             {response?.results.map(result => <Result key={`${result.kind}:${result.id}`} result={result} />)}
             {response && response.results.length === 0 && <p className={styles.empty}>Try a shorter query or search Documents by file name.</p>}
             {response && <p className={styles.snapshot}>Index checked {response.status.snapshot} · {response.status.documents} documents · {response.status.cards.toLocaleString('en-US')} card candidates</p>}
