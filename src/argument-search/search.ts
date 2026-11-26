@@ -1,0 +1,253 @@
+export type SearchIntent = 'card' | 'argument' | 'document';
+export type SearchFacet = 'war-unlikely' | 'war-likely' | 'war-impacts' | 'escalation';
+export type Coverage = 'card-candidates' | 'unparsed' | 'stale';
+type Match = 'compatible' | 'unknown' | 'opposing' | 'different-function' | 'metadata';
+
+export interface Claim {
+  subject: 'us-china-war';
+  facet: SearchFacet;
+}
+
+export interface SearchRequest {
+  query: string;
+  intent: SearchIntent;
+  facetOverride?: SearchFacet;
+  limit?: number;
+}
+
+export interface SearchDocument {
+  id: string;
+  title: string;
+  folderPath: string;
+  revision: string | null;
+  coverage: Coverage;
+  subject?: Claim['subject'];
+}
+
+export interface SearchCard {
+  id: string;
+  documentId: string;
+  sourceRevision: string;
+  extraction: 'original-docx' | 'connector-text' | 'synthetic';
+  tag: string;
+  citation: string;
+  evidence: string;
+  paragraphRange: readonly [start: number, end: number];
+  claim?: Claim;
+  classification: 'unreviewed' | 'reviewed' | 'synthetic';
+  condition?: string;
+  duplicateGroup?: string;
+}
+
+export interface SearchArgument {
+  id: string;
+  name: string;
+  aliases: readonly string[];
+  documentIds: readonly string[];
+  review: 'unreviewed' | 'reviewed' | 'synthetic';
+  claim?: Claim;
+}
+
+export interface SearchCorpus {
+  documents: readonly SearchDocument[];
+  cards: readonly SearchCard[];
+  arguments: readonly SearchArgument[];
+}
+
+export interface SourceLocation {
+  documentId: string;
+  title: string;
+  folderPath: string;
+}
+
+export type SearchResult =
+  | { kind: 'document'; id: string; match: 'metadata'; coverage: Coverage; source: SourceLocation }
+  | { kind: 'argument'; id: string; match: Match; name: string; review: SearchArgument['review']; sources: SourceLocation[] }
+  | {
+    kind: 'card';
+    id: string;
+    match: Match;
+    condition?: string;
+    sources: (SourceLocation & { cardId: string })[];
+    preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange'> & { excerpt: string };
+  };
+
+export interface SearchResponse {
+  interpretation: {
+    subject: Claim['subject'] | null;
+    facet: SearchFacet | null;
+    clarificationChoices: readonly SearchFacet[];
+  };
+  results: SearchResult[];
+}
+
+export interface SearchGrants {
+  documentIds: ReadonlySet<string>;
+  argumentIds: ReadonlySet<string>;
+}
+
+const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
+const facetPatterns: Record<SearchFacet, RegExp> = {
+  'war-unlikely': /\b(no|unlikely|avoidable|deterred|wont|won t|will not|does not|de escalation)\b/,
+  'war-likely': /\b(likely|inevitable|imminent|will happen|will go to war)\b/,
+  'war-impacts': /\b(impacts?|consequences?|extinction|catastrophic)\b/,
+  'escalation': /\b(escalation|escalates|miscalculation)\b/,
+};
+
+function normalize(text: string) {
+  return text.toLowerCase()
+    .replace(/\bu\s*\.\s*s\.?(?=\W|$)|\bunited states\b/g, 'us')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function interpret(query: string, request: SearchRequest): SearchResponse['interpretation'] {
+  const subject = /\bus\b/.test(query) && /\bchina\b/.test(query)
+    && /\b(war|conflict|escalation)\b/.test(query) ? 'us-china-war' : null;
+  if (!subject || request.intent === 'document') {
+    return { subject, facet: null, clarificationChoices: [] };
+  }
+
+  const claimText = query.replace(/\bnot (likely|inevitable|imminent)\b/g, 'unlikely');
+  const matchedFacets = warFacets.filter(facet => facetPatterns[facet].test(claimText));
+  const facet = request.facetOverride ?? (matchedFacets.length === 1 ? matchedFacets[0] : null);
+  return { subject, facet, clarificationChoices: facet ? [] : warFacets };
+}
+
+const stopWords = new Set(['a', 'an', 'and', 'about', 'for', 'in', 'is', 'of', 'on', 'the', 'to']);
+const matchPriority: Record<Match, number> = {
+  compatible: 5,
+  unknown: 4,
+  metadata: 3,
+  opposing: 2,
+  'different-function': 1,
+};
+
+function textRelevance(query: string, terms: readonly string[], fields: readonly string[]) {
+  if (!query) return 0;
+  const normalized = fields.map(normalize);
+  if (normalized.includes(query)) return 3;
+  if (normalized.some(field => ` ${field} `.includes(` ${query} `))) return 2;
+  const words = new Set(normalized.join(' ').split(' '));
+  return terms.length > 0 && terms.every(term => words.has(term)) ? 1 : 0;
+}
+
+function classify(facet: SearchFacet | null, claim?: Claim): Match {
+  if (!facet || !claim) return 'unknown';
+  if (facet === claim.facet) return 'compatible';
+  if ((facet === 'war-unlikely' && claim.facet === 'war-likely')
+    || (facet === 'war-likely' && claim.facet === 'war-unlikely')) return 'opposing';
+  return 'different-function';
+}
+
+function location(document: SearchDocument): SourceLocation {
+  return { documentId: document.id, title: document.title, folderPath: document.folderPath };
+}
+
+interface RankedResult {
+  result: SearchResult;
+  relevance: number;
+  conditional?: boolean;
+  duplicateKey?: string;
+}
+
+/** The caller resolves current grants server-side. An empty grant set serves no records. */
+export function searchArguments(
+  request: SearchRequest,
+  corpus: SearchCorpus,
+  grants: SearchGrants,
+): SearchResponse {
+  const query = normalize(request.query);
+  const interpretation = interpret(query, request);
+  if (!query || grants.documentIds.size === 0) return { interpretation, results: [] };
+
+  const terms = [...new Set(query.split(' ').filter(term => !stopWords.has(term)))];
+  const documents = new Map(corpus.documents
+    .filter(document => grants.documentIds.has(document.id))
+    .map(document => [document.id, document]));
+  const candidates: RankedResult[] = [];
+
+  if (request.intent !== 'argument') {
+    for (const document of documents.values()) {
+      const relevance = textRelevance(query, terms, [document.title, document.folderPath]);
+      const subjectMatches = interpretation.subject && document.subject === interpretation.subject;
+      if (relevance || (subjectMatches && request.intent === 'card')) {
+        candidates.push({
+          relevance,
+          result: { kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) },
+        });
+      }
+    }
+  }
+
+  if (request.intent === 'argument') {
+    for (const argument of corpus.arguments) {
+      if (!grants.argumentIds.has(argument.id)) continue;
+      const sources = [...new Set(argument.documentIds)].flatMap(id => {
+        const source = documents.get(id);
+        return source ? [location(source)] : [];
+      });
+      if (sources.length === 0) continue;
+      const relevance = textRelevance(query, terms, [argument.name, ...argument.aliases]);
+      const subjectMatches = interpretation.subject && argument.claim?.subject === interpretation.subject;
+      if (relevance || subjectMatches) {
+        candidates.push({
+          relevance,
+          result: { kind: 'argument', id: argument.id, name: argument.name, review: argument.review,
+            match: classify(interpretation.facet, subjectMatches ? argument.claim : undefined), sources },
+        });
+      }
+    }
+  }
+
+  if (request.intent === 'card') {
+    for (const card of corpus.cards) {
+      const document = documents.get(card.documentId);
+      if (!document || document.coverage !== 'card-candidates' || !document.revision
+        || document.revision !== card.sourceRevision || card.extraction === 'connector-text') continue;
+      const [start, end] = card.paragraphRange;
+      if (!card.tag.trim() || !card.citation.trim() || !card.evidence.trim()
+        || !Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start) continue;
+
+      const relevance = textRelevance(query, terms, [card.tag]);
+      const subjectMatches = interpretation.subject && card.claim?.subject === interpretation.subject;
+      if (!relevance && !subjectMatches) continue;
+      const match = classify(interpretation.facet, subjectMatches ? card.claim : undefined);
+      candidates.push({
+        relevance,
+        conditional: Boolean(card.condition),
+        duplicateKey: card.duplicateGroup
+          ? JSON.stringify([card.duplicateGroup, card.claim?.facet, card.condition, match]) : undefined,
+        result: {
+          kind: 'card', id: card.id, match, condition: card.condition,
+          sources: [{ ...location(document), cardId: card.id }],
+          preview: {
+            tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
+            extraction: card.extraction, classification: card.classification,
+            sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange,
+          },
+        },
+      });
+    }
+  }
+
+  candidates.sort((a, b) => matchPriority[b.result.match] - matchPriority[a.result.match]
+    || Number(Boolean(a.conditional)) - Number(Boolean(b.conditional))
+    || b.relevance - a.relevance
+    || a.result.id.localeCompare(b.result.id, 'en'));
+  const groups = new Map<string, Extract<SearchResult, { kind: 'card' }>>();
+  const results: SearchResult[] = [];
+  for (const { result, duplicateKey } of candidates) {
+    if (duplicateKey && result.kind === 'card') {
+      const primary = groups.get(duplicateKey);
+      if (primary) {
+        primary.sources.push(...result.sources);
+        continue;
+      }
+      groups.set(duplicateKey, result);
+    }
+    results.push(result);
+  }
+
+  const limit = request.limit ?? 10;
+  return { interpretation, results: results.slice(0, Number.isInteger(limit) ? Math.max(0, Math.min(limit, 50)) : 10) };
+}
