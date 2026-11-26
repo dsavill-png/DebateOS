@@ -95,7 +95,8 @@ export function interpretDebateQuery(query: string) {
   const side: Side | undefined = speech ? (speech.endsWith('ac') || speech.endsWith('ar') ? 'aff' : 'neg')
     : /\b(?:on (?:the )?aff|aff answers?)\b/.test(normalized) ? 'aff'
     : /\b(?:on (?:the )?neg|neg answers?)\b/.test(normalized) ? 'neg' : undefined;
-  const response = /\b(?:at|answers? to|answers? against|against|frontlines?|respond to)\b/.test(normalized);
+  const response = /\b(?:at|answers? to|answers? against|frontlines?|respond to)\b/.test(normalized)
+    || !familyOf(position.trim()) && /\bagainst\b/.test(normalized);
   const direction = /\bgood\b/.test(normalized) ? 'good' : /\bbad\b/.test(normalized) ? 'bad' : undefined;
   let topical = roleMatch ? normalized.replace(roleMatch[1], ' ') : normalized;
   if (/\bt usfg\b/.test(topical)) topical = topical.replace(/\bt usfg\b/, 'usfg');
@@ -107,7 +108,7 @@ export function interpretDebateQuery(query: string) {
 
 export type DebateQuery = ReturnType<typeof interpretDebateQuery>;
 
-type RecordContext = { tag: string; evidence?: string; sectionHeadings?: readonly string[] };
+type RecordContext = { tag: string; evidence?: string; sectionHeadings?: readonly string[]; argumentRole?: string };
 type DebateMatch = { score: number; compatible: boolean };
 
 function matchPropositionAnswer(query: DebateQuery, tag: string, sections: readonly string[], documentContext: string): DebateMatch | null {
@@ -163,7 +164,7 @@ export function matchDebateRecord(query: DebateQuery, record: RecordContext, tit
   const counteredWar = /\b(no (?:\w+ ){0,5}(?:war|escalation)|(?:war|escalation) (?:is )?unlikely|risk.{0,32} (?:is )?zero|caps? (?:\w+ ){0,5}(?:war|conflict|escalation)|deter\w* (?:\w+ ){0,5}(?:war|escalation))\b/.test(tag);
   const offense = /\b(?:causes?|guarantees?|triggers?|ends in) (?:\w+ ){0,3}(?:extinction|nuclear war)\b/.test(tag);
   const explicitAnswer = tagRole && /defense|turn|deficit|non-uniqueness|permutation answer/.test(tagRole);
-  const role = explicitAnswer ? tagRole : counteredWar && !offense ? 'impact defense' : offense ? 'impact' : sectionRole ?? tagRole;
+  const role = record.argumentRole ?? (explicitAnswer ? tagRole : counteredWar && !offense ? 'impact defense' : offense ? 'impact' : sectionRole ?? tagRole);
   const responds = /\b(?:at|answers?|no link|does not solve|fails|defense)\b/.test(tag) || sections.some(section => /^at\b|\b(?:answers?|defen[cs]e)\b/.test(section));
   const directionMatches = !query.direction || new RegExp(`\\b${query.direction}\\b`).test([tag, ...sections].join(' '));
   const speechMatches = Boolean(query.speech && new RegExp(`\\b${query.speech}\\b`).test(context));
