@@ -17,6 +17,10 @@ A link answers what triggers an argument. An internal link explains a later step
 
 The system uses tags, headings, file identity and the existing curated classifications. Structural matches are useful starting points and still require a read of the card. For example, an arms-transfer disadvantage link may live under a link heading even if its own tag never says “DA.” The result cannot acquire a verified preview without eligible provenance. An analytic, plan text or shell lacking an indexed card can only be located through an eligible source file in the current preview.
 
+## Claim-directed answers
+
+A request such as “answers to [claim] (named answers file)” separates the target proposition from the optional file or folder hint. It ranks explicit responses and evidence filed under a matching answer heading above related cards. Treat topic overlap as context. An answer section can establish what the card responds to, while the tag and evidence determine how it responds. Preserve heading breadcrumbs and differentiate direct matches from related material.
+
 ## Verification
 
 The automated suite includes 45 student-style prompts across policy and critical positions, negative case strategies, off-case positions, responses, and case and procedural jargon. It also exercises role and direction differences on fixtures. The live preview is a bounded evidence collection. Interpretation tests measure recognition of the prompt, and a coach-labeled holdout is still required to measure search relevance comprehensively.
