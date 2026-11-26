@@ -1,15 +1,16 @@
 'use client';
 
 import { useRef, useState, type FormEvent } from 'react';
-import type { SearchIntent, SearchFacet, SearchResponse, SearchResult, SourceLocation } from '../../argument-search/search';
+import type { SearchFilter, SearchFacet, SearchResponse, SearchResult, SourceLocation } from '../../argument-search/search';
 import styles from './search.module.css';
 
-const searchModes: { id: SearchIntent; label: string; hint: string }[] = [
-  { id: 'card', label: 'Cards', hint: 'Find evidence for a specific claim.' },
-  { id: 'argument', label: 'Arguments', hint: 'Find a family of related evidence.' },
-  { id: 'document', label: 'Documents', hint: 'Find a file by name or folder.' },
+const filters: { id: SearchFilter; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'argument', label: 'Arguments' },
+  { id: 'card', label: 'Cards' },
+  { id: 'document', label: 'Documents' },
 ];
-const examples = ['Impact defense for Indo-Pakistan war', 'Answers to anti-Blackness is ontological (K Answers file)', 'Economic decline impact defense', 'Link for Midterms DA'];
+const examples = ['Conditions CP against Israel AFF', 'Impact defense for Indo-Pakistan war', 'Answers to anti-Blackness is ontological', 'Link for Midterms DA'];
 const facetNames: Record<SearchFacet, string> = {
   'war-unlikely': 'War unlikely',
   'war-likely': 'War likely',
@@ -57,7 +58,14 @@ function Result({ result }: { result: SearchResult }) {
   if (result.kind === 'argument') return <article className={styles.result}>
     <div className={styles.resultLabels}><span>Argument</span><span>{result.review === 'reviewed' ? 'Coach reviewed' : 'Suggested family'}</span></div>
     <h2>{result.name}</h2>
-    <details><summary>{result.sources.length} source {result.sources.length === 1 ? 'document' : 'documents'}</summary>
+    {result.section?.length ? <p className={styles.recordStatus}>{result.section.join(' › ')}</p> : null}
+    {result.supportingCards?.length ? <details><summary>{result.supportingCards.length} supporting cards</summary>
+      {result.supportingCards.map(card => <div key={card.id} className={styles.support}>
+        <strong>{card.preview.tag}</strong><p className={styles.citation}>{card.preview.citation}</p>
+        <p className={styles.excerpt}>{card.preview.excerpt}</p>
+      </div>)}
+    </details> : null}
+    <details open={Boolean(result.section?.length)}><summary>{result.sources.length} source {result.sources.length === 1 ? 'document' : 'documents'}</summary>
       {result.sources.map(source => <Source key={source.documentId} source={source} />)}
     </details>
   </article>;
@@ -79,7 +87,8 @@ function Result({ result }: { result: SearchResult }) {
 }
 
 export function EvidenceSearch() {
-  const [mode, setMode] = useState<SearchIntent>('card');
+  const [filter, setFilter] = useState<SearchFilter>('all');
+  const [facet, setFacet] = useState<SearchFacet>();
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState<Results | null>(null);
   const [submitted, setSubmitted] = useState('');
@@ -87,12 +96,14 @@ export function EvidenceSearch() {
   const [error, setError] = useState('');
   const request = useRef<AbortController | null>(null);
 
-  async function run(value: string, intent = mode, facetOverride?: SearchFacet) {
+  async function run(value: string, nextFilter: SearchFilter = 'all', facetOverride?: SearchFacet) {
     if (!value.trim()) return;
     request.current?.abort();
     const controller = new AbortController();
     request.current = controller;
     setSubmitted(value.trim());
+    setFilter(nextFilter);
+    setFacet(facetOverride);
     setPending(true);
     setResponse(null);
     setError('');
@@ -100,14 +111,15 @@ export function EvidenceSearch() {
       const res = await fetch('/api/arguments/search', {
         method: 'POST', cache: 'no-store', signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: value.trim(), intent, facetOverride, limit: 12 }),
+        body: JSON.stringify({ query: value.trim(), filter: nextFilter, facetOverride, limit: 12 }),
       });
       if (!res.ok) {
         setError(res.status === 401 || res.status === 403 ? 'Sign in with the account that owns this preview.'
           : 'The evidence index is unavailable. Try again shortly.');
         return;
       }
-      setResponse(await res.json() as Results);
+      const data = await res.json() as Results;
+      if (!controller.signal.aborted) setResponse(data);
     } catch {
       if (!controller.signal.aborted) setError('Search could not connect. Try again.');
     } finally {
@@ -128,31 +140,23 @@ export function EvidenceSearch() {
       <h1>Evidence Search</h1>
       <p className={styles.lede}>Find debate cards, arguments, and their original Dropbox documents.</p>
       <div className={styles.layout}>
-        <aside className={styles.aside}>
-          <div className={styles.asideTitle}>Search for</div>
-          <div role="group" aria-label="Search type" className={styles.modes}>
-            {searchModes.map(item => <button key={item.id} type="button" aria-pressed={mode === item.id} onClick={() => {
-              setMode(item.id);
-              if (query.trim() && submitted) void run(query, item.id);
-            }}>
-              <strong>{item.label}</strong><span>{item.hint}</span>
-            </button>)}
-          </div>
-          <p className={styles.collection}><strong>Collection</strong>2026–27 Arms Sales<br />Selected shared prep</p>
-        </aside>
         <section className={styles.work} aria-label="Evidence search">
           <form onSubmit={submit} className={styles.form}>
             <label htmlFor="query">What are you looking for?</label>
             <div className={styles.controls}>
               <input required id="query" value={query} maxLength={200} onChange={event => setQuery(event.target.value)}
-                placeholder={mode === 'document' ? 'Search a file name or folder' : 'Search a claim, e.g. No US-China War'} />
+                placeholder="Search an argument, claim, or file name" />
               <button type="submit" disabled={!query.trim()}>Search</button>
             </div>
           </form>
           <div className={styles.examples} aria-label="Example searches">
-            {examples.map(example => <button type="button" key={example} onClick={() => { setQuery(example); setMode('card'); void run(example, 'card'); }}>{example}</button>)}
+            {examples.map(example => <button type="button" key={example} onClick={() => { setQuery(example); void run(example); }}>{example}</button>)}
           </div>
           <div className={styles.results}>
+            {submitted && <div role="group" aria-label="Filter results" className={styles.filters}>
+              {filters.map(item => <button key={item.id} type="button" aria-pressed={filter === item.id}
+                onClick={() => { if (filter !== item.id) void run(submitted, item.id, facet); }}>{item.label}</button>)}
+            </div>}
             <div aria-live="polite" className={styles.resultStatus}>
               {pending && <p>Searching…</p>}
               {error && <p role="alert">{error}</p>}
@@ -164,12 +168,15 @@ export function EvidenceSearch() {
             {response && response.interpretation.clarificationChoices.length > 0 && <div className={styles.clarify}>
               <strong>Which claim do you need?</strong>
               <div className={styles.examples}>{response.interpretation.clarificationChoices.map(facet =>
-                <button type="button" key={facet} onClick={() => void run(submitted, mode, facet)}>{facetNames[facet]}</button>)}</div>
+                <button type="button" key={facet} onClick={() => void run(submitted, filter, facet)}>{facetNames[facet]}</button>)}</div>
             </div>}
-            {(response?.interpretation.debate?.role || response?.interpretation.debate?.response) && !response.results.some(result => result.kind === 'card' && result.match === 'compatible')
-              && mode === 'card' && <p className={styles.empty}>No verified card directly matched this request in the current collection.</p>}
+            {(response?.interpretation.facet || response?.interpretation.debate?.role || response?.interpretation.debate?.response) && !response.results.some(result => result.kind === 'card' && result.match === 'compatible')
+              && response.results.length > 0 && (filter === 'card' || filter === 'all' && response.preferredKind === 'card') && <p className={styles.empty}>No verified card directly matched this request in the current collection.</p>}
+            {response?.preferredKind === 'argument' && filter === 'all' && response.results.length > 0
+              && !response.results.some(result => result.kind === 'argument' && result.match === 'compatible')
+              && <p className={styles.empty}>No indexed position matched. Related cards and documents appear below.</p>}
             {response?.results.map(result => <Result key={`${result.kind}:${result.id}`} result={result} />)}
-            {response && response.results.length === 0 && <p className={styles.empty}>Try a shorter query or search Documents by file name.</p>}
+            {response && response.results.length === 0 && <p className={styles.empty}>No matches in this collection. Try a shorter query or a file name.</p>}
             {response && <p className={styles.snapshot}>Index checked {response.status.snapshot} · {response.status.documents} documents · {response.status.cards.toLocaleString('en-US')} card candidates</p>}
           </div>
         </section>
