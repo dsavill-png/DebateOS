@@ -59,6 +59,7 @@ As of 2026-11-26. Shared state for Dennis Commander and Jared Commander. `main` 
 - Both commanders use this file for session startup and shutdown. The [repository instructions](AGENTS.md#task-execution-protocol) define the process.
 - Durable Person is role-neutral. Debater, judge and coach are historical/contextual roles; institution affiliation and debate partnership are historical relationships, not permanent Person attributes. A school transfer or partner change must not create a new Person.
 - Public/core engineering may remain in the public repository, but authenticated/private integration and sensitive SNU operational details require a separate privacy decision before publication.
+- Neon is a future hosted-PostgreSQL candidate based on Jared's experience, not a selected or currently required hosting provider.
 
 ## Architecture / Guardrails
 
