@@ -57,7 +57,7 @@ const families: readonly (readonly [DebateFamily, RegExp])[] = [
   ['presumption', /\bpresumption\b/],
 ];
 
-const promptWords = /\b(?:a|an|the|for|of|to|on|in|against|versus|vs|some|find|give|show|me|what|where|how|with|about|should|we|they|read|cards?|evidence|blocks?|answers?|respond|answer|frontlines?|extensions?|aff|neg|good|bad|best|1ac|1nc|2ac|2nc|1ar|1nr|2ar|2nr)\b/g;
+const promptWords = /\b(?:a|an|the|for|of|to|on|in|against|versus|vs|some|find|need|want|give|show|i|me|what|where|how|is|are|was|were|be|with|about|should|we|they|read|cards?|evidence|blocks?|answers?|respond|answer|frontlines?|extensions?|aff|neg|good|bad|best|1ac|1nc|2ac|2nc|1ar|1nr|2ar|2nr)\b/g;
 
 function normalize(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9!]+/g, ' ').trim();
@@ -69,7 +69,10 @@ function aliasTopics(value: string) {
     .replace(/\b(?:recession|economic downturn|economic contraction|econ decline)\b/g, 'economic decline')
     .replace(/\bunited states federal government\b/g, 'usfg')
     .replace(/\b(?:military sales|weapons sales|arms sales|weapons transfers)\b/g, 'arms transfers')
-    .replace(/\b(?:mid term|mid terms|midterm)\b/g, 'midterms');
+    .replace(/\b(?:mid term|mid terms|midterm)\b/g, 'midterms')
+    .replace(/\banti blackness\b/g, 'antiblackness')
+    .replace(/\bafro pessimism\b/g, 'afropessimism')
+    .replace(/\bontolog(?:ical(?:ly)?|ies)\b/g, 'ontology');
 }
 
 function familyOf(value: string) {
@@ -77,7 +80,10 @@ function familyOf(value: string) {
 }
 
 export function interpretDebateQuery(query: string) {
-  const normalized = aliasTopics(normalize(query));
+  const notes = [...query.matchAll(/\(([^()]+)\)/g)].map(match => match[1]);
+  const sourceNote = notes.find(note => /\b(?:file|folder|packet)\b/i.test(note));
+  const normalized = aliasTopics(normalize(sourceNote ? query.replace(`(${sourceNote})`, ' ') : query));
+  const sourceHint = sourceNote ? normalize(sourceNote).replace(/\b(?:file|folder|packet)\b/g, '').trim() : undefined;
   const roleMatch = roleRules.find(([, pattern]) => pattern.test(normalized));
   // "Acquisition of land" and similar plain searches don't get treated as debate roles.
   const [position, target] = normalized.split(/\b(?:against|versus|vs|answers? to)\b/, 2);
@@ -96,13 +102,39 @@ export function interpretDebateQuery(query: string) {
   for (const [, pattern] of families) topical = topical.replace(pattern, ' ');
   topical = topical.replace(/\b(?:performance affs?|k affs?|policy affs?|critical affs?|affs|disad|da|cp|k)\b/g, ' ');
   const terms = [...new Set(topical.replace(promptWords, ' ').replace(/\bat\b/g, ' ').split(/\s+/).filter(term => /[a-z0-9]/.test(term)))];
-  return { role, family, targetFamily, speech, side, response, direction, topics: terms };
+  return { role, family, targetFamily, speech, side, response, direction, topics: terms, sourceHint };
 }
 
 export type DebateQuery = ReturnType<typeof interpretDebateQuery>;
 
 type RecordContext = { tag: string; evidence?: string; sectionHeadings?: readonly string[] };
 type DebateMatch = { score: number; compatible: boolean };
+
+function matchPropositionAnswer(query: DebateQuery, tag: string, sections: readonly string[], documentContext: string): DebateMatch | null {
+  if (!query.response || query.role || query.topics.length === 0) return null;
+  const topicalContext = new Set([tag, ...sections].join(' ').split(' '));
+  const blackOntology = query.topics.includes('antiblackness') && query.topics.includes('ontology');
+  const inDebate = topicalContext.has('antiblackness') || topicalContext.has('afropessimism');
+  const directTerms = query.topics.filter(term => tag.split(' ').includes(term)).length;
+  const namedResponse = sections.some(section => /^(?:at|answers? to)\b/.test(section)
+    && query.topics.every(term => section.split(' ').includes(term)));
+  const ontologyAnswer = blackOntology && inDebate && /\b(?:not (?:foundational|ontolog\w*)|reject(?:s|ing)? ontology|refuse(?:s)? ontology|ontology (?:fails?|prevents|reifies)|(?:violence|slavery) is contingent|not the foundational structure|ontology is (?:intellectual|flawed|false))\b/.test(tag);
+  const topical = query.topics.every(term => topicalContext.has(term)) || ontologyAnswer;
+  if (!topical && !namedResponse) return null;
+  const explicitRebuttal = /\b(?:does(?:n t| not)|is(?:n t| not)|are(?:n t| not)|can't|cannot|no |false|wrong|flawed|contingent|refute\w*)\b/.test(tag);
+  const relevantAnswerHeading = sections.some(section => /\b(?:k answers|2ac|answers? to|at)\b/.test(section));
+  const namedSource = query.sourceHint && (
+    documentContext.includes(query.sourceHint)
+    || query.sourceHint === 'k answers' && /\b(?:expanded k answers|kritiks? blocks|universal block ks|k answers)\b/.test(documentContext)
+  );
+  const compatible = blackOntology ? ontologyAnswer
+    : namedResponse || explicitRebuttal && (directTerms === query.topics.length || relevantAnswerHeading);
+  const specificKAnswers = sections.some(section => section.includes('specific k answers'));
+  const explicitOntologyDenial = blackOntology && /\bnot ontology\b/.test(tag);
+  return { compatible, score: 1 + directTerms * 2 + Number(Boolean(namedSource)) * 6
+    + Number(namedResponse) * 3 + Number(ontologyAnswer) * 6 + Number(Boolean(specificKAnswers && namedSource)) * 4
+    + Number(explicitOntologyDenial) * 4 };
+}
 export function matchDebateRecord(query: DebateQuery, record: RecordContext, title: string, folder: string): DebateMatch | null {
   if (!query.role && !query.family && !query.speech && !query.response) return null;
   const tag = aliasTopics(normalize(record.tag));
@@ -110,6 +142,11 @@ export function matchDebateRecord(query: DebateQuery, record: RecordContext, tit
   const titleText = aliasTopics(normalize(title));
   const folderText = aliasTopics(normalize(folder));
   const context = [tag, ...sections, titleText, folderText].join(' ');
+  if (query.response && !query.role && query.topics.length) {
+    const answer = matchPropositionAnswer(query, tag, sections, `${titleText} ${folderText} ${sections.join(' ')}`);
+    if (answer) return answer;
+    return null;
+  }
   const hits = query.topics.filter(term => new RegExp(`\\b${term}\\b`).test(context)).length;
   if (hits !== query.topics.length) return null;
 
