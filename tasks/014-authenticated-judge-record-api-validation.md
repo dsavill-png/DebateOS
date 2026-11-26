@@ -4,7 +4,7 @@
 **Owner** Dennis Commander  
 **Worker** Work, upon release  
 **Review** Chat with Dennis. Consult Jared on any UI-facing contract.  
-**Dependencies** [TASK-003](003-tabroom-authentication.md) and Tabroom authorization for the proposed access. [ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) governs the warehouse proposal.
+**Dependencies** [TASK-003](003-tabroom-authentication.md) and a documented, owner-released source-use scope for the proposed access. [ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) governs the warehouse proposal.
 
 ## Objective
 
@@ -39,7 +39,11 @@ The [TASK-003 discovery addendum](../docs/research/tabroom-authenticated-access.
 
 ## Authorization and scope limits
 
-TASK-003 remains the gate. Obtain and record Tabroom confirmation of supported backend credentials, session lifetime and renewal, endpoint and role scopes, rate limits, and permitted data handling. Release only the agreed bounded validation after authorization. No broad harvest, HTML scraping, or winner inference from ambiguous structures. No persistent protected ingestion of paradigms or judging records until TASK-003 and vendor approval are in place and Dennis separately approves ingestion. Keep the supplied reference and protected response bodies out of GitHub.
+For one supervised native API validation, record the owner’s project-side release, the designated Person and exact endpoint scope, ordinary account access, known source constraints, unresolved policy evidence, and handling and cleanup requirements in the private work record. A separate vendor endorsement is not a blanket release requirement for this pilot. Record vendor consent or terms compliance only where verified, and stop on an applicable restriction, denial, expiry, rate limit, identity mismatch or unexpected response.
+
+Use one owner-authenticated session and at most two read-only GETs for the designated Person: one paradigm and one judging record. No retries, fallback scraping, bypass, or ambiguous winner inference. Validate locally or in the approved private runner, clear session material, verify termination through the established cleanup path, and discard temporary protected data. Keep reference material and response bodies out of GitHub. Report sanitized validation findings.
+
+TASK-003 continues to govern unattended backend ingestion. Persistent protected ingestion, broader collection, scheduled refresh and warehouse promotion require separate scope review and applicable approvals. This draft does not release a live run.
 
 ## Credential-free mapper proof
 
