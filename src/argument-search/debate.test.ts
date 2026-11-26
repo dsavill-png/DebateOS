@@ -79,3 +79,19 @@ test('the same topic can have distinct DA, CP, kritik and framework components',
   assert.equal(q('Cap K alt solvency', 'Cap K', 'Alt solvency', 'Organizing builds durable power')?.compatible, true);
   assert.equal(q('T USFG limits', 'T USFG', 'Standards', 'Predictability improves clash')?.compatible, true);
 });
+
+test('natural-language claim answers inherit source context without treating the claim as a requested endorsement', () => {
+  const input = 'I need answers to anti blackness is ontological (K answers file)';
+  const query = interpretDebateQuery(input);
+  assert.equal(query.sourceHint, 'k answers');
+  assert.deepEqual(query.topics, ['antiblackness', 'ontology']);
+  const direct = { tag: 'Blackness is not ontological. Violence is contingent.', sectionHeadings: ['Specific K Answers', 'Afro-Pessimism / Anti-Blackness', '2AC'] };
+  const opposing = { tag: 'Anti-Blackness is ontological', sectionHeadings: ['Afropessimism', '1NC'] };
+  const adjacent = { tag: 'The alternative fails under capitalism', sectionHeadings: ['Afropessimism', '2AC'] };
+  assert.equal(matchDebateRecord(query, direct, 'Kritiks Blocks', 'Shared')?.compatible, true);
+  assert.equal(matchDebateRecord(query, opposing, 'Afropessimism K', 'Shared')?.compatible, false);
+  assert.equal(matchDebateRecord(query, adjacent, 'Kritiks Blocks', 'Shared'), null);
+  const noHint = matchDebateRecord(interpretDebateQuery('answers to anti-Blackness is ontology'), direct, 'Kritiks Blocks', 'Shared');
+  assert.ok(noHint?.compatible);
+  assert.ok(Number.isFinite(noHint.score));
+});
