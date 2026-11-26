@@ -1,5 +1,6 @@
+import { searchAll } from './unified.ts';
 import { suggestClaim } from './classify.ts';
-import { searchArguments, searchFacets, type SearchArgument, type SearchCorpus, type SearchFacet, type SearchIntent } from './search.ts';
+import { searchArguments, searchFacets, type SearchArgument, type SearchCorpus, type SearchFacet, type SearchFilter, type SearchIntent } from './search.ts';
 
 export type SearchSnapshot = {
   schema: 1;
@@ -48,22 +49,26 @@ export function makeSearchSnapshot(corpus: SearchCorpus, checkedOn: string, link
       claim: card.claim, documentIds, review: 'unreviewed',
     });
   }
-  return { schema: 1, checkedOn, corpus: { documents, cards, arguments: [...argumentsByFacet.values()] } };
+  return { schema: 1, checkedOn, corpus: { documents, cards, arguments: [...new Map([...argumentsByFacet.values(), ...corpus.arguments].map(argument => [argument.id, argument])).values()] } };
 }
 
 export function runSnapshotSearch(snapshot: SearchSnapshot, input: unknown) {
   if (typeof input !== 'object' || input === null) return null;
-  const { query, intent, facetOverride, limit } = input as Record<string, unknown>;
+  const { query, intent, filter, facetOverride, limit } = input as Record<string, unknown>;
   if (typeof query !== 'string' || !query.trim() || query.length > 200
-    || !['card', 'argument', 'document'].includes(String(intent))) return null;
+    || (intent !== undefined && !['card', 'argument', 'document'].includes(String(intent)))) return null;
+  if (filter !== undefined && !['all', 'card', 'argument', 'document'].includes(String(filter))) return null;
   if (facetOverride !== undefined && !searchFacets.includes(facetOverride as SearchFacet)) return null;
   if (limit !== undefined && (typeof limit !== 'number' || !Number.isInteger(limit) || limit < 1 || limit > 25)) return null;
 
   const { corpus } = snapshot;
-  const response = searchArguments({ query, intent: intent as SearchIntent, facetOverride: facetOverride as SearchFacet | undefined,
-    limit: limit ?? 12 }, corpus, {
+  const grants = {
     documentIds: new Set(corpus.documents.map(source => source.id)),
     argumentIds: new Set(corpus.arguments.map(argument => argument.id)),
-  });
+  };
+  const request = { query, facetOverride: facetOverride as SearchFacet | undefined, limit: limit ?? 12 };
+  const response = intent === undefined
+    ? searchAll({ ...request, filter: filter as SearchFilter | undefined }, corpus, grants)
+    : searchArguments({ ...request, intent: intent as SearchIntent }, corpus, grants);
   return { ...response, status: { snapshot: snapshot.checkedOn, documents: corpus.documents.length, cards: corpus.cards.length } };
 }
