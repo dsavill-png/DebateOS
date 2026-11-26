@@ -1,3 +1,5 @@
+import { interpretDebateQuery, matchDebateRecord, type DebateQuery } from './debate.ts';
+
 export type SearchIntent = 'card' | 'argument' | 'document';
 const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
 export const searchFacets = [...warFacets, 'alliance-erosion', 'alliance-resilience', 'escalation-unlikely', 'escalation-likely', 'impact-defense', 'impact-offense', 'link', 'link-defense', 'uniqueness', 'internal-link', 'impact'] as const;
@@ -83,6 +85,7 @@ export interface SearchResponse {
     subject: Claim['subject'] | null;
     facet: SearchFacet | null;
     clarificationChoices: readonly SearchFacet[];
+    debate?: DebateQuery;
   };
   results: SearchResult[];
 }
@@ -202,6 +205,11 @@ export function searchArguments(
 ): SearchResponse {
   const query = normalizeSearchText(request.query);
   const interpretation = interpret(query, request);
+  const debate = interpretDebateQuery(request.query);
+  const guided = request.intent !== 'document' && Boolean(debate.role || debate.family || debate.speech || debate.response);
+  if (guided) interpretation.debate = debate;
+  const useDebateRanking = guided && (!interpretation.facet || (debate.role === 'impact defense' && interpretation.facet === 'war-impacts'));
+  if (useDebateRanking && debate.role === 'impact defense' && interpretation.facet === 'war-impacts') interpretation.facet = null;
   if (!query || grants.documentIds.size === 0) return { interpretation, results: [] };
 
   const structuredTopic = interpretation.subject === 'economic-decline' || interpretation.subject === 'midterms-da';
@@ -219,7 +227,8 @@ export function searchArguments(
     for (const document of documents.values()) {
       const relevance = textRelevance(retrievalQuery, terms, [document.title, document.folderPath]);
       const subjectMatches = interpretation.subject && document.subject === interpretation.subject;
-      if (relevance || (subjectMatches && request.intent === 'card')) {
+      const context = useDebateRanking && matchDebateRecord(debate, { tag: '' }, document.title, document.folderPath);
+      if (relevance || context || (subjectMatches && request.intent === 'card')) {
         candidates.push({
           relevance,
           result: { kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) },
@@ -238,7 +247,8 @@ export function searchArguments(
       if (sources.length === 0) continue;
       const relevance = textRelevance(retrievalQuery, terms, [argument.name, ...argument.aliases]);
       const subjectMatches = interpretation.subject && argument.claim?.subject === interpretation.subject;
-      if (relevance || subjectMatches) {
+      const context = useDebateRanking && sources.some(source => matchDebateRecord(debate, { tag: argument.name }, source.title, source.folderPath));
+      if (relevance || subjectMatches || context) {
         candidates.push({
           relevance,
           result: { kind: 'argument', id: argument.id, name: argument.name, review: argument.review,
@@ -258,12 +268,16 @@ export function searchArguments(
         || !Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start) continue;
 
       const cardContext = [card.tag, ...(card.sectionHeadings ?? [])];
-      const relevance = textRelevance(retrievalQuery, terms, [card.tag])
+      const context = useDebateRanking ? matchDebateRecord(debate, card, document.title, document.folderPath) : null;
+      const relevance = (context?.score ?? 0) + textRelevance(retrievalQuery, terms, [card.tag])
         + extraTerms.filter(term => cardContext.some(field => normalizeSearchText(field).split(' ').includes(term))).length * 4;
       const subjectMatches = interpretation.subject && card.claim?.subject === interpretation.subject;
       if (!relevance && !subjectMatches) continue;
+      if (useDebateRanking && (debate.role || debate.family) && !context && !subjectMatches) continue;
       if (structuredTopic && interpretation.facet && !subjectMatches) continue;
-      const match = classify(interpretation.facet, subjectMatches ? card.claim : undefined);
+      const match = context?.compatible ? 'compatible'
+        : context && debate.role && debate.topics.length > 0 ? 'different-function'
+        : classify(interpretation.facet, subjectMatches ? card.claim : undefined);
       candidates.push({
         relevance,
         conditional: Boolean(card.condition),
@@ -302,6 +316,14 @@ export function searchArguments(
     results.push(result);
   }
 
+  // When the request names a debate role, surface unused source documents as a secondary lookup.
+  if (request.intent === 'argument' && results.length === 0 && useDebateRanking) {
+    for (const document of documents.values()) {
+      if (matchDebateRecord(debate, { tag: '' }, document.title, document.folderPath)) {
+        results.push({ kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) });
+      }
+    }
+  }
   const limit = request.limit ?? 10;
   return { interpretation, results: results.slice(0, Number.isInteger(limit) ? Math.max(0, Math.min(limit, 50)) : 10) };
 }
