@@ -6,7 +6,7 @@ export type Evidence = Readonly<{
 }>;
 
 type PersonLink = Readonly<{ tabroomPersonId: number; personId: string }>;
-type Side = 'aff' | 'neg';
+export type Side = 'aff' | 'neg';
 
 function canonicalPerson(sourceId: number, links: readonly PersonLink[]) {
   const matches = new Set(links.filter(link => link.tabroomPersonId === sourceId)
@@ -110,7 +110,7 @@ type PanelLink = Readonly<{
   evidenceId: string;
 }>;
 
-type HistoryObservation = Readonly<{
+export type HistoryObservation = Readonly<{
   personId: string;
   panelId: string;
   linkEvidenceIds: readonly string[];
@@ -119,6 +119,8 @@ type HistoryObservation = Readonly<{
   roundLabel: string | null;
   individualVote: Side | null;
   panelResult: Side | null;
+  voteUnrecognized: boolean;
+  resultUnrecognized: boolean;
   evidence: Evidence;
 }>;
 
@@ -170,13 +172,17 @@ export function mapJudgeHistory(
       continue;
     }
     const observations = byPanel.get(link.panelId) ?? [];
+    const vote = fields.vote === undefined ? undefined : field(row.payload, fields.vote);
+    const result = fields.result === undefined ? undefined : field(row.payload, fields.result);
     observations.push({
       personId: person.personId, panelId: link.panelId, tournamentSourceId,
       linkEvidenceIds: [...new Set(links.map(candidate => candidate.evidenceId))].sort(),
       eventLabel: label(fields.event && field(row.payload, fields.event)),
       roundLabel: label(fields.round && field(row.payload, fields.round)),
-      individualVote: side(fields.vote && field(row.payload, fields.vote)),
-      panelResult: side(fields.result && field(row.payload, fields.result)),
+      individualVote: side(vote),
+      panelResult: side(result),
+      voteUnrecognized: vote != null && side(vote) === null,
+      resultUnrecognized: result != null && side(result) === null,
       evidence: row.evidence,
     });
     byPanel.set(link.panelId, observations);
@@ -185,16 +191,16 @@ export function mapJudgeHistory(
     status: 'mapped' as const, gaps,
     assignments: [...byPanel].map(([panelId, observations]) => ({
       personId: person.personId, panelId, observations,
-      individualVote: resolveSide(observations.map(row => row.individualVote)),
-      panelResult: resolveSide(observations.map(row => row.panelResult)),
+      individualVote: resolveSide(observations.map(row => row.individualVote), observations.some(row => row.voteUnrecognized)),
+      panelResult: resolveSide(observations.map(row => row.panelResult), observations.some(row => row.resultUnrecognized)),
       level: null, competitionDate: null,
     })),
   };
 }
 
-function resolveSide(sides: readonly (Side | null)[]) {
+function resolveSide(sides: readonly (Side | null)[], unrecognized: boolean) {
   const known = new Set(sides.filter(side => side !== null));
   if (known.size > 1) return { status: 'conflicting' as const, value: null };
   const value = known.values().next().value;
-  return value ? { status: 'observed' as const, value } : { status: 'missing' as const, value: null };
+  return value ? { status: 'observed' as const, value } : { status: unrecognized ? 'unrecognized' as const : 'missing' as const, value: null };
 }
