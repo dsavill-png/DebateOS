@@ -42,7 +42,7 @@ As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` 
 
 - [TASK-016](tasks/016-person-role-affiliation-model.md) is Completed. [ADR-003](docs/architecture/ADR-003-person-role-affiliation-history.md) is Accepted. This architecture-only task defines durable Person identity, historical roles, institution affiliations, student-to-person evidence, entry-person membership and partner-change semantics. No schema migration is authorized by TASK-016.
 
-- [TASK-014](tasks/014-authenticated-judge-record-api-validation.md) is Draft / Gated. After TASK-003 clears, compare a bounded sample from Dennis's Tabroom judge record with supported API responses and propose the verified warehouse contract.
+- [TASK-014](tasks/014-authenticated-judge-record-api-validation.md) is Draft / Gated. The credential-free mapper prototype uses synthetic evidence to link immutable paradigm revisions and Person × panel history. Level/date and response field mappings require further validation. Live access and protected ingestion remain gated.
 
 - TASK-011 Phase B stays Draft / Gated on TASK-003, Tabroom authorization, and separate pilot approval.
 
