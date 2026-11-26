@@ -40,6 +40,7 @@ function runTool(binary, args, url) {
   ]) {
     if (url.searchParams.has(parameter)) options[variable] = url.searchParams.get(parameter);
   }
+  if (options.PGSSLMODE === 'verify-full' && !options.PGSSLROOTCERT) options.PGSSLROOTCERT = 'system';
   // Avoid passing credentials as arguments or printing child diagnostics.
   execFileSync(binary, args, { env: { ...process.env, ...options }, stdio: 'ignore' });
 }
