@@ -2,7 +2,7 @@
 
 ## Executive Snapshot
 
-As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` remains trusted; draft work is review-only until merged.
+As of 2026-11-26. Shared state for Dennis Commander and Jared Commander. `main` remains trusted; draft work is review-only until merged.
 
 - Dennis approved resuming public Tabroom Phase 2 on November 23. TASK-008 remains Partial and does not gate product work. Continue using the human-safe GitHub handoff.
 - Dennis and Jared are shifting product validation toward coach-usable outputs before dashboards. The immediate judge-intelligence proof should answer human questions such as “Who is this judge?” with evidence-backed identity and history.
@@ -11,6 +11,9 @@ As of 2026-11-25. Shared state for Dennis Commander and Jared Commander. `main` 
 - TASK-012 is complete on `main`. The first public-evidence PostgreSQL warehouse implements the [TASK-010 design](docs/architecture/ADR-002-canonical-warehouse-model.md) and preserves capture lineage and row-level eligibility.
 - TASK-002 cleared leadership merge and is complete on `main`. TASK-006 is complete and verified.
 - The Codex dispatcher is operational. The remaining event-orchestrator wakeup gap is separate from the Codex pipeline.
+
+- The persistent Neon public warehouse now contains the validated 2025–26 collegiate-policy baseline of 401 canonical people and 8,868 distinct Person × panel assignments across 87 included divisions. The approved import, transactional recovery rehearsal and post-restore reconciliation passed. Detailed evidence is retained privately.
+- Next priority is public data acquisition and scrubbing. Prepare an initial five-judge comparison from permitted sources, incremental ETL for the populated warehouse, named read-only access to approved views, and aggregate coverage and quality reporting. Existing authorization rules continue to govern protected material.
 
 ## Completed Since Last Update
 
