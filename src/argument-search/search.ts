@@ -76,6 +76,7 @@ export type SearchResult =
     id: string;
     match: Match;
     condition?: string;
+    section?: readonly string[];
     sources: (SourceLocation & { cardId: string })[];
     preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange' | 'classificationBasis'> & { excerpt: string };
   };
@@ -228,9 +229,11 @@ export function searchArguments(
       const relevance = textRelevance(retrievalQuery, terms, [document.title, document.folderPath]);
       const subjectMatches = interpretation.subject && document.subject === interpretation.subject;
       const context = useDebateRanking && matchDebateRecord(debate, { tag: '' }, document.title, document.folderPath);
-      if (relevance || context || (subjectMatches && request.intent === 'card')) {
+      const hintText = normalizeSearchText(`${document.title} ${document.folderPath}`);
+      const hinted = debate.sourceHint && hintText.includes(debate.sourceHint);
+      if (relevance || context || hinted || (subjectMatches && request.intent === 'card')) {
         candidates.push({
-          relevance,
+          relevance: relevance + (hinted ? 5 : 0),
           result: { kind: 'document', id: document.id, match: 'metadata', coverage: document.coverage, source: location(document) },
         });
       }
@@ -273,10 +276,10 @@ export function searchArguments(
         + extraTerms.filter(term => cardContext.some(field => normalizeSearchText(field).split(' ').includes(term))).length * 4;
       const subjectMatches = interpretation.subject && card.claim?.subject === interpretation.subject;
       if (!relevance && !subjectMatches) continue;
-      if (useDebateRanking && (debate.role || debate.family) && !context && !subjectMatches) continue;
+      if (useDebateRanking && (debate.role || debate.family || debate.response) && !context && !subjectMatches) continue;
       if (structuredTopic && interpretation.facet && !subjectMatches) continue;
       const match = context?.compatible ? 'compatible'
-        : context && debate.role && debate.topics.length > 0 ? 'different-function'
+        : context && (debate.role || debate.response) && debate.topics.length > 0 ? 'different-function'
         : classify(interpretation.facet, subjectMatches ? card.claim : undefined);
       candidates.push({
         relevance,
@@ -285,7 +288,7 @@ export function searchArguments(
         duplicateKey: card.duplicateGroup
           ? JSON.stringify([card.duplicateGroup, card.claim?.facet, card.condition, match]) : undefined,
         result: {
-          kind: 'card', id: card.id, match, condition: card.condition,
+          kind: 'card', id: card.id, match, condition: card.condition, section: card.sectionHeadings,
           sources: [{ ...location(document), cardId: card.id }],
           preview: {
             tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
