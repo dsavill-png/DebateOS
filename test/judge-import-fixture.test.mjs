@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, unlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
@@ -13,6 +13,11 @@ test('five synthetic judges resume with deduplicated revisions and quarantined r
     const first = await importFixture(fixture, checkpoint, { intervalMs: 0, pageBudget: 1 });
     assert.equal(first.completedPages, 1);
     assert.equal(Object.keys(first.records).length, 10);
+    await writeFile(checkpoint + '.lock', '{"pid":0}');
+    await writeFile(checkpoint + '.pending', 'partial checkpoint');
+    await assert.rejects(importFixture(fixture, checkpoint, { intervalMs: 0 }), /Checkpoint is locked/);
+    assert.equal(await readFile(checkpoint + '.pending', 'utf8'), 'partial checkpoint');
+    await unlink(checkpoint + '.lock');
     const result = await importFixture(fixture, checkpoint, { intervalMs: 0 });
     assert.equal(result.completedPages, 2);
     assert.deepEqual(result.quality, { accepted: 11, unchanged: 1, quarantined: 2 });
@@ -20,6 +25,23 @@ test('five synthetic judges resume with deduplicated revisions and quarantined r
     assert.equal(result.records[JSON.stringify(['fixture-2', 'paradigm', 'record-1'])].length, 2);
     assert.deepEqual(await importFixture(fixture, checkpoint, { intervalMs: 0 }), result);
     await assert.rejects(importFixture({ ...fixture, pages: [] }, checkpoint), /Snapshot changed/);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('overlapping writers cannot share a checkpoint', async () => {
+  const fixture = JSON.parse(await readFile(new URL('./fixtures/judge-import-pilot.json', import.meta.url), 'utf8'));
+  const directory = await mkdtemp(join(tmpdir(), 'judge-import-'));
+  try {
+    const checkpoint = join(directory, 'checkpoint.json');
+    const results = await Promise.allSettled([
+      importFixture(fixture, checkpoint, { intervalMs: 25 }),
+      importFixture(fixture, checkpoint, { intervalMs: 25 }),
+    ]);
+    assert.equal(results.filter(result => result.status === 'fulfilled').length, 1);
+    const rejected = results.find(result => result.status === 'rejected');
+    assert.match(rejected.reason.message, /Checkpoint is locked/);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

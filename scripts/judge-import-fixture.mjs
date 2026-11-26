@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { readFile, rename, writeFile } from 'node:fs/promises';
+import { open, readFile, realpath, rename, unlink } from 'node:fs/promises';
+import { basename, dirname, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 
@@ -43,8 +44,24 @@ export function planCohortImport(pin, links, pilotPersonIds) {
   return { pin: cohortPin, worklist, sha256: digest(worklist) };
 }
 
-// One runner owns a checkpoint file. Each rename commits records and position together.
-export async function importFixture(fixture, checkpoint, {
+export async function importFixture(fixture, checkpoint, options) {
+  const directory = await realpath(dirname(checkpoint));
+  const target = join(directory, basename(checkpoint));
+  const lockPath = target + '.lock';
+  const lock = await open(lockPath, 'wx').catch(error => {
+    if (error.code === 'EEXIST') throw new Error('Checkpoint is locked', { cause: error });
+    throw error;
+  });
+  try {
+    await lock.writeFile(JSON.stringify({ pid: process.pid }));
+    return await importLockedFixture(fixture, target, options);
+  } finally {
+    await lock.close();
+    await unlink(lockPath);
+  }
+}
+
+async function importLockedFixture(fixture, checkpoint, {
   intervalMs = 1000, pageBudget = Infinity, onProgress = () => {},
 } = {}) {
   if (fixture.kind !== 'synthetic-judge-snapshot' || !fixture.snapshotId ||
@@ -111,8 +128,28 @@ export async function importFixture(fixture, checkpoint, {
     }
     position.nextPage += 1;
     processed += 1;
-    await writeFile(checkpoint + '.pending', JSON.stringify(state), 'utf8');
-    await rename(checkpoint + '.pending', checkpoint);
+    const pendingPath = checkpoint + '.pending';
+    // Discard any uncommitted page after the operator clears a stale lock.
+    await unlink(pendingPath).catch(error => {
+      if (error.code !== 'ENOENT') throw error;
+    });
+    const pending = await open(pendingPath, 'wx');
+    try {
+      await pending.writeFile(JSON.stringify(state), 'utf8');
+      await pending.sync();
+    } finally {
+      await pending.close();
+    }
+    await rename(pendingPath, checkpoint);
+    // Windows does not expose directory fsync through Node.
+    if (process.platform !== 'win32') {
+      const directory = await open(dirname(checkpoint), 'r');
+      try {
+        await directory.sync();
+      } finally {
+        await directory.close();
+      }
+    }
     onProgress({ completedPages: position.nextPage, totalPages: pages.length });
   }
   return { completedPages: position.nextPage, totalPages: pages.length, records: state.records, quality: state.quality, quarantine: state.quarantine };

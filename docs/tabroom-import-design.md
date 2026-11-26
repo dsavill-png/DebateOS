@@ -10,6 +10,8 @@ Pin the verified TASK-011 cohort and join its explicit provider Person links to 
 
 The accompanying fixture runner accepts a JSON object with kind `synthetic-judge-snapshot`, a stable `snapshotId`, and `pages`. Each page has an ISO `observedAt` and `records` with `personId`, `stream` (history or paradigm), `sourceId` and string `content`. Run it using Node with the fixture path and a checkpoint path. It processes committed pages once per snapshot and records changed content across successive snapshots. Use a single runner per checkpoint. The fixture pace is local and there is no external transport.
 
+Before reusing a checkpoint after a crash, verify that its writer has exited and no replacement is running, then remove the adjacent `.lock` file. The next writer discards any uncommitted `.pending` page and resumes at the last committed cursor. Use a local filesystem and a single canonical checkpoint name. Files are synced before replacement. POSIX also syncs the containing directory. Windows directory-entry durability after power loss is unverified. The cloud implementation requires transactional PostgreSQL checkpoints and a worker lease.
+
 ## Planning estimate
 
 The pinned 2025–26 college policy cohort contains **401 distinct linked people**. At one response per Person per stream, budget **802 requests** for the baseline and **802 per full refresh**, or **3,208 per four weekly refreshes**. Pagination, retries, session renewal and changed-record discovery can add requests. At one request per second, the baseline takes at least 13 minutes 22 seconds before extra requests. This pace is for modeling only.
@@ -31,6 +33,12 @@ Complete TASK-003 and obtain Tabroom approval for unattended use, credential ren
 5. In production, commit pages and cursors together in PostgreSQL under a lease, retaining immutable evidence under approved retention. Separate quarantine from promotion and record reconciled counts by stream. Promote only fields with an approved versioned mapping and policy evidence. Keep serving disabled through full-load reconciliation.
 
 ## Operating budget worksheet
+
+For the five-judge pilot, first inventory approved worker capacity, outbound access, a secret store and PostgreSQL. Prefer an isolated workload role, an explicitly scoped database role and protected storage on that existing stack, with manual invocation and serving disabled. If only PostgreSQL is missing, price a temporary private single-AZ instance on the existing approved network, including storage and backups through teardown.
+
+Before authentication setup, the owner must obtain Tabroom's written authorization for a permanent service identity, approved endpoints and renewal, rate and scope limits, and collection and retention terms. The owner must name the security operator for secret provisioning, rotation and revocation, and approve infrastructure, access, storage, retention and any spend. After credential-free verification and archive replay, approve the specific five judges, ten initial requests and any pagination allowance. Require repeat-run reconciliation before approving any broader run.
+
+Request the authorized TASK-011 capture manifest and archive from its custodian for offline replay. Verify the published pin and reconstruct explicit links before comparing the 401-person count and recording the worklist digest. Where accessible and authorized, independently reconcile paradigm text against Tabroom's event-level bulk paradigm PDF and round counts against seasonal totals or the associated judge record. Record capture dates, academic year, judge identity and category. Filter to comparable scope and record missing or incomparable evidence explicitly.
 
 Use 4,010 baseline-month requests and 3,208 subsequent monthly requests, before pagination, retries and auth renewals. Price the selected US East deployment before free tiers.
 
