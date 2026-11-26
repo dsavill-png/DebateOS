@@ -1,34 +1,15 @@
-# TASK-023 local Tabroom validation
+# TASK-023 Tabroom session proof
 
-The hosted path is `SecretProvider → TabroomSessionProvider → allowlisted authenticated adapter → canonical DebateOS ingestion`. The implemented seam is `openTabroomSession`. A future per-user server-side vault can implement `SecretProvider` without changing the session or validation caller. The session exposes its login Person ID and one GET operation scoped to that Person. Canonical ingestion remains a future approval. The local proof clears its in-memory cookie when it finishes and treats HTTP 401 as session expiry.
+The owner-approved private cloud validation replaced local authenticated execution. The upstream session and gold-record validator are exercised with a supplied synthetic transport. The upstream session has no default network transport and allows one own-record read per session. Its close operation clears the local cookie. The private workflow owns approval, credentials, bounded live execution, and the server-side logout attempt. Any future live integration or canonical ingestion requires separate approval and a reviewed session lifecycle.
 
-## After code review
+[Private validation run](https://github.com/dsavill-png/DebateOS-Private/actions/runs/45732454973) · [Governance amendment](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7178801219)
 
-On Dennis's machine, use Node 24 and an approved local secret source that injects `DEBATEOS_TABROOM_USERNAME` and `DEBATEOS_TABROOM_PASSWORD` into the process environment. Run:
+The single cloud run verified login, account Person identity, and own-record retrieval. Seven fields matched on both reference rows, including separate individual vote and panel result. Level and date remain unavailable. Automated API logout was attempted and server-side termination from that attempt is unconfirmed.
 
-```sh
-node scripts/tabroom-gold-record.ts /absolute/private/path/gold-sample.json
-```
+## Session recovery for Jared and future integrations
 
-The proof verifies that the live login returns HTTP 200, a numeric Person ID and a `TabroomToken` cookie before issuing the GET. It stops on a contradictory response or a different Person ID. Expect at most three requests including login, the record GET and one possible GET retry. Each request has a 15-second timeout. The documented person-record endpoint returns the account's record collection, and the comparison uses at most five reference rows.
+Tabroom Profile lists active sessions and provides an **End This Session** action for each entry. In an existing owner session, correlate the run time and hosting label before ending the runner entry. Keep session identifiers, location details, and screenshots private. If the entry cannot be identified, record recovery as unconfirmed until the owner verifies termination.
 
-Prepare the JSON sample locally from the supplied 15-page record. Use the signed-in Person ID and verified record keys to identify each row. Include a split panel if the source contains one. The example below uses synthetic values and illustrative field paths. Confirm actual paths against authorized local evidence. Keep the sample and any protected source material private.
+For TASK-023, the owner matched the Microsoft Azure session at 6:58 p.m. CST on November 25, 2026 to the Actions run and reported manually terminating all active Tabroom sessions. Manual recovery is owner-confirmed. The automated API logout result remains unconfirmed.
 
-```json
-{
-  "personId": 42,
-  "rows": [
-    {
-      "match": [
-        { "path": ["panelId"], "value": 11 }
-      ],
-      "fields": {
-        "individualVote": { "expected": "Aff", "path": ["vote"] },
-        "panelResult": { "expected": "Neg", "path": ["result"] }
-      }
-    }
-  ]
-}
-```
-
-The other field keys are `tournament`, `level`, `date`, `event`, `round`, `aff` and `neg`. For mappings supported by source evidence, supply a property path relative to the matched record and the expected string or number from the reference. A field can specify `"transform": "trim"` or `"transform": "number-to-string"`. Leave paths unset where the source mapping is unresolved, including team sides and panel result if the record supplies only the individual vote. Use all required keys for the match and preserve the source paths in the private sample. Duplicate matches produce ambiguous field statuses. The console matrix contains row ordinals and statuses only.
+[Tabroom Profile](https://www.tabroom.com/user/login/profile.mhtml) · [Sanitized outcome](https://github.com/dsavill-png/DebateOS/pull/1#issuecomment-7179304931)

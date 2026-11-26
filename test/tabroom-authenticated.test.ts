@@ -34,6 +34,7 @@ test('uses first-party cookie login and reads only the signed-in person record',
   });
   assert.equal(session.personId, 42);
   assert.deepEqual(await session.readOwnJudgeRecord(), []);
+  await assert.rejects(session.readOwnJudgeRecord(), { code: 'read-used' });
   session.close();
   await assert.rejects(session.readOwnJudgeRecord(), { code: 'closed' });
   assert.deepEqual(calls, [base + '/auth/login', base + '/rest/paradigms/42/record']);
@@ -58,11 +59,11 @@ test('distinguishes rejected credentials, malformed login, and session expiry', 
   assert.equal(calls, 2);
 });
 
-test('caps retries and strips underlying errors from diagnostics', async () => {
+test('refuses retries and strips underlying errors from diagnostics', async () => {
   const sensitive = new Error(credentials.password + cookie);
   await assert.rejects(openTabroomSession({
     async getCredentials() { throw sensitive; },
-  }), { message: 'Tabroom session: credentials' });
+  }, { fetch: async () => assert.fail('Unexpected request') }), { message: 'Tabroom session: credentials' });
 
   let calls = 0;
   const session = await openTabroomSession(secrets, {
@@ -74,7 +75,8 @@ test('caps retries and strips underlying errors from diagnostics', async () => {
     },
   });
   await assert.rejects(session.readOwnJudgeRecord(), { message: 'Tabroom session: transport' });
-  assert.equal(calls, 3);
+  await assert.rejects(session.readOwnJudgeRecord(), { code: 'read-used' });
+  assert.equal(calls, 2);
   session.close();
 
   let loginAttempts = 0;
@@ -135,4 +137,10 @@ test('public imports omit credentials while an authenticated session is open', a
   } finally {
     session.close();
   }
+});
+
+test('rejects native fetch before consulting the secret provider', async () => {
+  await assert.rejects(openTabroomSession({
+    async getCredentials() { return assert.fail('Unexpected credential lookup'); },
+  }, { fetch: globalThis.fetch }), { code: 'transport' });
 });

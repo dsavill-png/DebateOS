@@ -5,7 +5,7 @@ export interface SecretProvider {
 }
 
 type Failure = 'credentials' | 'unauthorized' | 'expired' | 'forbidden'
-  | 'invalid-response' | 'transport' | 'http' | 'closed';
+  | 'invalid-response' | 'transport' | 'http' | 'closed' | 'read-used';
 
 export class TabroomSessionError extends Error {
   readonly code: Failure;
@@ -17,12 +17,15 @@ export class TabroomSessionError extends Error {
 }
 
 type Options = {
-  fetch?: typeof fetch;
+  fetch: typeof fetch;
   timeoutMs?: number;
 };
 
-export async function openTabroomSession(secrets: SecretProvider, options: Options = {}) {
-  const send = options.fetch ?? fetch;
+export async function openTabroomSession(secrets: SecretProvider, options: Options) {
+  const send = options?.fetch;
+  if (typeof send !== 'function' || send === globalThis.fetch) {
+    throw new TabroomSessionError('transport');
+  }
   const timeoutMs = options.timeoutMs ?? 15_000;
   if (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 15_000) {
     throw new TabroomSessionError('transport');
@@ -90,38 +93,30 @@ export async function openTabroomSession(secrets: SecretProvider, options: Optio
 
   let { id, cookie }: { id: number; cookie?: string } = await login();
   let expired = false;
+  let readAttempted = false;
   return {
     personId: id,
     close() { cookie = undefined; },
     async readOwnJudgeRecord(): Promise<readonly unknown[]> {
-      for (let attempt = 0; attempt < 2; attempt++) {
-        if (!cookie) throw new TabroomSessionError(expired ? 'expired' : 'closed');
-        let reply: Response;
-        try {
-          reply = await request(`/rest/paradigms/${id}/record`, {
-            method: 'GET', headers: { accept: 'application/json', cookie },
-          });
-        } catch (error) {
-          if (attempt === 1) throw error;
-          continue;
-        }
-        if (reply.status === 401) {
-          expired = true;
-          cookie = undefined;
-        }
-        if (reply.status !== 200) {
-          await reply.body?.cancel().catch(() => {});
-          if (reply.status === 401) throw new TabroomSessionError('expired');
-          if (reply.status === 403) throw new TabroomSessionError('forbidden');
-          if (attempt === 0 && [502, 503, 504].includes(reply.status) &&
-              !reply.headers.has('retry-after')) continue;
-          throw new TabroomSessionError('http');
-        }
-        const rows = await json(reply);
-        if (!Array.isArray(rows)) throw new TabroomSessionError('invalid-response');
-        return rows;
+      if (!cookie) throw new TabroomSessionError(expired ? 'expired' : 'closed');
+      if (readAttempted) throw new TabroomSessionError('read-used');
+      readAttempted = true;
+      const reply = await request(`/rest/paradigms/${id}/record`, {
+        method: 'GET', headers: { accept: 'application/json', cookie },
+      });
+      if (reply.status === 401) {
+        expired = true;
+        cookie = undefined;
       }
-      throw new TabroomSessionError('transport');
+      if (reply.status !== 200) {
+        await reply.body?.cancel().catch(() => {});
+        if (reply.status === 401) throw new TabroomSessionError('expired');
+        if (reply.status === 403) throw new TabroomSessionError('forbidden');
+        throw new TabroomSessionError('http');
+      }
+      const rows = await json(reply);
+      if (!Array.isArray(rows)) throw new TabroomSessionError('invalid-response');
+      return rows;
     },
   };
 }
