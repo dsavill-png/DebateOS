@@ -17,6 +17,10 @@ A link answers what triggers an argument. An internal link explains a later step
 
 The system uses tags, headings, file identity and the existing curated classifications. Structural matches are useful starting points and still require a read of the card. For example, an arms-transfer disadvantage link may live under a link heading even if its own tag never says “DA.” The result cannot acquire a verified preview without eligible provenance. An analytic, plan text or shell lacking an indexed card can only be located through an eligible source file in the current preview.
 
+## Unified search
+
+Search all three record types by default. Named positions rank first for position requests. A requested evidence role puts matching cards first, and explicit file or folder requests favor source documents. Optional result filters keep the submitted search. An argument result can carry its indexed section path, supporting cards with current revision checks, and its original source document. Exact file paths and supported links remain visible when evidence coverage is incomplete.
+
 ## Claim-directed answers
 
 A request such as “answers to [claim] (named answers file)” separates the target proposition from the optional file or folder hint. It ranks explicit responses and evidence filed under a matching answer heading above related cards. Treat topic overlap as context. An answer section can establish what the card responds to, while the tag and evidence determine how it responds. Preserve heading breadcrumbs and differentiate direct matches from related material.
