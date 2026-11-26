@@ -1,6 +1,7 @@
-import { interpretDebateQuery, matchDebateRecord, type DebateQuery } from './debate.ts';
+import { interpretDebateQuery, matchDebateRecord, type DebateFamily, type DebateQuery } from './debate.ts';
 
 export type SearchIntent = 'card' | 'argument' | 'document';
+export type SearchFilter = 'all' | SearchIntent;
 const warFacets = ['war-unlikely', 'war-likely', 'war-impacts', 'escalation'] as const;
 export const searchFacets = [...warFacets, 'alliance-erosion', 'alliance-resilience', 'escalation-unlikely', 'escalation-likely', 'impact-defense', 'impact-offense', 'link', 'link-defense', 'uniqueness', 'internal-link', 'impact'] as const;
 export type SearchFacet = typeof searchFacets[number];
@@ -44,6 +45,7 @@ export interface SearchCard {
   classificationBasis?: 'tag-and-excerpt' | 'tag' | 'benchmark' | 'file-section';
   duplicateGroup?: string;
   sectionHeadings?: readonly string[];
+  argumentRole?: 'solvency';
 }
 
 export interface SearchArgument {
@@ -53,6 +55,9 @@ export interface SearchArgument {
   documentIds: readonly string[];
   review: 'unreviewed' | 'reviewed' | 'synthetic';
   claim?: Claim;
+  family?: DebateFamily;
+  section?: readonly string[];
+  cardIds?: readonly string[];
 }
 
 export interface SearchCorpus {
@@ -70,7 +75,8 @@ export interface SourceLocation {
 
 export type SearchResult =
   | { kind: 'document'; id: string; match: 'metadata'; coverage: Coverage; source: SourceLocation }
-  | { kind: 'argument'; id: string; match: Match; name: string; review: SearchArgument['review']; sources: SourceLocation[] }
+  | { kind: 'argument'; id: string; match: Match; name: string; review: SearchArgument['review']; sources: SourceLocation[];
+      section?: readonly string[]; supportingCards?: CardResult[] }
   | {
     kind: 'card';
     id: string;
@@ -81,6 +87,8 @@ export type SearchResult =
     preview: Pick<SearchCard, 'tag' | 'citation' | 'extraction' | 'classification' | 'sourceRevision' | 'paragraphRange' | 'classificationBasis'> & { excerpt: string };
   };
 
+export type CardResult = Extract<SearchResult, { kind: 'card' }>;
+
 export interface SearchResponse {
   interpretation: {
     subject: Claim['subject'] | null;
@@ -88,6 +96,7 @@ export interface SearchResponse {
     clarificationChoices: readonly SearchFacet[];
     debate?: DebateQuery;
   };
+  preferredKind?: SearchIntent;
   results: SearchResult[];
 }
 
@@ -190,6 +199,26 @@ function location(document: SearchDocument): SourceLocation {
   return { documentId: document.id, title: document.title, folderPath: document.folderPath, ...(document.openUrl ? { openUrl: document.openUrl } : {}) };
 }
 
+function canPreview(card: SearchCard, document: SearchDocument | undefined): document is SearchDocument {
+  const [start, end] = card.paragraphRange;
+  return !!document && document.coverage === 'card-candidates' && !!document.revision
+    && document.revision === card.sourceRevision && card.extraction !== 'connector-text'
+    && !!card.tag.trim() && !/^(?:\W*)(?:todo\b|avoid saying\b)/i.test(card.tag) && !!card.citation.trim() && !!card.evidence.trim()
+    && Number.isInteger(start) && Number.isInteger(end) && start >= 0 && end >= start;
+}
+
+function previewCard(card: SearchCard, document: SearchDocument, match: Match): CardResult {
+  return {
+    kind: 'card', id: card.id, match, condition: card.condition, section: card.sectionHeadings,
+    sources: [{ ...location(document), cardId: card.id }],
+    preview: {
+      tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
+      extraction: card.extraction, classification: card.classification,
+      sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange, classificationBasis: card.classificationBasis,
+    },
+  };
+}
+
 interface RankedResult {
   result: SearchResult;
   relevance: number;
@@ -241,6 +270,7 @@ export function searchArguments(
   }
 
   if (request.intent === 'argument') {
+    const cardsById = new Map(corpus.cards.map(card => [card.id, card]));
     for (const argument of corpus.arguments) {
       if (!grants.argumentIds.has(argument.id)) continue;
       const sources = [...new Set(argument.documentIds)].flatMap(id => {
@@ -248,14 +278,26 @@ export function searchArguments(
         return source ? [location(source)] : [];
       });
       if (sources.length === 0) continue;
-      const relevance = textRelevance(retrievalQuery, terms, [argument.name, ...argument.aliases]);
+      const names = [argument.name, ...argument.aliases];
+      const nameTerms = new Set(names.flatMap(name => interpretDebateQuery(name).topics));
+      const positionMatches = !!argument.family && argument.family === debate.family && debate.topics.length > 0
+        && debate.topics.every(term => nameTerms.has(term));
+      const relevance = textRelevance(retrievalQuery, terms, names) + (positionMatches ? 4 : 0);
       const subjectMatches = interpretation.subject && argument.claim?.subject === interpretation.subject;
       const context = useDebateRanking && sources.some(source => matchDebateRecord(debate, { tag: argument.name }, source.title, source.folderPath));
       if (relevance || subjectMatches || context) {
+        const eligibleSourceIds = new Set(sources.map(source => source.documentId));
+        const supportingCards = (argument.cardIds ?? []).flatMap(id => {
+          const card = cardsById.get(id);
+          if (!card || !eligibleSourceIds.has(card.documentId)) return [];
+          const document = documents.get(card.documentId);
+          return canPreview(card, document) ? [previewCard(card, document, 'unknown')] : [];
+        }).slice(0, 5);
         candidates.push({
           relevance,
           result: { kind: 'argument', id: argument.id, name: argument.name, review: argument.review,
-            match: classify(interpretation.facet, subjectMatches ? argument.claim : undefined), sources },
+            match: positionMatches ? 'compatible' : classify(interpretation.facet, subjectMatches ? argument.claim : undefined),
+            sources, section: argument.section, supportingCards },
         });
       }
     }
@@ -264,11 +306,7 @@ export function searchArguments(
   if (request.intent === 'card') {
     for (const card of corpus.cards) {
       const document = documents.get(card.documentId);
-      if (!document || document.coverage !== 'card-candidates' || !document.revision
-        || document.revision !== card.sourceRevision || card.extraction === 'connector-text') continue;
-      const [start, end] = card.paragraphRange;
-      if (!card.tag.trim() || !card.citation.trim() || !card.evidence.trim()
-        || !Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start) continue;
+      if (!canPreview(card, document)) continue;
 
       const cardContext = [card.tag, ...(card.sectionHeadings ?? [])];
       const context = useDebateRanking ? matchDebateRecord(debate, card, document.title, document.folderPath) : null;
@@ -278,24 +316,17 @@ export function searchArguments(
       if (!relevance && !subjectMatches) continue;
       if (useDebateRanking && (debate.role || debate.family || debate.response) && !context && !subjectMatches) continue;
       if (structuredTopic && interpretation.facet && !subjectMatches) continue;
-      const match = context?.compatible ? 'compatible'
+      const match = context?.compatible && Boolean(debate.role || debate.response || !debate.family) ? 'compatible'
         : context && (debate.role || debate.response) && debate.topics.length > 0 ? 'different-function'
         : classify(interpretation.facet, subjectMatches ? card.claim : undefined);
+      if (useDebateRanking && debate.role && debate.topics.length === 0 && !context?.compatible && !subjectMatches) continue;
       candidates.push({
         relevance,
         conditional: Boolean(card.condition),
         supportingContext: Boolean(card.sectionHeadings?.some(heading => normalizeSearchText(heading) === 'shell')),
         duplicateKey: card.duplicateGroup
           ? JSON.stringify([card.duplicateGroup, card.claim?.facet, card.condition, match]) : undefined,
-        result: {
-          kind: 'card', id: card.id, match, condition: card.condition, section: card.sectionHeadings,
-          sources: [{ ...location(document), cardId: card.id }],
-          preview: {
-            tag: card.tag, citation: card.citation, excerpt: card.evidence.slice(0, 360),
-            extraction: card.extraction, classification: card.classification,
-            sourceRevision: card.sourceRevision, paragraphRange: card.paragraphRange, classificationBasis: card.classificationBasis,
-          },
-        },
+        result: previewCard(card, document, match),
       });
     }
   }
