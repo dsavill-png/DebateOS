@@ -4,11 +4,11 @@
 **Owner** Dennis Commander  
 **Worker** Work, upon release  
 **Review** Chat with Dennis. Consult Jared on any UI-facing contract.  
-**Dependencies** [TASK-003](003-tabroom-authentication.md) and Tabroom authorization for the proposed access. [ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) governs the warehouse proposal.
+**Dependencies** [TASK-003](003-tabroom-authentication.md) and a documented, owner-released source-use scope for the proposed access. [ADR-002](../docs/architecture/ADR-002-canonical-warehouse-model.md) governs the warehouse proposal.
 
 ## Objective
 
-Verify whether supported Tabroom authenticated APIs can reconstruct the judge history visible in Tabroom, field by field, then propose a warehouse contract based on the verified mappings and limitations. Use Dennis's supplied 15-page Tabroom judge record as the comparison reference after authorization.
+Verify whether supported Tabroom authenticated APIs can reconstruct the judge history visible in Tabroom, field by field, then propose a warehouse contract based on the verified mappings and limitations. The broader validation uses Dennis's supplied 15-page Tabroom judge record after authorization. The separately released supervised pilot compares the designated judge's paradigm and two distinct rows from that judge's owner-viewed record.
 
 ## Existing evidence
 
@@ -29,7 +29,7 @@ The [TASK-003 discovery addendum](../docs/research/tabroom-authenticated-access.
 | Result | Overall panel decision, including vote split where displayed, supported by an explicit result or verified mapping |
 | Paradigm | Statement text and review date, verified separately as a versioned stream |
 
-## Acceptance after release
+## Broader acceptance after release
 
 - Agree on a bounded sample and request cap before accessing protected endpoints. Compare selected visible rows from Dennis's own record field by field. Where available, include a split panel where Dennis's vote differs from the panel decision.
 - Require exact or explainable matches for tournament, date, event, round, Aff, Neg, vote and result. Include level and the paradigm text and review date in the validation report. For each field, document its source, join keys, match status, and any transformation. Flag label-only, unavailable, ambiguous and mismatched fields explicitly, and leave unsupported mappings unresolved.
@@ -37,9 +37,17 @@ The [TASK-003 discovery addendum](../docs/research/tabroom-authenticated-access.
 - Propose immutable paradigm revisions separately from judging-history observations. Document provenance and access controls for both streams, including observation time, source and authorized scope, and distinguish the source review date from the observation time.
 - Deliver a field matrix and a contract recommendation that identifies supported joins, gaps and unresolved grain questions. Use sanitized evidence in the handoff.
 
+## Supervised pilot acceptance
+
+Compare the paradigm text and source review date, plus tournament ID, event, round label, sides, individual vote, panel decision and split for two distinct reference rows. Include a split panel when available. Check the authenticated account against the owner-known account Person ID independently of the target Person ID and its roster crosswalk. Report sanitized field statuses. Leave level, actual round date and canonical panel links unresolved where the response supplies insufficient evidence. Passing this pilot validates the sample and leaves the broader acceptance contract open.
+
 ## Authorization and scope limits
 
-TASK-003 remains the gate. Obtain and record Tabroom confirmation of supported backend credentials, session lifetime and renewal, endpoint and role scopes, rate limits, and permitted data handling. Release only the agreed bounded validation after authorization. No broad harvest, HTML scraping, or winner inference from ambiguous structures. No persistent protected ingestion of paradigms or judging records until TASK-003 and vendor approval are in place and Dennis separately approves ingestion. Keep the supplied reference and protected response bodies out of GitHub.
+For one supervised native API validation, record the owner’s project-side release, the designated Person and exact endpoint scope, ordinary account access, known source constraints, unresolved policy evidence, and handling and cleanup requirements in the private work record. A separate vendor endorsement is not a blanket release requirement for this pilot. Record vendor consent or terms compliance only where verified, and stop on an applicable restriction, denial, expiry, rate limit, identity mismatch or unexpected response.
+
+Use one owner-authenticated session and at most two read-only GETs for the designated Person: one paradigm and one judging record. No retries, fallback scraping, bypass, or ambiguous winner inference. Validate locally or in the approved private runner, clear session material, verify termination through the established cleanup path, and discard temporary protected data. Keep reference material and response bodies out of GitHub. Report sanitized validation findings.
+
+TASK-003 continues to govern unattended backend ingestion. Persistent protected ingestion, broader collection, scheduled refresh and warehouse promotion require separate scope review and applicable approvals. This draft does not release a live run.
 
 ## Credential-free mapper proof
 

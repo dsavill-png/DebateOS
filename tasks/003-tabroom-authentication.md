@@ -57,6 +57,6 @@ Report:
 
 [Tabroom authenticated REST access](https://www.dropbox.com/home/DebateOS/Research?preview=TASK-003-7039686188-tabroom-authentication.md) · source comment `7039686188`
 
-[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records 14 successful in-browser API reads, including Harvard tournament and coach/judge-affiliated data. TASK-003 remains Partial. Before enabling backend ingestion, obtain Tabroom confirmation of supported unattended third-party backend credential use, session lifetime and renewal behavior, scopes and authorization boundaries, and rate limits. Role-isolated access and nonempty current-ballot coverage remain unverified.
+[November 23 API discovery addendum](../docs/research/tabroom-authenticated-access.md) records 14 successful in-browser API reads, including Harvard tournament and coach/judge-affiliated data. TASK-003 remains Partial. Before enabling unattended third-party backend ingestion, obtain Tabroom confirmation of supported unattended third-party backend credential use, session lifetime and renewal behavior, scopes and authorization boundaries, and rate limits. Role-isolated access and nonempty current-ballot coverage remain unverified. The separately scoped supervised TASK-014 validation uses ordinary owner-authenticated access, with its release and constraints recorded privately.
 
 Dennis reports that current Tabroom login uses username/password only, without MFA. This is user-reported operational context. MFA is outside the current test plan.
