@@ -8,7 +8,7 @@
 
 ## Objective
 
-Verify whether supported Tabroom authenticated APIs can reconstruct the judge history visible in Tabroom, field by field, then propose a warehouse contract based on the verified mappings and limitations. Use Dennis's supplied 15-page Tabroom judge record as the comparison reference after authorization.
+Verify whether supported Tabroom authenticated APIs can reconstruct the judge history visible in Tabroom, field by field, then propose a warehouse contract based on the verified mappings and limitations. The broader validation uses Dennis's supplied 15-page Tabroom judge record after authorization. The separately released supervised pilot compares the designated judge's paradigm and two distinct rows from that judge's owner-viewed record.
 
 ## Existing evidence
 
@@ -29,13 +29,17 @@ The [TASK-003 discovery addendum](../docs/research/tabroom-authenticated-access.
 | Result | Overall panel decision, including vote split where displayed, supported by an explicit result or verified mapping |
 | Paradigm | Statement text and review date, verified separately as a versioned stream |
 
-## Acceptance after release
+## Broader acceptance after release
 
 - Agree on a bounded sample and request cap before accessing protected endpoints. Compare selected visible rows from Dennis's own record field by field. Where available, include a split panel where Dennis's vote differs from the panel decision.
 - Require exact or explainable matches for tournament, date, event, round, Aff, Neg, vote and result. Include level and the paradigm text and review date in the validation report. For each field, document its source, join keys, match status, and any transformation. Flag label-only, unavailable, ambiguous and mismatched fields explicitly, and leave unsupported mappings unresolved.
 - Review the candidate grain of one judge person per tournament, event, round and panel. Test uniqueness, including multiple panels per round and multiple scoped judge IDs linked to a person, before adopting that grain. Link verified Aff and Neg entries, the individual judge vote, the overall panel result and source provenance. Preserve the individual vote and panel result as distinct facts. Keep tournament-scoped judge IDs distinct from person IDs and require an explicit identity link.
 - Propose immutable paradigm revisions separately from judging-history observations. Document provenance and access controls for both streams, including observation time, source and authorized scope, and distinguish the source review date from the observation time.
 - Deliver a field matrix and a contract recommendation that identifies supported joins, gaps and unresolved grain questions. Use sanitized evidence in the handoff.
+
+## Supervised pilot acceptance
+
+Compare the paradigm text and source review date, plus tournament ID, event, round label, sides, individual vote, panel decision and split for two distinct reference rows. Include a split panel when available. Check the authenticated account against the owner-known account Person ID independently of the target Person ID and its roster crosswalk. Report sanitized field statuses. Leave level, actual round date and canonical panel links unresolved where the response supplies insufficient evidence. Passing this pilot validates the sample and leaves the broader acceptance contract open.
 
 ## Authorization and scope limits
 
